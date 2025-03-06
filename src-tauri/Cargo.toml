@@ -1,0 +1,36 @@
+[package]
+name = "telecat"
+version = "1.2.0"
+description = "Open Source Teleprompter App"
+authors = [ "MarcusUniverse" ]
+license = "MIT"
+repository = "https://github.com/NicolaSpadari/nuxtor"
+edition = "2021"
+
+[lib]
+name = "nuxtor_lib"
+crate-type = [
+  "staticlib",
+  "cdylib",
+  "rlib"
+]
+
+[build-dependencies.tauri-build]
+version = "2.0.5"
+features = [ ]
+
+[dependencies]
+tauri-plugin-shell = "2.2.0"
+tauri-plugin-notification = "2.2.1"
+tauri-plugin-os = "2.2.0"
+tauri-plugin-fs = "2.2.0"
+tauri-plugin-store = "2.2.0"
+serde_json = "1"
+
+[dependencies.tauri]
+version = "2.2.5"
+features = [ "tray-icon" ]
+
+[dependencies.serde]
+version = "1"
+features = [ "derive" ]

@@ -1,0 +1,11 @@
+@theme {
+	--font-heading: "Montserrat", sans-serif;
+	--font-sans: "Inter", sans-serif;
+
+	--color-primary: #FF5722;
+	--color-secondary: #FFC107;
+	--color-success: #4CAF50;
+	--color-info: #2196F3;
+	--color-warning: #FF9800;
+	--color-error: #F44336;
+}

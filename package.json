@@ -1,0 +1,48 @@
+{
+	"name": "telecat",
+	"type": "module",
+	"version": "1.2.0",
+	"private": true,
+	"packageManager": "pnpm@9.15.4",
+	"description": "Open Source Teleprompter App",
+	"author": "MarcusUniverse",
+	"license": "MIT",
+	"engines": {
+		"node": ">=23"
+	},
+	"scripts": {
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preinstall": "npx only-allow pnpm",
+		"postinstall": "nuxt prepare",
+		"lint": "eslint . --fix",
+		"bump": "bumpp",
+		"tauri": "tauri",
+		"tauri:dev": "tauri dev",
+		"tauri:build": "tauri build",
+		"tauri:build:debug": "tauri build --debug"
+	},
+	"dependencies": {
+		"@tauri-apps/api": ">=2.2.0",
+		"@tauri-apps/plugin-fs": "^2.2.0",
+		"@tauri-apps/plugin-notification": "^2.2.1",
+		"@tauri-apps/plugin-os": "^2.2.0",
+		"@tauri-apps/plugin-shell": "^2.2.0",
+		"@tauri-apps/plugin-store": "^2.2.0",
+		"nuxt": "^3.15.4",
+		"vue": "^3.5.13",
+		"vue-router": "^4.5.0",
+		"zod": "^3.24.1"
+	},
+	"devDependencies": {
+		"@antfu/eslint-config": "^4.1.1",
+		"@nuxt/eslint": "^1.0.1",
+		"@tauri-apps/cli": ">=2.2.7",
+		"@vueuse/core": "^12.5.0",
+		"@vueuse/nuxt": "^12.5.0",
+		"bumpp": "^10.0.2",
+		"eslint": "9.17.0",
+		"nuxt-svgo": "^4.0.14",
+		"typescript": "^5.7.3"
+	}
+}
