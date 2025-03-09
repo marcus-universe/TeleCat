@@ -29,7 +29,13 @@ $desktop: 1600px
   --prompt_bg: #{$BGPromter}
   --text_color: #{$TextColor}
   --imageSizeN: clamp(180px, 11vw, 400px)
-  --pSize: 3rem
+  --mirrorX: 1
+  --mirrorY: 1
+  --fontSize: 1
+  --pSize: calc(1rem * var(--fontSize))
+  --h1Size: calc(2rem * var(--fontSize))
+  --h2Size: calc(1.5rem * var(--fontSize))
+  --h3Size: calc(1.2rem * var(--fontSize))
 @media screen and (max-width: $phone)
   :root
     --imageSizeN: 180px

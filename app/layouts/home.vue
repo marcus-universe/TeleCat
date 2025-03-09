@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<LayoutNavTop />
-		<LayoutSettings v-if="settingsOpen" />
+		<LayoutSettings :class="{ show: settingsOpen }" />
 		<slot />
 	</div>
 </template>

@@ -20,6 +20,7 @@
 	const previewState = computed(() => store.previewState);
 	const playState = computed(() => store.playState);
 	const speed = computed(() => store.speed);
+	const direction = computed(() => store.settings.direction);
 
 	const markdownText = ref(store.textContent);
 	const renderedMarkdown = computed(() => marked(markdownText.value));
@@ -36,14 +37,43 @@
 		});
 	}
 
+
+	let scrollDelay: ReturnType<typeof setTimeout>;
 	function startScrolling() {
+		const markdownPreview = document.querySelector('.MarkdownPreview') as HTMLElement;
+		if (!markdownPreview) return;
+
+		const offset = 1;
+		const animate = 0;
+
 		const scroll = () => {
 			if (store.playState && store.previewState) {
-				window.scrollBy(0, speed.value);
-				requestAnimationFrame(scroll);
+				clearTimeout(scrollDelay);
+				scrollDelay = setTimeout(scroll, Math.floor(100 - speed.value));
+
+				if (direction.value) {
+					window.scrollBy(0, offset);
+					if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+						stopScrolling();
+					}
+				} else {
+					window.scrollBy(0, -offset);
+					if (window.scrollY === 0) {
+						stopScrolling();
+						setTimeout(() => {
+							window.scrollTo(0, document.documentElement.scrollHeight);
+						}, 500);
+					}
+				}
 			}
 		};
+
 		scroll();
+	}
+
+	function stopScrolling() {
+		store.togglePlayState();
+		clearTimeout(scrollDelay);
 	}
 
 	onMounted(() => {
@@ -54,10 +84,11 @@
 	});
 
 	watch(playState, (newVal) => {
-		if (newVal) {
-			startScrolling();
-		}
-	});
+    if (newVal && previewState.value) {
+        startScrolling();
+    }
+});
+
 
 	definePageMeta({
 		layout: "home"

@@ -8,6 +8,7 @@ nav
     top: 0
     left: 0
     width: calc(100% - 2rem)
+    z-index: 99
 
     .nav-wrapper
         width: 100%
@@ -37,5 +38,33 @@ nav
     outline: none
     padding: 2rem 1rem
 .MarkdownPreview
+    transform: scale(var(--mirrorX), var(--mirrorY))
+    h1
+        font-size: var(--h1Size)
+    h2
+        font-size: var(--h2Size)
+    h3
+        font-size: var(--h3Size)
     p
         font-size: var(--pSize)
+    
+
+.SettingsBar
+    position: fixed
+    top: 5rem
+    right: -30vw
+    width: calc(30vw - 6rem)
+    transition: all 0.3s ease
+    height: 100%
+    background: rgba(var(--color_bg), 0.5)
+    backdrop-filter: blur(10px)
+    z-index: 99
+    padding: 2rem
+    h1
+        font-size: 3rem
+        color: var(--color_p)
+        text-align: center
+        margin: 1rem 0
+.show
+    right: 0
+        

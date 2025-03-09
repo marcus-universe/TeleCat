@@ -5,12 +5,16 @@ export const useStore = defineStore("store", {
 		return {
 			previewState: false,
 			playState: false,
-			speed: 1,
+			speed: 0.4,
 			textContent: "Hello, World!",
 			settings: {
 				open: false,
+				mirroredX: false,
+				mirroredY: false,
 				colorText: "#eeeeee",
-				colorBackground: "#392342"
+				colorBackground: "#392342",
+				direction: true,
+				fontScale: 1,
 			}
 		};
 	},
@@ -29,6 +33,10 @@ export const useStore = defineStore("store", {
 		},
 		setSettingsOpen() {
 			this.settings.open = !this.settings.open;
+		},
+
+		toggleDirection() {
+			this.settings.direction = !this.settings.direction;
 		}
 
 	}

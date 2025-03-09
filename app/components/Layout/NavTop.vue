@@ -15,12 +15,20 @@
 				</NuxtLink>
 			</div>
 
-			<div @click="playstop()">
-				<DesignIcons icon="play" customclass="play" />
+			<div class="flex_c_h flex_end gap1">
+				<div @click="playstop()">
+					<DesignIcons icon="play" customclass="play" />
+				</div>
+
+				<div @click="direction()">
+					<DesignIcons icon="direction" customclass="direction" />
+				</div>
 			</div>
 
-			<div @click="switchPreview()">
-				<DesignIcons icon="preview" customclass="preview" />
+			<div>
+				<div @click="switchPreview()">
+					<DesignIcons icon="preview" customclass="preview" />
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -41,5 +49,9 @@
 
 	function playstop() {
 		store.togglePlayState();
+	}
+
+	function direction() {
+		store.toggleDirection();
 	}
 </script>
