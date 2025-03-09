@@ -1,7 +1,15 @@
 <template>
 	<div>
-		<div class="relative overflow-hidden px-6 lg:px-8">
-			<h1>Home</h1>
-		</div>/
+		<LayoutNavTop />
+		<LayoutSettings v-if="settingsOpen" />
+		<slot />
 	</div>
 </template>
+
+<script setup lang="ts">
+	import { useStore } from "@/stores/store";
+
+	const store = useStore();
+
+	const settingsOpen = computed(() => store.settings.open);
+</script>

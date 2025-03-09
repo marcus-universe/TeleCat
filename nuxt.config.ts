@@ -1,17 +1,17 @@
 export default defineNuxtConfig({
-	modules: [
-		"@vueuse/nuxt",
-		"nuxt-svgo",
-		"@nuxt/eslint"
-	],
+	devtools: {
+		enabled: true // or false to disable
+	},
+	modules: ["@vueuse/nuxt", "nuxt-svgo", "@nuxt/eslint", "@pinia/nuxt"],
+	pinia: {
+		storeDirs: ["@/stores/**"]
+	},
 	app: {
 		head: {
 			title: "Nuxtor",
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
-			meta: [
-				{ name: "format-detection", content: "no" }
-			]
+			meta: [{ name: "format-detection", content: "no" }]
 		},
 		pageTransition: {
 			name: "page",
@@ -22,9 +22,8 @@ export default defineNuxtConfig({
 			mode: "out-in"
 		}
 	},
-	css: [
-		"@/assets/css/main.css"
-	],
+	css: ["@/assets/css/main.css", "@/sass/main.sass"],
+
 	icon: {
 		customCollections: [
 			{
@@ -44,11 +43,14 @@ export default defineNuxtConfig({
 		presets: [
 			{
 				from: "zod",
-				imports: ["z", {
-					name: "infer",
-					as: "zInfer",
-					type: true
-				}]
+				imports: [
+					"z",
+					{
+						name: "infer",
+						as: "zInfer",
+						type: true
+					}
+				]
 			}
 		]
 	},
@@ -84,43 +86,44 @@ export default defineNuxtConfig({
 	compatibilityDate: "2025-02-01"
 });
 function defineNuxtConfig(config: {
-	modules: string[];
+	devtools: { enabled: boolean }
+	modules: string[]
+	pinia: { storeDirs: string[] }
 	app: {
 		head: {
-			title: string;
-			charset: string;
-			viewport: string;
-			meta: { name: string; content: string; }[];
-		};
-		pageTransition: { name: string; mode: string; };
-		layoutTransition: { name: string; mode: string; };
-	};
-	css: string[];
-	icon: { customCollections: { prefix: string; dir: string; }[]; };
-	svgo: { autoImportPath: string; };
-	ssr: boolean;
-	dir: { modules: string; };
+			title: string
+			charset: string
+			viewport: string
+			meta: { name: string, content: string }[]
+		}
+		pageTransition: { name: string, mode: string }
+		layoutTransition: { name: string, mode: string }
+	}
+	css: string[]
+	icon: { customCollections: { prefix: string, dir: string }[] }
+	svgo: { autoImportPath: string }
+	ssr: boolean
+	dir: { modules: string }
 	imports: {
 		presets: {
-			from: string;
-			imports: (string | { name: string; as: string; type: boolean; })[];
-		}[];
-	};
+			from: string
+			imports: (string | { name: string, as: string, type: boolean })[]
+		}[]
+	}
 	vite: {
-		clearScreen: boolean;
-		envPrefix: string[];
+		clearScreen: boolean
+		envPrefix: string[]
 		server: {
-			strictPort: boolean;
-			hmr: { protocol: string; host: string; port: number; };
-			watch: { ignored: string[]; };
-		};
-	};
-	devServer: { host: string; };
-	eslint: { config: { standalone: boolean; }; };
-	experimental: { typedPages: boolean; };
-	future: { compatibilityVersion: number; };
-	compatibilityDate: string;
+			strictPort: boolean
+			hmr: { protocol: string, host: string, port: number }
+			watch: { ignored: string[] }
+		}
+	}
+	devServer: { host: string }
+	eslint: { config: { standalone: boolean } }
+	experimental: { typedPages: boolean }
+	future: { compatibilityVersion: number }
+	compatibilityDate: string
 }) {
 	return config;
 }
-

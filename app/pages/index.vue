@@ -1,15 +1,68 @@
 <template>
-	<h1>Home</h1>
+	<div class="teleprommt_wrapper">
+		<textarea v-if="previewState === false" id="teleprompter" v-model="markdownText" class="teleprompter" role="textbox" aria-multiline="true" aria-label="TelePrompter Text" contenteditable @input="autoResize" />
+
+		<div v-if="previewState === true" class="MarkdownPreview" v-html="renderedMarkdown" />
+	</div>
 </template>
 
 <script lang="ts" setup>
+	import { useStore } from "@/stores/store";
+	import { marked } from "marked";
+
+	// Set marked options to enable line breaks
+	marked.use({
+		gfm: true,
+		breaks: true
+	});
+
+	const store = useStore();
+	const previewState = computed(() => store.previewState);
+	const playState = computed(() => store.playState);
+	const speed = computed(() => store.speed);
+
+	const markdownText = ref(store.textContent);
+	const renderedMarkdown = computed(() => marked(markdownText.value));
+
+	function autoResize(_event?: Event) {
+		nextTick(() => {
+			const textarea = document.getElementById("teleprompter") as HTMLTextAreaElement;
+			if (textarea) {
+				textarea.style.height = "auto";
+				textarea.style.height = `${textarea.scrollHeight}px`;
+			}
+			console.log("Auto Resize");
+			store.textContent = markdownText.value;
+		});
+	}
+
+	function startScrolling() {
+		const scroll = () => {
+			if (store.playState && store.previewState) {
+				window.scrollBy(0, speed.value);
+				requestAnimationFrame(scroll);
+			}
+		};
+		scroll();
+	}
+
+	onMounted(() => {
+		autoResize();
+	});
+	watch(previewState, () => {
+		autoResize();
+	});
+
+	watch(playState, (newVal) => {
+		if (newVal) {
+			startScrolling();
+		}
+	});
+
 	definePageMeta({
 		layout: "home"
 	});
 	function definePageMeta(meta: { layout: string }) {
-		// Assuming this function sets some metadata for the page
-		// Here we can set the metadata to a global or local state
-		// For simplicity, let's log the meta to the console
 		console.log("Page metadata:", meta);
 	}
-	</script>
+</script>

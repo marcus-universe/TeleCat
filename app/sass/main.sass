@@ -1,0 +1,41 @@
+@use 'base' as *;
+
+nav
+    background: rgba(var(--color_bg), 1)
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+    position: fixed
+    transform: translateY(0%)
+    top: 0
+    left: 0
+    width: calc(100% - 2rem)
+
+    .nav-wrapper
+        width: 100%
+            
+        svg
+            width: 2rem
+            height: 2rem
+            fill: var(--color_p)
+            cursor: pointer  
+
+
+.logo
+    width: 2rem
+    height: 2rem
+
+#teleprompter
+    background: var(--prompt_bg)
+    color: var(--text_color)
+    font-family: $font
+    font-size: 1.5rem
+    display: block
+    width: calc( 100% - 2rem )
+    height: auto
+    resize: none
+    overflow: auto
+    border: none
+    outline: none
+    padding: 2rem 1rem
+.MarkdownPreview
+    p
+        font-size: var(--pSize)

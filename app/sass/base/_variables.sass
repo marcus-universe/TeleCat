@@ -1,0 +1,54 @@
+
+//Contrast
+$WColor: #eeeeee
+
+//Neon Colors
+$nBlue: #77adff
+$nGreen: #9CFF5C
+$nPink: #FF3E8D
+$nPurple: #a25aff
+$nRed: #FF6161
+$nOrange: #FFA05F
+
+//BG
+$BGPromter: #392342
+$TextColor: #eeeeee
+
+$BGcolor: 35, 45, 66
+$BGPromter: #1e1e1e
+
+//Responsive
+$phone: 640px
+$tablet: 1280px
+$desktop: 1600px
+
+//root
+:root
+  --color_p: #{$nBlue}
+  --color_bg: #{$BGcolor}
+  --prompt_bg: #{$BGPromter}
+  --text_color: #{$TextColor}
+  --imageSizeN: clamp(180px, 11vw, 400px)
+  --pSize: 3rem
+@media screen and (max-width: $phone)
+  :root
+    --imageSizeN: 180px
+
+// Fonts
+// @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;800;900&display=swap')
+// @font-face
+//   font-family: 'Noto Sans JP'
+//   src: url('/assets/fonts/NotoSansDisplay-variablefont.ttf') format('truetype')
+//   src: url('/assets/fonts/NotoSansDisplay-Regular.eot') format('embedded-opentype'), url('/assets/fonts/NotoSansDisplay-Regular.woff2') format('woff2'), url('/assets/fonts/NotoSansDisplay-Regular.woff') format('woff'), url('/assets/fonts/NotoSansDisplay-Regular.ttf') format('truetype')
+
+// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Saira+Stencil+One&display=swap')
+
+// $fontExo: 'Exo 2', sans-serif
+// $fontNoto: 'Noto Sans JP', sans-serif
+@font-face
+  font-family: 'Assistant'
+  font-display: swap
+  src: url(assets/fonts/Assistant/Assistant-VariableFont_wght.ttf) format("truetype")
+
+$font: 'Assistant', sans-serif
+// $fontSaira: 'Saira Stencil One', cursive

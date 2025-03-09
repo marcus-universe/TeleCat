@@ -1,5 +1,7 @@
 <template>
-	<h1>Settings</h1>
+	<div class="SettingsBar">
+		<h1>Settings</h1>
+	</div>
 </template>
 
 <script lang="ts" setup>
