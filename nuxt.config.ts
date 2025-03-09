@@ -1,95 +1,99 @@
 export default defineNuxtConfig({
-	devtools: {
-		enabled: true // or false to disable
-	},
-	modules: ["@vueuse/nuxt", "nuxt-svgo", "@nuxt/eslint", "@pinia/nuxt"],
-	pinia: {
-		storeDirs: ["@/stores/**"]
-	},
-	app: {
-		head: {
-			title: "Nuxtor",
-			charset: "utf-8",
-			viewport: "width=device-width, initial-scale=1",
-			meta: [{ name: "format-detection", content: "no" }]
-		},
-		pageTransition: {
-			name: "page",
-			mode: "out-in"
-		},
-		layoutTransition: {
-			name: "layout",
-			mode: "out-in"
-		}
-	},
-	css: ["@/assets/css/main.css", "@/sass/main.sass"],
+  devtools: {
+    enabled: true, // or false to disable
+  },
+  modules: ["@vueuse/nuxt", "nuxt-svgo", "@nuxt/eslint", "@pinia/nuxt"],
+  pinia: {
+    storeDirs: ["@/stores/**"],
+  },
+  app: {
+    baseURL: "/TeleCat/",
+    buildAssetsDir: "assets",
+    head: {
+      title: "Nuxtor",
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+      meta: [{ name: "format-detection", content: "no" }],
+    },
+    pageTransition: {
+      name: "page",
+      mode: "out-in",
+    },
+    layoutTransition: {
+      name: "layout",
+      mode: "out-in",
+    },
+  },
+  css: ["@/assets/css/main.css", "@/sass/main.sass"],
 
-	icon: {
-		customCollections: [
-			{
-				prefix: "local",
-				dir: "./app/assets/icons"
-			}
-		]
-	},
-	svgo: {
-		autoImportPath: "@/assets/"
-	},
-	ssr: false,
-	dir: {
-		modules: "app/modules"
-	},
-	imports: {
-		presets: [
-			{
-				from: "zod",
-				imports: [
-					"z",
-					{
-						name: "infer",
-						as: "zInfer",
-						type: true
-					}
-				]
-			}
-		]
-	},
-	vite: {
-		clearScreen: false,
-		envPrefix: ["VITE_", "TAURI_"],
-		server: {
-			strictPort: true,
-			hmr: {
-				protocol: "ws",
-				host: "0.0.0.0",
-				port: 3001
-			},
-			watch: {
-				ignored: ["**/src-tauri/**"]
-			}
-		}
-	},
-	devServer: {
-		host: "0.0.0.0"
-	},
-	eslint: {
-		config: {
-			standalone: false
-		}
-	},
-	experimental: {
-		typedPages: true
-	},
-	future: {
-		compatibilityVersion: 4
-	},
-	compatibilityDate: "2025-02-01"
+  icon: {
+    customCollections: [
+      {
+        prefix: "local",
+        dir: "./app/assets/icons",
+      },
+    ],
+  },
+  svgo: {
+    autoImportPath: "@/assets/",
+  },
+  ssr: false,
+  dir: {
+    modules: "app/modules",
+  },
+  imports: {
+    presets: [
+      {
+        from: "zod",
+        imports: [
+          "z",
+          {
+            name: "infer",
+            as: "zInfer",
+            type: true,
+          },
+        ],
+      },
+    ],
+  },
+  vite: {
+    clearScreen: false,
+    envPrefix: ["VITE_", "TAURI_"],
+    server: {
+      strictPort: true,
+      hmr: {
+        protocol: "ws",
+        host: "0.0.0.0",
+        port: 3001,
+      },
+      watch: {
+        ignored: ["**/src-tauri/**"],
+      },
+    },
+  },
+  devServer: {
+    host: "0.0.0.0",
+  },
+  eslint: {
+    config: {
+      standalone: false,
+    },
+  },
+  experimental: {
+    typedPages: true,
+  },
+  future: {
+    compatibilityVersion: 4,
+  },
+  compatibilityDate: "2025-02-01",
 });
 function defineNuxtConfig(config: {
 	devtools: { enabled: boolean }
 	modules: string[]
 	pinia: { storeDirs: string[] }
 	app: {
+		baseURL: string
+		buildAssetsDir: string
 		head: {
 			title: string
 			charset: string
