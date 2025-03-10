@@ -15,6 +15,9 @@ export default defineNuxtConfig({
 			viewport: "width=device-width, initial-scale=1",
 			meta: [{ name: "format-detection", content: "no" }]
 		},
+  router: {
+    base: '/TeleCat/',
+  },
 		pageTransition: {
 			name: "page",
 			mode: "out-in"
