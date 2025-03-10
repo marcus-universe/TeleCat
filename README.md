@@ -4,9 +4,11 @@
 </a>
 </p>
 <center>
+<div align="center">
 <img src="https://img.shields.io/github/license/marcus-universe/TeleCat.svg" />
 <img src="https://img.shields.io/github/downloads/marcus-universe/TeleCat/total.svg" />
 <img src="https://img.shields.io/github/package-json/v/marcus-universe/TeleCat?style=for-the-badge.svg" />
+</div>
 </center>
 <p align="center">
 Best Open Source Teleprompter App for you and your cat😺!
