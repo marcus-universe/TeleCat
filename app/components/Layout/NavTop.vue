@@ -3,7 +3,7 @@
 		<div class="nav-wrapper flex_c_h flex_space">
 			<div class="flex_c_h flex_start gap1">
 				<NuxtLink to="/" class="brand-logo">
-					<img class="logo icon" src="../../assets/logo.svg" alt="">
+					<img class="logo icon" src="/logo.svg" alt="">
 				</NuxtLink>
 
 				<div class="settingsButton" @click="store.setSettingsOpen()">

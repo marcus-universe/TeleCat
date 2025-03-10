@@ -9,6 +9,7 @@ $nPink: #FF3E8D
 $nPurple: #a25aff
 $nRed: #FF6161
 $nOrange: #FFA05F
+$nGrey: #b5b5b5
 
 //BG
 $BGPromter: #392342
@@ -18,7 +19,7 @@ $BGcolor: 35, 45, 66
 $BGPromter: #1e1e1e
 
 //Responsive
-$phone: 640px
+$phone: 740px
 $tablet: 1280px
 $desktop: 1600px
 
@@ -28,7 +29,7 @@ $desktop: 1600px
   --color_bg: #{$BGcolor}
   --prompt_bg: #{$BGPromter}
   --text_color: #{$TextColor}
-  --imageSizeN: clamp(180px, 11vw, 400px)
+  --imageSizeN: clamp(400px, 20vw, 100%)
   --mirrorX: 1
   --mirrorY: 1
   --fontSize: 1
@@ -36,6 +37,7 @@ $desktop: 1600px
   --h1Size: calc(2rem * var(--fontSize))
   --h2Size: calc(1.5rem * var(--fontSize))
   --h3Size: calc(1.2rem * var(--fontSize))
+  --sidePadding: 2rem
 @media screen and (max-width: $phone)
   :root
     --imageSizeN: 180px

@@ -38,6 +38,8 @@ nav
     outline: none
     padding: 2rem 1rem
 .MarkdownPreview
+    width: calc( 100% - var(--sidePadding) * 2)
+    padding: 0 var(--sidePadding)
     transform: scale(var(--mirrorX), var(--mirrorY))
     h1
         font-size: var(--h1Size)
@@ -52,11 +54,11 @@ nav
 .SettingsBar
     position: fixed
     top: 5rem
-    right: -30vw
-    width: calc(30vw - 6rem)
-    transition: all 0.3s ease
+    right: -100vw
+    width: calc(100vw - 6rem)
+    transition: right 0.3s ease
     height: 100%
-    background: rgba(var(--color_bg), 0.5)
+    background: rgba(var(--color_bg), 0.8)
     backdrop-filter: blur(10px)
     z-index: 99
     padding: 2rem
@@ -65,6 +67,105 @@ nav
         color: var(--color_p)
         text-align: center
         margin: 1rem 0
-.show
-    right: 0
+
+    .option
+        margin: 1rem 0
+        display: flex
+        width: 100%
+        height: 3rem
+        cursor: pointer
+        padding: 0.5rem
+        border-radius: 1rem
+        border: 2px solid var(--color_p)
+        &.button
+            width: 3rem
+            height: 3rem
+
+
+        .color-picker, .color-fillpicker 
+            position: absolute
+            width: 3rem
+            height: 3rem
+            opacity: 0
+            cursor: pointer
+        .sidePadding
+            transform: rotate(90deg)
+        svg
+            width: 3rem
+            height: 3rem
+            fill: var(--color_p)
+        .mirrorY
+            transform: rotate(90deg)
+        &.active
+            svg
+                fill: var(--color_bg)
+            background: var(--color_p)
+        label
+            font-size: 1.5rem
+            color: var(--color_p)
+            margin: 0
+        input
+            width: 2rem
+            height: 2rem
+            cursor: pointer
+            &:checked + label
+                color: var(--nBlue)
+            &.slider
+                -webkit-appearance: none
+                width: 100%
+                height: 1rem
+                border-radius: 10rem
+                opacity: 0.7
+                background: var(--color_p)
+                outline: none
+                transition: opacity 0.2s ease
+            &.slider::-webkit-slider-thumb
+                -webkit-appearance: none
+                appearance: none
+                width: 2rem
+                height: 2rem
+                border-radius: 50%
+                background: $WColor
+                cursor: pointer
+            &.slider:hover
+                opacity: 1
+    @include media(">phone", "<=tablet")
+        width: calc(50vw - 6rem) 
+        right: -50vw
+    @include media("<=phone")
+        width: calc(100vw - 6rem)
+        right: calc(-100vw)
+    @include media(">=tablet")
+        width: calc(40vw - 6rem) 
+        right: -40vw
+
+    &.show
+            right: 0
         
+
+.aboutSection
+    padding: 2rem
+    width: calc( 100% - 4rem )
+    text-align: center
+    background: rgba(var(--color_bg), 1)
+    min-height: calc(100vh - 10rem)
+    img
+        width: var(--imageSizeN)
+        height: auto
+    h1
+        font-size: 2rem
+        color: var(--color_p)
+        margin: 0 0 0rem 0
+    p
+        margin: 0 0
+        padding: 0
+        a
+            color: var(--color_p)
+            text-decoration: none
+            transition: all 0.3s ease
+            &:hover
+                color: var(--text_color)
+        b
+            color: var(--color_p)
+            font-size: 1rem
+            margin: 0 0 1rem 0

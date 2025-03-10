@@ -37,14 +37,13 @@
 		});
 	}
 
-
 	let scrollDelay: ReturnType<typeof setTimeout>;
 	function startScrolling() {
-		const markdownPreview = document.querySelector('.MarkdownPreview') as HTMLElement;
+		const markdownPreview = document.querySelector(".MarkdownPreview") as HTMLElement;
 		if (!markdownPreview) return;
 
 		const offset = 1;
-		const animate = 0;
+		// const animate = 0;
 
 		const scroll = () => {
 			if (store.playState && store.previewState) {
@@ -84,11 +83,10 @@
 	});
 
 	watch(playState, (newVal) => {
-    if (newVal && previewState.value) {
-        startScrolling();
-    }
-});
-
+		if (newVal && previewState.value) {
+			startScrolling();
+		}
+	});
 
 	definePageMeta({
 		layout: "home"
