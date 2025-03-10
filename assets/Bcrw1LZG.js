@@ -1,1 +1,0 @@
-import{e as a,c as n,o,a as t}from"./DYchbKBf.js";const u=a({__name:"about",setup(s){return(r,e)=>(o(),n("section",null,e[0]||(e[0]=[t("h1",null,"About",-1),t("p",null,"TeleCat is created by Marcus Universe.",-1)])))}});export{u as default};
