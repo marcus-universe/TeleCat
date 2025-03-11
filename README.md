@@ -4,9 +4,11 @@
 </a>
 </p>
 <center>
+<div align="center">
 <img src="https://img.shields.io/github/license/marcus-universe/TeleCat.svg" />
 <img src="https://img.shields.io/github/downloads/marcus-universe/TeleCat/total.svg" />
 <img src="https://img.shields.io/github/package-json/v/marcus-universe/TeleCat?style=for-the-badge.svg" />
+</div>
 </center>
 <p align="center">
 Best Open Source Teleprompter App for you and your cat😺!
@@ -31,7 +33,7 @@ Best Open Source Teleprompter App for you and your cat😺!
 <a href="https://github.com/marcus-universe/TeleCat/releases/latest" target="_blank"><img src="https://img.shields.io/badge/DOWNLOAD-77adff?style=for-the-badge" /></a>
 
 ## IDE Tools used
-
+<div align="center">
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/nuxt.svg?logo=nuxt" />
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/@tauri-apps/api.svg?logo=tauri" />
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/pinia.svg" />
@@ -40,6 +42,7 @@ Best Open Source Teleprompter App for you and your cat😺!
 <img src="https://img.shields.io/badge/typescript--blue?logo=typescript&logoColor=eeeeee" />
 <img src="https://img.shields.io/badge/eslint--blue?logo=eslint&logoColor=eeeeee" />
 <img src="https://img.shields.io/badge/rust--blue?logo=rust" />
+</div>
 
 ## License
 
