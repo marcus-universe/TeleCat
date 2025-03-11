@@ -33,7 +33,7 @@
 
 		<div class="option flex_c_h alignCenter gap1">
 			<DesignIcons icon="textsize" customclass="textsize" />
-			<input id="fontScale" v-model="fontScale" type="range" min="0.1" max="20" value="5" class="slider" step="0.1">
+			<input id="fontScale" v-model="fontScale" type="range" min="0.1" max="20" value="1.5" class="slider" step="0.1">
 		</div>
 
 		<div class="option flex_c_h alignCenter gap1">
@@ -89,6 +89,13 @@
 
 	watch(speed, (newSpeed) => {
 		store.speed = newSpeed;
+	});
+
+	onMounted(() => {
+		document.documentElement.style.setProperty("--text_color", colorText.value);
+		document.documentElement.style.setProperty("--prompt_bg", colorBackground.value);
+		document.documentElement.style.setProperty("--fontSize", `${fontScale.value}`);
+		document.documentElement.style.setProperty("--sidePadding", `${sidePadding.value}rem`);
 	});
 
 	const colorPicker = ref<HTMLInputElement | null>(null);

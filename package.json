@@ -1,7 +1,7 @@
 {
 	"name": "telecat",
 	"type": "module",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"private": true,
 	"packageManager": "pnpm@9.15.4",
 	"description": "Open Source Teleprompter App",
@@ -20,8 +20,10 @@
 		"tauri": "tauri",
 		"deploy": "gh-pages -d .output/public",
 		"tauri:dev": "tauri dev",
-		"tauri:build": "tauri build",
+		"tauri:build": "npm run prebuild && tauri build && npm run postbuild",
 		"tauri:build:debug": "tauri build --debug",
+		"prebuild": "node scripts/prebuild.js",
+		"postbuild": "node scripts/postbuild.js",
 		"npm_patch": "npm version patch --no-git-tag-version",
 		"npm_major": "npm version major --no-git-tag-version",
 		"npm_minor": "npm version minor --no-git-tag-version"

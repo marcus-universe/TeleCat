@@ -10,24 +10,39 @@
 					<DesignIcons icon="settings" customclass="settings" />
 				</div>
 
-				<NuxtLink to="/about">
+				<NuxtLink to="/about" @click="openAbout()">
 					<DesignIcons icon="about" customclass="about" />
 				</NuxtLink>
 			</div>
 
 			<div class="flex_c_h flex_end gap1">
-				<div @click="playstop()">
-					<DesignIcons icon="play" customclass="play" />
+				<div class="PlayIconWrapper" @click="playstop()">
+					<div :class="{ active: !playState }" class="PlayIcon">
+						<DesignIcons icon="play" customclass="play" />
+					</div>
+					<div :class="{ active: playState }" class="PlayIcon">
+						<DesignIcons icon="stop" customclass="stop" />
+					</div>
 				</div>
 
-				<div @click="direction()">
-					<DesignIcons icon="direction" customclass="direction" />
+				<div class="DirectionIconWrapper" @click="toggleDirection()">
+					<div class="DirectionIcon" :class="{ active: !direction }">
+						<DesignIcons icon="direction" customclass="direction" />
+					</div>
+					<div class="DirectionIcon" :class="{ active: direction }">
+						<DesignIcons icon="direction" customclass="direction" />
+					</div>
 				</div>
 			</div>
 
 			<div>
-				<div @click="switchPreview()">
-					<DesignIcons icon="preview" customclass="preview" />
+				<div class="PreviewIconWrapper" @click="switchPreview()">
+					<div class="PreviewIcon" :class="{ active: !previewState }">
+						<DesignIcons icon="preview" customclass="preview" />
+					</div>
+					<div class="PreviewIcon" :class="{ active: previewState }">
+						<DesignIcons icon="edit" customclass="edit" />
+					</div>
 				</div>
 			</div>
 		</div>
@@ -40,6 +55,10 @@
 	defineEmits(["switchPreview"]);
 
 	const store = useStore();
+	const playState = computed(() => store.playState);
+	const previewState = computed(() => store.previewState);
+	const direction = computed(() => store.settings.direction);
+	const settingsOpen = computed(() => store.settings.open);
 	console.log("Preview State:", store.previewState);
 
 	function switchPreview() {
@@ -48,10 +67,24 @@
 	}
 
 	function playstop() {
-		store.togglePlayState();
+		nextTick(() => {
+			store.togglePlayState();
+			if (previewState.value === false) {
+				store.switchPreviewState();
+			}
+			if (settingsOpen.value === true) {
+				store.setSettingsOpen();
+			}
+		});
 	}
 
-	function direction() {
+	function openAbout() {
+		if (settingsOpen.value === true) {
+			store.setSettingsOpen();
+		}
+	}
+
+	function toggleDirection() {
 		store.toggleDirection();
 	}
 </script>

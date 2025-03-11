@@ -13,9 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-	import { getVersion } from "@tauri-apps/api/app";
+	const config = useRuntimeConfig();
+	const appVersion = config.public.appVersion;
 
-	const appVersion = await getVersion();
 	definePageMeta({
 		layout: "home"
 	});

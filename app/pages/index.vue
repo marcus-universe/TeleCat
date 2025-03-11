@@ -39,35 +39,34 @@
 
 	let scrollDelay: ReturnType<typeof setTimeout>;
 	function startScrolling() {
-		const markdownPreview = document.querySelector(".MarkdownPreview") as HTMLElement;
-		if (!markdownPreview) return;
+		nextTick(() => {
+			const markdownPreview = document.querySelector(".MarkdownPreview") as HTMLElement;
+			if (!markdownPreview) return;
 
-		const offset = 1;
-		// const animate = 0;
+			const offset = 1;
+			// const animate = 0;
 
-		const scroll = () => {
-			if (store.playState && store.previewState) {
-				clearTimeout(scrollDelay);
-				scrollDelay = setTimeout(scroll, Math.floor(100 - speed.value));
+			const scroll = () => {
+				if (store.playState && store.previewState) {
+					clearTimeout(scrollDelay);
+					scrollDelay = setTimeout(scroll, Math.floor(100 - speed.value));
 
-				if (direction.value) {
-					window.scrollBy(0, offset);
-					if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-						stopScrolling();
-					}
-				} else {
-					window.scrollBy(0, -offset);
-					if (window.scrollY === 0) {
-						stopScrolling();
-						setTimeout(() => {
-							window.scrollTo(0, document.documentElement.scrollHeight);
-						}, 500);
+					if (direction.value) {
+						window.scrollBy(0, offset);
+						if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+							stopScrolling();
+						}
+					} else {
+						window.scrollBy(0, -offset);
+						if (window.scrollY === 0) {
+							stopScrolling();
+						}
 					}
 				}
-			}
-		};
+			};
 
-		scroll();
+			scroll();
+		});
 	}
 
 	function stopScrolling() {

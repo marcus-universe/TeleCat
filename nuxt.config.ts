@@ -1,23 +1,24 @@
+import packageJson from "./package.json" with { type: "json" };
+
 export default defineNuxtConfig({
 	devtools: {
 		enabled: true // or false to disable
 	},
+
 	modules: ["@vueuse/nuxt", "nuxt-svgo", "@nuxt/eslint", "@pinia/nuxt"],
 	pinia: {
 		storeDirs: ["@/stores/**"]
 	},
 	app: {
-		baseURL: "/TeleCat/",
-		buildAssetsDir: "assets",
-		head: {
+baseURL: "/TeleCat/",
+buildAssetsDir: "assets",
+head: {
 			title: "TeleCat",
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
 			meta: [{ name: "format-detection", content: "no" }]
 		},
-  router: {
-    base: '/TeleCat/',
-  },
+		target: "static",
 		pageTransition: {
 			name: "page",
 			mode: "out-in"
@@ -88,7 +89,12 @@ export default defineNuxtConfig({
 	future: {
 		compatibilityVersion: 4
 	},
-	compatibilityDate: "2025-02-01"
+	compatibilityDate: "2025-02-01",
+	runtimeConfig: {
+		public: {
+			appVersion: packageJson.version
+		}
+	}
 });
 function defineNuxtConfig(config: {
 	devtools: { enabled: boolean }
@@ -103,6 +109,7 @@ function defineNuxtConfig(config: {
 			viewport: string
 			meta: { name: string, content: string }[]
 		}
+		target: string
 		pageTransition: { name: string, mode: string }
 		layoutTransition: { name: string, mode: string }
 	}
@@ -131,6 +138,8 @@ function defineNuxtConfig(config: {
 	experimental: { typedPages: boolean }
 	future: { compatibilityVersion: number }
 	compatibilityDate: string
+
+	runtimeConfig: { public: { appVersion: string } }
 }) {
 	return config;
 }

@@ -12,6 +12,42 @@ nav
 
     .nav-wrapper
         width: 100%
+        .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper
+            position: relative
+            display: block
+            width: 2rem
+            height: 2rem
+
+        .PlayIcon, .DirectionIcon, .PreviewIcon
+            width: 2rem
+            height: 2rem
+            svg
+                position: absolute
+                left: 0
+                top: 0
+                transform: translate(-50%, -50%)
+                opacity: 0
+                transform: scale(0) rotate(0deg)
+                transition: opacity 0.3s ease, transform 0.3s ease
+        .DirectionIcon
+            svg
+                transition: opacity 0s ease, transform 1s ease
+                transform: scale(1) rotate(0deg)
+                opacity: 0
+
+        .PlayIcon, .PreviewIcon
+            &.active
+                svg
+                    
+                    opacity: 1
+                    transform: scale(1)
+        .DirectionIcon
+            &.active
+                svg
+                    transform: scale(1) rotate(180deg)
+                    opacity: 1
+
+            
             
         svg
             width: 2rem
@@ -28,7 +64,7 @@ nav
     background: var(--prompt_bg)
     color: var(--text_color)
     font-family: $font
-    font-size: 1.5rem
+    font-size: 2rem
     display: block
     width: calc( 100% - 2rem )
     height: auto
@@ -49,6 +85,19 @@ nav
         font-size: var(--h3Size)
     p
         font-size: var(--pSize)
+        line-height: 1.5
+        margin: 0 0 calc(1.5 * var(--pSize)) 0
+    
+    blockquote
+        font-size: var(--pSize)
+        margin: 0 0 calc(1.5 * var(--pSize)) 0
+        padding: 0 0 0 1rem
+        border-left: 0.5rem solid var(--text_color)
+
+    ul
+        li
+            margin: 0 0 calc(1.5 * var(--pSize)) 0
+            font-size: var(--pSize)
     
 
 .SettingsBar
