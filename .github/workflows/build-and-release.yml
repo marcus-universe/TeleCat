@@ -27,14 +27,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '23'
+          node-version: '23'  # Match package.json engines
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4  # Match packageManager field exactly
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
       - name: Install Tauri CLI
         run: pnpm install -g @tauri-apps/cli
 
