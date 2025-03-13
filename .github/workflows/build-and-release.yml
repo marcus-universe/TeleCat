@@ -93,6 +93,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          for file in ./release/**/*; do
-            gh release upload v${{ github.run_number }} "$file"
-          done
+          find ./release -type f -exec gh release upload v${{ github.run_number }} {} +
