@@ -29,12 +29,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            libsoup-3.0-dev \
+            libjavascriptcoregtk-4.1-dev \
             pkg-config \
             libglib2.0-dev \
             libgtk-3-dev \
             libpango1.0-dev \
-            libgdk-pixbuf2.0-dev \
+            libgdk-pixbuf2.0-dev
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -43,11 +43,10 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.4  # Match packageManager field exactly
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
+
       - name: Install Tauri CLI
         run: pnpm install -g @tauri-apps/cli
 
