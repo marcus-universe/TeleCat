@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, windows-latest, ubuntu-latest]
+        platform: [macos-latest, windows-latest]
 
     steps:
       - name: Checkout repository
@@ -36,7 +36,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
       - name: Install Tauri CLI
         run: pnpm install -g @tauri-apps/cli
 
@@ -88,11 +87,12 @@ jobs:
           gh release create v$VERSION \
             --title "Release $VERSION" \
             --draft \
-            --generate-notes
+            --generate-notes \
+            ./release/**/*
 
       - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(jq -r '.version' package.json)
-          find ./release -type f -exec gh release upload v$VERSION {} +
+          find ./release -type f -exec gh release upload v$VERSION {} \;
