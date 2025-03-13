@@ -47,7 +47,7 @@ jobs:
         run: npm run postbuild
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tauri-app-${{ matrix.platform }}
           path: src-tauri/target/release/bundle/
