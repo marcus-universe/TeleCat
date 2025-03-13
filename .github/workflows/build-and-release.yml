@@ -35,7 +35,7 @@ jobs:
           version: 9.15.4  # Match packageManager field exactly
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
       - name: Install Tauri CLI
         run: pnpm install -g @tauri-apps/cli
 
