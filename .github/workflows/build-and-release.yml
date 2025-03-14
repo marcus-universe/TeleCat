@@ -87,12 +87,11 @@ jobs:
           gh release create v$VERSION \
             --title "Release $VERSION" \
             --draft \
-            --generate-notes \
-            ./release/**/*
+            --generate-notes
 
       - name: Upload Release Assets
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(jq -r '.version' package.json)
-          find ./release -type f -exec gh release upload v$VERSION {} \;
+          find ./release -type f -name '*' -exec gh release upload v$VERSION {} +
