@@ -94,4 +94,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(jq -r '.version' package.json)
-          find ./release -type f -name '*' -exec gh release upload v$VERSION {} +
+          for file in $(find ./release -type f); do
+            FILENAME=$(basename "$file")
+            if gh release view v$VERSION --json assets | jq -e ".assets[].name" | grep -q "$FILENAME"; then
+              echo "Skipping existing file: $FILENAME"
+            else
+              gh release upload v$VERSION "$file"
+            fi
+          done
