@@ -20,10 +20,11 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 > Consider contributing to the **Open Source Community** to support this project ❤️`,
 			settings: {
 				open: false,
+				tabs: [{ name: "General", active: true }, { name: "Colors", active: false }, { name: "Controls", active: false }],
 				mirroredX: false,
 				mirroredY: false,
 				colorText: "#eeeeee",
-				colorBackground: "#181818",
+				colorBackground: "27, 31, 58",
 				direction: true,
 				fontScale: 1.5,
 				sidePadding: 8
