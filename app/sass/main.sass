@@ -1,26 +1,31 @@
 @use 'base' as *;
-
+$navIconSize: 3rem
+$navPadding: 2rem
 nav
-    background: rgba(var(--color_bg), 1)
+    background: rgba(var(--prompt_bg), 0.7)
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
     position: fixed
     transform: translateY(0%)
     top: 0
     left: 0
-    width: calc(100% - 2rem)
+    width: calc(100% - $navIconSize)
+    backdrop-filter: blur(10px)
     z-index: 99
+    margin: 0
+    padding: $navPadding
+
 
     .nav-wrapper
         width: 100%
         .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper
             position: relative
             display: block
-            width: 2rem
-            height: 2rem
+            width: $navIconSize
+            height: $navIconSize
 
         .PlayIcon, .DirectionIcon, .PreviewIcon
-            width: 2rem
-            height: 2rem
+            width: $navIconSize
+            height: $navIconSize
             svg
                 position: absolute
                 left: 0
@@ -50,15 +55,15 @@ nav
             
             
         svg
-            width: 2rem
-            height: 2rem
+            width: $navIconSize
+            height: $navIconSize
             fill: var(--color_p)
             cursor: pointer  
 
 
-.logo
-    width: 2rem
-    height: 2rem
+        .logo
+            width: $navIconSize
+            height: $navIconSize
 
 #teleprompter
     background: var(--prompt_bg)
@@ -100,55 +105,100 @@ nav
             font-size: var(--pSize)
     
 
+$SettingsIconSize: 3rem
+
 .SettingsBar
     position: fixed
-    top: 5rem
+    top: calc( $navIconSize + $navPadding * 2)
     right: -100vw
     width: calc(100vw - 6rem)
     transition: right 0.3s ease
     height: 100%
-    background: rgba(var(--color_bg), 0.8)
+    background: rgba(var(--color_bg), 0.6)
     backdrop-filter: blur(10px)
-    z-index: 99
+    z-index: 98
     padding: 2rem
+    border-left: calc($navPadding / 2) solid var(--color_p)
+    .settingsTabs
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        margin: 0 0 0 0
+        padding: 0
+       
+        li
+            margin: 0 0 00
+            list-style: none
+            font-size: 1.5rem
+            width: 100%
+            text-align: center
+            border: 0.25rem solid var(--color_p)
+            font-weight: 800
+            padding: 0.5rem
+            // border-radius: 0.5rem
+            color: var(--color_p)
+            cursor: pointer
+            transition: color 0.3s ease, background 0.3s ease
+            &:first-child
+                border-top-left-radius: 0.5rem
+                border-bottom-left-radius: 0.5rem
+                border-right: none
+            &:last-child
+                border-top-right-radius: 0.5rem
+                border-bottom-right-radius: 0.5rem
+                border-left: none
+        
+            &.active
+                background: var(--color_p)
+                color: rgb(var(--color_bg))
+                font-weight: 800
+                
+            
     h1
         font-size: 3rem
         color: var(--color_p)
         text-align: center
-        margin: 1rem 0
+        margin: 0rem 0 1rem 0
+        font-weight: 800
+        border-bottom: var(--color_p) 0.2rem solid
+    p
+        font-size: 1.5rem
+        color: var(--color_p)
+        text-align: center
 
     .option
-        margin: 1rem 0
         display: flex
-        width: 100%
-        height: 3rem
+        // width: 100%
+        height: $SettingsIconSize
         cursor: pointer
         padding: 0.5rem
         border-radius: 1rem
         border: 2px solid var(--color_p)
+        margin: 1rem 0
         &.button
-            width: 3rem
-            height: 3rem
+            width:  $SettingsIconSize
+            height:  $SettingsIconSize
 
 
         .color-picker, .color-fillpicker 
             position: absolute
-            width: 3rem
-            height: 3rem
+            width:  $SettingsIconSize
+            height:  $SettingsIconSize
             opacity: 0
             cursor: pointer
         .sidePadding
             transform: rotate(90deg)
         svg
-            width: 3rem
-            height: 3rem
+            width:  $SettingsIconSize
+            height:  $SettingsIconSize
             fill: var(--color_p)
         .mirrorY
             transform: rotate(90deg)
         &.active
+            background: var(--color_p)
             svg
                 fill: var(--color_bg)
-            background: var(--color_p)
+            
         label
             font-size: 1.5rem
             color: var(--color_p)
@@ -164,17 +214,18 @@ nav
                 width: 100%
                 height: 1rem
                 border-radius: 10rem
-                opacity: 0.7
+                opacity: 0.9
                 background: var(--color_p)
                 outline: none
                 transition: opacity 0.2s ease
             &.slider::-webkit-slider-thumb
                 -webkit-appearance: none
                 appearance: none
-                width: 2rem
-                height: 2rem
+                width: 2.5rem
+                height: 2.5rem
+                border: 0.5rem solid rgb(var(--color_bg))
                 border-radius: 50%
-                background: $WColor
+                background: var(--color_p)
                 cursor: pointer
             &.slider:hover
                 opacity: 1
@@ -189,25 +240,38 @@ nav
         right: -40vw
 
     &.show
-            right: 0
+        right: 0
         
 
 .aboutSection
+    margin-top: calc( $navIconSize + $navPadding * 2)
     padding: 2rem
     width: calc( 100% - 4rem )
     text-align: center
     background: rgba(var(--color_bg), 1)
-    min-height: calc(100vh - 10rem)
+    .linksAbout
+        svg
+            fill: var(--color_p)
+            transform: scale(1)
+            transition: fill 0.3s ease, transform 0.3s ease
+            &:hover
+                fill: var(--text_color)
+                transform: scale(1.2)
+    svg
+        fill: var(--color_p)
+        width: $SettingsIconSize
+        height: auto
     img
         width: var(--imageSizeN)
         height: auto
     h1
-        font-size: 2rem
+        font-size: 4rem
         color: var(--color_p)
         margin: 0 0 0rem 0
     p
         margin: 0 0
         padding: 0
+        font-size: 1.5rem
         a
             color: var(--color_p)
             text-decoration: none
@@ -216,5 +280,5 @@ nav
                 color: var(--text_color)
         b
             color: var(--color_p)
-            font-size: 1rem
+            font-size: 2rem
             margin: 0 0 1rem 0

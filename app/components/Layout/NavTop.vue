@@ -1,5 +1,5 @@
 <template>
-	<nav class="flex_c_h p1">
+	<nav class="flex_c_h">
 		<div class="nav-wrapper flex_c_h flex_space">
 			<div class="flex_c_h flex_start gap1">
 				<NuxtLink to="/" class="brand-logo">
@@ -69,12 +69,12 @@
 	function playstop() {
 		nextTick(() => {
 			store.togglePlayState();
-			if (previewState.value === false) {
-				store.switchPreviewState();
-			}
-			if (settingsOpen.value === true) {
-				store.setSettingsOpen();
-			}
+			// if (previewState.value === false) {
+			// 	store.switchPreviewState();
+			// }
+			// if (settingsOpen.value === true) {
+			// 	store.setSettingsOpen();
+			// }
 		});
 	}
 

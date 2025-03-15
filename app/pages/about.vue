@@ -1,10 +1,14 @@
 <template>
 	<section class="aboutSection flex_h_center">
-		<img src="/wide.svg" alt="Telecat Logo">
+		<img src="/SVG/logo_wide.svg" alt="Telecat Logo">
 		<p>Current Version: <b>v{{ appVersion }}</b></p>
 		<p>created by <a href="https://github.com/marcus-universe" target="_blank">Marcus Universe</a>.</p>
 		<br>
-		<p> <a href="https://github.com/marcus-universe/TeleCat" target="_blank">Github Repo</a></p>
+		<p class="linksAbout flex_c_h gap1">
+			<a href="https://github.com/marcus-universe/TeleCat" target="_blank"><DesignIcons icon="github" customclass="github" /></a>
+			<a href="https://www.youtube.com/@marcusunivers" target="_blank"><DesignIcons icon="youtube" customclass="youtube" /></a>
+			<a href="https://marcus-universe.de" target="_blank"><DesignIcons icon="web" customclass="web" /></a>
+		</p>
 		<br>
 		<p class="lighttext">
 			MIT License © 2025-PRESENT MarcusUniverse

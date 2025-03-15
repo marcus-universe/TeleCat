@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://marcus-universe.github.io/TeleCat/" target="_blank">
-    <img width="350" src="./ci/SVG/wide.svg" alt="logo">
+    <img width="400" src="./public/SVG/logo_wide.svg" alt="logo">
 </a>
 </p>
 <center>
@@ -11,7 +11,7 @@
 </div>
 </center>
 <p align="center">
-Best Open Source Teleprompter App for you and your cat😺!
+Open Source Teleprompter App for you and your cat😺!
 <br />
 
 <h2>🚀 Features</h2>
@@ -24,13 +24,13 @@ Best Open Source Teleprompter App for you and your cat😺!
     <li>🌈 Customizable</li>
 </ul>
 
-<h2> ▶️ Download / Live Web</h2>
-<b>Live Web:</b> <a href="https://marcus-universe.github.io/TeleCat/" target="_blank">TeleCat Live Web</a>
-<br />
-<br>
-<b>Releases:</b>
-<br>
-<a href="https://github.com/marcus-universe/TeleCat/releases/latest" target="_blank"><img src="https://img.shields.io/badge/DOWNLOAD-77adff?style=for-the-badge" /></a>
+<h2> ▶️ Latest Releases:</h2>
+<a href="https://github.com/marcus-universe/TeleCat/releases/latest" target="_blank">
+    <img width="200" src="./public/SVG/download.svg" alt="logo">
+</a>
+<a href="https://marcus-universe.github.io/TeleCat/" target="_blank">
+    <img width="200" src="./public/SVG/webview.svg" alt="logo">
+</a>
 
 ## IDE Tools used
 <div align="center">
