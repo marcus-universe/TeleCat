@@ -1,0 +1,12 @@
+import{X as t}from"./Dz3LtAfn.js";const i=t("store",{state:()=>({previewState:!0,playState:!1,fullscreen:!1,speed:100,textContent:`# Nya 😺 to TeleCat!
+This is the best **Open Source Telepromter App** for you and your cat 😺
+
+## First Steps
+<ul>
+  <li>On the top right corner you can switch between preview and edit mode.</li>
+  <li>On the top left corner you find Settings to customize the preview look.</li>
+  <li>Change the scroll direction with the two arrows next to the play button</li>
+  <li>Inside the edit view you can use markdown syntax to style your promter content</li>
+</ul>
+
+> Consider contributing to the **Open Source Community** to support this project ❤️`,settings:{open:!1,mouseOverSettings:!1,mouseOverSettingsButton:!1,tabs:[{name:"General",active:!0},{name:"Colors",active:!1},{name:"Controls",active:!1}],mirroredX:!1,mirroredY:!1,colorText:"#eeeeee",colorTheme:"#FF8548",colorBackground:"27, 31, 58",direction:!0,fontScale:3.5,editFontScale:1.5,sidePadding:8,keyboardControls:[{keyStroke:"Enter",action:"ChangeScrollDirection"},{keyStroke:" ",action:"Play/Pause"},{keyStroke:"Tab",action:"Preview/Editor"},{keyStroke:"F11",action:"fullscreen"},{keyStroke:"ArrowLeft",action:"decreaseSpeed"},{keyStroke:"ArrowRight",action:"increaseSpeed"}]}}),getters:{},actions:{switchPreviewState(){this.previewState=!this.previewState},togglePlayState(){this.playState=!this.playState},setSpeed(e){this.speed=e},setSettingsOpen(){this.settings.open=!this.settings.open},setOverlaysClosed(){this.settings.open=!1},toggleDirection(){this.settings.direction=!this.settings.direction},toggleMirroredX(){this.settings.mirroredX=!this.settings.mirroredX},toggleMirroredY(){this.settings.mirroredY=!this.settings.mirroredY},toggleFullscreen(){this.fullscreen=!this.fullscreen},setMouseSettingsButtonOver(e){this.settings.mouseOverSettingsButton=e},setShortcutAction(e){this.previewState&&(e===0?this.toggleDirection():e===1?this.togglePlayState():e===2?this.switchPreviewState():e===3?this.toggleFullscreen():e===4?this.setSpeed(this.speed-10):e===5&&this.setSpeed(this.speed+10))}}});export{i as u};
