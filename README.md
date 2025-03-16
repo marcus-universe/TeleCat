@@ -32,18 +32,36 @@ Open Source Teleprompter App for you and your cat😺!
     <img width="200" src="./public/SVG/webview.svg" alt="logo">
 </a>
 
-## IDE Tools used
+## ⌨️Default Keyboard Shortcuts
+
+| Keys                                              | Action                        |
+| :------------------------------------------------ | :---------------------------- |
+| <kbd>Spacebar</kbd> | Play/Pause Scroll |
+| <kbd>Enter</kbd> | Toggle Scroll-Direction |
+| <kbd>Tab</kbd> | Switch to Edit-Mode |
+| <kbd>F11</kbd> | Toggle Fullscreen-Mode |
+| <kbd>Arrow Left</kbd> | Decrease Scrollspeed by -10 |
+| <kbd>Arrow Right</kbd> | Increase Scrollspeed by +10 |
+
 <div align="center">
+
+## IDE Tools used
+
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/nuxt.svg?logo=nuxt" />
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/@tauri-apps/api.svg?logo=tauri" />
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/pinia.svg" />
+<br>
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/vue.svg?logo=vuedotjs" />
 <img src="https://img.shields.io/github/package-json/dependency-version/marcus-universe/TeleCat/marked.svg?logo=markdown" />
 <img src="https://img.shields.io/badge/typescript--blue?logo=typescript&logoColor=eeeeee" />
+<br>
 <img src="https://img.shields.io/badge/eslint--blue?logo=eslint&logoColor=eeeeee" />
 <img src="https://img.shields.io/badge/rust--blue?logo=rust" />
 </div>
 
+<div align="center">
+
 ## License
 
 MIT License © 2025-PRESENT [MarcusUniverse](https://github.com/marcus-universe)
+</div>

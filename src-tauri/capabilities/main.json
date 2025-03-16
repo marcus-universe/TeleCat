@@ -25,8 +25,7 @@
 						{
 							"validator": "\\S+"
 						}
-					],
-					"sidecar": false
+					]
 				}
 			]
 		},
@@ -38,6 +37,7 @@
 		"os:allow-locale",
 		"fs:allow-document-read",
 		"fs:allow-document-write",
-		"store:default"
+		"store:default",
+		"core:window:allow-set-fullscreen"
 	]
 }
