@@ -6,7 +6,7 @@
 					<img class="logo icon" src="/logo.svg" alt="">
 				</NuxtLink>
 
-				<div class="settingsButton" @click="store.setSettingsOpen()">
+				<div ref="settingsButton" class="settingsButton" @click="store.setSettingsOpen()">
 					<DesignIcons icon="settings" customclass="settings" />
 				</div>
 
@@ -16,6 +16,15 @@
 			</div>
 
 			<div class="flex_c_h flex_end gap1">
+				<div class="FullscreenIconWrapper" @click="store.toggleFullscreen()">
+					<div :class="{ active: !isFullscreen }" class="FullscreenIcon">
+						<DesignIcons icon="fullscreen" customclass="fullscreen" />
+					</div>
+					<div :class="{ active: isFullscreen }" class="FullscreenIcon">
+						<DesignIcons icon="minimize" customclass="minimize" />
+					</div>
+				</div>
+
 				<div class="PlayIconWrapper" @click="playstop()">
 					<div :class="{ active: !playState }" class="PlayIcon">
 						<DesignIcons icon="play" customclass="play" />
@@ -51,6 +60,8 @@
 
 <script lang="ts" setup>
 	import { useStore } from "@/stores/store";
+	import { getCurrentWindow } from "@tauri-apps/api/window";
+	import { useMouseInElement } from "@vueuse/core";
 
 	defineEmits(["switchPreview"]);
 
@@ -59,7 +70,14 @@
 	const previewState = computed(() => store.previewState);
 	const direction = computed(() => store.settings.direction);
 	const settingsOpen = computed(() => store.settings.open);
-	console.log("Preview State:", store.previewState);
+	const isFullscreen = computed(() => store.fullscreen);
+	const settingsButton = ref(null);
+
+	const { isOutside: isSettingsButtonOutside } = useMouseInElement(settingsButton);
+
+	watch(isSettingsButtonOutside, () => {
+		store.setMouseSettingsButtonOver(!isSettingsButtonOutside.value);
+	});
 
 	function switchPreview() {
 		console.log("Preview State:", store.previewState);
@@ -69,14 +87,33 @@
 	function playstop() {
 		nextTick(() => {
 			store.togglePlayState();
-			// if (previewState.value === false) {
-			// 	store.switchPreviewState();
-			// }
+			if (previewState.value === false) {
+				store.switchPreviewState();
+			}
 			// if (settingsOpen.value === true) {
-			// 	store.setSettingsOpen();
+			//  store.setSettingsOpen();
 			// }
 		});
 	}
+
+	async function setWindowFullscreen(fullscreen: boolean) {
+		try {
+			await getCurrentWindow().setFullscreen(fullscreen);
+		} catch {
+			console.log("Not a Tauri Environment: No Fullscreen Mode for Window");
+		}
+	}
+
+	watch(isFullscreen, () => {
+		if (isFullscreen.value === false) {
+			document.documentElement.requestFullscreen();
+		} else {
+			if (document.fullscreenElement) {
+				document.exitFullscreen();
+			}
+		}
+		setWindowFullscreen(isFullscreen.value);
+	});
 
 	function openAbout() {
 		if (settingsOpen.value === true) {

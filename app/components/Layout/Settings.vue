@@ -1,5 +1,5 @@
 <template>
-	<div class="SettingsBar">
+	<div ref="SettingsBar" class="SettingsBar">
 		<h1>Settings</h1>
 
 		<ul class="settingsTabs flex_c_h">
@@ -11,14 +11,10 @@
 			<div class="flex_c_h gap1">
 				<div class="option button flex_c_h" :class="{ active: mirrorX }" @click="store.toggleMirroredX();">
 					<DesignIcons icon="mirror" customclass="mirrorX" />
-					<!-- <label for="mirrorX">MirrorX:</label>
-			<input id="mirrorX" v-model="mirrorX" type="checkbox"> -->
 				</div>
 
 				<div class="option button" :class="{ active: mirrorY }" @click="store.toggleMirroredY();">
 					<DesignIcons icon="mirror" customclass="mirrorY" />
-					<!-- <label for="mirrorY">MirrorY:</label>
-			<input id="mirrorY" v-model="mirrorY" type="checkbox"> -->
 				</div>
 			</div>
 
@@ -29,7 +25,7 @@
 
 			<div class="option flex_c_h alignCenter gap1">
 				<DesignIcons icon="textsize" customclass="textsize" />
-				<input id="fontScale" v-model="fontScale" type="range" min="0.1" max="20" value="1.5" class="slider" step="0.1">
+				<input id="fontScale" v-model="fontScale" type="range" min="0.5" max="7" value="3.5" class="slider" step="0.1">
 			</div>
 
 			<div class="option flex_c_h alignCenter gap1">
@@ -48,6 +44,11 @@
 					<DesignIcons icon="fillcolor" customclass="fillcolor" />
 					<input id="colorFillPicker" ref="colorFillPicker" v-model="colorBackground" type="color" class="color-fillpicker">
 				</div>
+
+				<div class="option button " @click="openColorThemePicker">
+					<DesignIcons icon="themecolor" customclass="themecolor" />
+					<input id="colorThemePicker" ref="colorThemePicker" v-model="colorTheme" type="color" class="color-themepicker">
+				</div>
 			</div>
 		</div>
 
@@ -59,13 +60,54 @@
 
 <script lang="ts" setup>
 	import { useStore } from "@/stores/store";
+	import { onKeyStroke, useMouseInElement, useMousePressed } from "@vueuse/core";
+
+	interface KeyboardControl {
+		keyStroke: string
+		action: string
+	}
+
+	const { pressed } = useMousePressed();
+
+	const SettingsBar = ref(null);
 
 	const store = useStore();
 	const colorText = ref(store.settings.colorText);
 	const colorBackground = ref(store.settings.colorBackground);
+	const colorTheme = ref(store.settings.colorTheme);
 	const fontScale = ref(store.settings.fontScale);
 	const sidePadding = ref(store.settings.sidePadding);
 	const tabs = computed(() => store.settings.tabs || []);
+	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
+	const keyboardControls: ComputedRef<KeyboardControl[]> = computed(() => store.settings.keyboardControls || []);
+
+	const { isOutside } = useMouseInElement(SettingsBar);
+
+	function checkAllKeystrokes(keyboardControlsValue: KeyboardControl[]) {
+		const allKeys: { keyStroke: string, index: number }[] = [];
+		for (let i = 0; i < keyboardControlsValue.length; i++) {
+			if (keyboardControlsValue[i]) {
+				allKeys.push({ keyStroke: keyboardControlsValue[i].keyStroke, index: i });
+			}
+		}
+		// console.log(allKeys);
+		return allKeys;
+	}
+
+	onKeyStroke(checkAllKeystrokes(keyboardControls.value).map((k) => k.keyStroke), (e) => {
+		const keyObject = checkAllKeystrokes(keyboardControls.value).find((k) => k.keyStroke === e.key);
+		if (keyObject) {
+			const index = keyObject.index;
+			store.setShortcutAction(index);
+			console.log(`Key: ${e.key}, Index: ${index}`);
+		}
+	});
+
+	watch(pressed, () => {
+		if (isOutside.value && pressed.value === true && store.settings.open === true && mouseOverSettingsButton.value === false) {
+			store.setOverlaysClosed();
+		}
+	});
 
 	watch(colorText, (newColor) => {
 		store.settings.colorText = newColor;
@@ -76,6 +118,12 @@
 		store.settings.colorBackground = getColorFillPickerRGB() || "";
 
 		document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
+	});
+
+	watch(colorTheme, (newColor) => {
+		store.settings.colorTheme = newColor;
+
+		document.documentElement.style.setProperty("--color_p", newColor);
 	});
 
 	const mirrorX = computed(() => store.settings.mirroredX);
@@ -116,6 +164,7 @@
 
 	const colorPicker = ref<HTMLInputElement | null>(null);
 	const colorFillPicker = ref<HTMLInputElement | null>(null);
+	const colorThemePicker = ref<HTMLInputElement | null>(null);
 
 	function openColorPicker() {
 		const colorPickerElement = colorPicker.value;
@@ -128,6 +177,13 @@
 		const colorFillPickerElement = colorFillPicker.value;
 		if (colorFillPickerElement) {
 			colorFillPickerElement.click();
+		}
+	}
+
+	function openColorThemePicker() {
+		const colorThemePickerElement = colorThemePicker.value;
+		if (colorThemePickerElement) {
+			colorThemePickerElement.click();
 		}
 	}
 

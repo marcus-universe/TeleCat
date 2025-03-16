@@ -5,6 +5,7 @@ export const useStore = defineStore("store", {
 		return {
 			previewState: true,
 			playState: false,
+			fullscreen: false,
 			speed: 100,
 			textContent: `# Nya 😺 to TeleCat!
 This is the best **Open Source Telepromter App** for you and your cat 😺
@@ -20,14 +21,30 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 > Consider contributing to the **Open Source Community** to support this project ❤️`,
 			settings: {
 				open: false,
-				tabs: [{ name: "General", active: true }, { name: "Colors", active: false }, { name: "Controls", active: false }],
+				mouseOverSettings: false,
+				mouseOverSettingsButton: false,
+				tabs: [
+					{ name: "General", active: true },
+					{ name: "Colors", active: false },
+					{ name: "Controls", active: false }
+				],
 				mirroredX: false,
 				mirroredY: false,
 				colorText: "#eeeeee",
+				colorTheme: "#FF8548",
 				colorBackground: "27, 31, 58",
 				direction: true,
-				fontScale: 1.5,
-				sidePadding: 8
+				fontScale: 3.5,
+				editFontScale: 1.5,
+				sidePadding: 8,
+				keyboardControls: [
+					{ keyStroke: "Enter", action: "ChangeScrollDirection" },
+					{ keyStroke: " ", action: "Play/Pause" },
+					{ keyStroke: "Tab", action: "Preview/Editor" },
+					{ keyStroke: "F11", action: "fullscreen" },
+					{ keyStroke: "ArrowLeft", action: "decreaseSpeed" },
+					{ keyStroke: "ArrowRight", action: "increaseSpeed" }
+				]
 			}
 		};
 	},
@@ -47,6 +64,9 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 		setSettingsOpen() {
 			this.settings.open = !this.settings.open;
 		},
+		setOverlaysClosed() {
+			this.settings.open = false;
+		},
 
 		toggleDirection() {
 			this.settings.direction = !this.settings.direction;
@@ -56,6 +76,29 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 		},
 		toggleMirroredY() {
 			this.settings.mirroredY = !this.settings.mirroredY;
+		},
+		toggleFullscreen() {
+			this.fullscreen = !this.fullscreen;
+		},
+		setMouseSettingsButtonOver(value: boolean) {
+			this.settings.mouseOverSettingsButton = value;
+		},
+		setShortcutAction(index: number) {
+			if (this.previewState) {
+				if (index === 0) {
+					this.toggleDirection();
+				} else if (index === 1) {
+					this.togglePlayState();
+				} else if (index === 2) {
+					this.switchPreviewState();
+				} else if (index === 3) {
+					this.toggleFullscreen();
+				} else if (index === 4) {
+					this.setSpeed(this.speed - 10);
+				} else if (index === 5) {
+					this.setSpeed(this.speed + 10);
+				}
+			}
 		}
 
 	}

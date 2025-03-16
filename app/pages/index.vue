@@ -3,6 +3,9 @@
 		<textarea v-if="previewState === false" id="teleprompter" v-model="markdownText" class="teleprompter" role="textbox" aria-multiline="true" aria-label="TelePrompter Text" contenteditable @input="autoResize" />
 
 		<div v-if="previewState === true" class="MarkdownPreview" v-html="renderedMarkdown" />
+		<div v-if="previewState === true" class="directionArrow" :class="{ up: direction }">
+			<DesignIcons icon="scrollarrow" customclass="scrollarrow" />
+		</div>
 	</div>
 </template>
 
@@ -32,7 +35,6 @@
 				textarea.style.height = "auto";
 				textarea.style.height = `${textarea.scrollHeight}px`;
 			}
-			console.log("Auto Resize");
 			store.textContent = markdownText.value;
 		});
 	}
@@ -44,23 +46,24 @@
 			if (!markdownPreview) return;
 
 			const offset = 1;
-			// const animate = 0;
 
 			const scroll = () => {
-				if (store.playState && store.previewState) {
-					clearTimeout(scrollDelay);
-					scrollDelay = setTimeout(scroll, Math.floor(100 - speed.value));
+				if (!store.playState || !store.previewState) return;
 
-					if (direction.value) {
-						window.scrollBy(0, offset);
-						if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
-							stopScrolling();
-						}
-					} else {
-						window.scrollBy(0, -offset);
-						if (window.scrollY === 0) {
-							stopScrolling();
-						}
+				clearTimeout(scrollDelay);
+				scrollDelay = setTimeout(scroll, Math.floor(100 - speed.value));
+
+				if (direction.value) {
+					window.scrollBy(0, offset);
+					if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight) {
+						stopScrolling();
+						store.toggleDirection();
+					}
+				} else {
+					window.scrollBy(0, -offset);
+					if (window.scrollY === 0) {
+						stopScrolling();
+						store.toggleDirection();
 					}
 				}
 			};
@@ -74,8 +77,19 @@
 		clearTimeout(scrollDelay);
 	}
 
+	function preventSpaceScroll(event: KeyboardEvent) {
+		if (event.key === " ") {
+			event.preventDefault();
+		}
+	}
+
 	onMounted(() => {
 		autoResize();
+		window.addEventListener("keydown", preventSpaceScroll);
+	});
+
+	onUnmounted(() => {
+		window.removeEventListener("keydown", preventSpaceScroll);
 	});
 	watch(previewState, () => {
 		autoResize();

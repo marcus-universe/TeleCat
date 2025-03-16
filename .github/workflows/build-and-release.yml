@@ -94,7 +94,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           VERSION=$(jq -r '.version' package.json)
-          for file in $(find ./release -type f); do
+          
+          # Upload .dmg file from macOS build
+          DMG_FILE=$(find ./release/tauri-app-macos-latest/dmg -name "*.dmg")
+          if [ -n "$DMG_FILE" ]; then
+            gh release upload v$VERSION "$DMG_FILE"
+          else
+            echo "No .dmg file found to upload."
+          fi
+
+          # Upload setup files from Windows build
+          for file in $(find ./release/tauri-app-windows-latest -type f); do
             FILENAME=$(basename "$file")
             if gh release view v$VERSION --json assets | jq -e ".assets[].name" | grep -q "$FILENAME"; then
               echo "Skipping existing file: $FILENAME"

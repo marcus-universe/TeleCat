@@ -17,17 +17,19 @@ nav
 
     .nav-wrapper
         width: 100%
-        .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper
+        .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper, .FullscreenIconWrapper
             position: relative
             display: block
             width: $navIconSize
             height: $navIconSize
 
-        .PlayIcon, .DirectionIcon, .PreviewIcon
+        .PlayIcon, .DirectionIcon, .PreviewIcon, .FullscreenIcon
             width: $navIconSize
             height: $navIconSize
             svg
                 position: absolute
+                width: $navIconSize
+                height: $navIconSize
                 left: 0
                 top: 0
                 transform: translate(-50%, -50%)
@@ -40,7 +42,7 @@ nav
                 transform: scale(1) rotate(0deg)
                 opacity: 0
 
-        .PlayIcon, .PreviewIcon
+        .PlayIcon, .PreviewIcon, .FullscreenIcon
             &.active
                 svg
                     
@@ -65,19 +67,21 @@ nav
             width: $navIconSize
             height: $navIconSize
 
+.teleprommt_wrapper
+    margin-top: calc( $navIconSize + $navPadding * 2)
 #teleprompter
     background: var(--prompt_bg)
     color: var(--text_color)
     font-family: $font
-    font-size: 2rem
+    font-size: var(--MarkdownFontSize)
     display: block
-    width: calc( 100% - 2rem )
-    height: auto
+    width: calc( 100% - 4rem )
+    min-height: 100% 
     resize: none
     overflow: auto
     border: none
     outline: none
-    padding: 2rem 1rem
+    padding: 2rem 2rem
 .MarkdownPreview
     width: calc( 100% - var(--sidePadding) * 2)
     padding: 0 var(--sidePadding)
@@ -103,18 +107,43 @@ nav
         li
             margin: 0 0 calc(1.5 * var(--pSize)) 0
             font-size: var(--pSize)
+
+$scrollArrowSize: 7rem
+.directionArrow
+    position: fixed
+    bottom: 2rem
+    left: 2rem
+    opacity: 0.5
+    transform: rotate(0deg)
+    transition: transform 0.3s ease
+    .scrollarrow
+        width: $scrollArrowSize
+        height: $scrollArrowSize
+        fill: var(--color_p)
+    &.up
+        transform: rotate(180deg)
     
 
 $SettingsIconSize: 3rem
+
+.BGWrapper
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 97
+    pointer-events: none
 
 .SettingsBar
     position: fixed
     top: calc( $navIconSize + $navPadding * 2)
     right: -100vw
+    opacity: 0
     width: calc(100vw - 6rem)
-    transition: right 0.3s ease
+    transition: right 0.3s ease, opacity 0.3s ease
     height: 100%
-    background: rgba(var(--color_bg), 0.6)
+    background: rgba(var(--prompt_bg), 0.6)
     backdrop-filter: blur(10px)
     z-index: 98
     padding: 2rem
@@ -180,7 +209,7 @@ $SettingsIconSize: 3rem
             height:  $SettingsIconSize
 
 
-        .color-picker, .color-fillpicker 
+        .color-picker, .color-fillpicker, .color-themepicker 
             position: absolute
             width:  $SettingsIconSize
             height:  $SettingsIconSize
@@ -241,6 +270,7 @@ $SettingsIconSize: 3rem
 
     &.show
         right: 0
+        opacity: 1
         
 
 .aboutSection
