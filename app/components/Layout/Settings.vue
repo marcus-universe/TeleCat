@@ -60,7 +60,7 @@
 
 <script lang="ts" setup>
 	import { useStore } from "@/stores/store";
-	import { onKeyStroke, useMouseInElement, useMousePressed } from "@vueuse/core";
+	import { onKeyStroke, useMouse, useMouseInElement, useMousePressed } from "@vueuse/core";
 
 	interface KeyboardControl {
 		keyStroke: string
@@ -68,6 +68,7 @@
 	}
 
 	const { pressed } = useMousePressed();
+	const { x, y, sourceType } = useMouse();
 
 	const SettingsBar = ref(null);
 
@@ -82,6 +83,7 @@
 	const keyboardControls: ComputedRef<KeyboardControl[]> = computed(() => store.settings.keyboardControls || []);
 
 	const { isOutside } = useMouseInElement(SettingsBar);
+	const { isMobile } = useDevice();
 
 	function checkAllKeystrokes(keyboardControlsValue: KeyboardControl[]) {
 		const allKeys: { keyStroke: string, index: number }[] = [];
@@ -104,7 +106,8 @@
 	});
 
 	watch(pressed, () => {
-		if (isOutside.value && pressed.value === true && store.settings.open === true && mouseOverSettingsButton.value === false) {
+		if (isOutside.value && pressed.value === true && store.settings.open === true && mouseOverSettingsButton.value === false && !isMobile) {
+			console.log(sourceType.value, isMobile);
 			store.setOverlaysClosed();
 		}
 	});

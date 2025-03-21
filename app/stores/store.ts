@@ -23,10 +23,11 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				open: false,
 				mouseOverSettings: false,
 				mouseOverSettingsButton: false,
+				mouseSourceType: "mouse",
 				tabs: [
 					{ name: "General", active: true },
 					{ name: "Colors", active: false },
-					{ name: "Controls", active: false }
+					{ name: "Controls", active: false 
 				],
 				mirroredX: false,
 				mirroredY: false,
