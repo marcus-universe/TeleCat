@@ -24,10 +24,11 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				mouseOverSettings: false,
 				mouseOverSettingsButton: false,
 				mouseSourceType: "mouse",
+				websocketServer: "ws://localhost:1234",
 				tabs: [
 					{ name: "General", active: true },
 					{ name: "Colors", active: false },
-					{ name: "Controls", active: false 
+					{ name: "Controls", active: false }
 				],
 				mirroredX: false,
 				mirroredY: false,
@@ -98,6 +99,10 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 					this.setSpeed(this.speed - 10);
 				} else if (index === 5) {
 					this.setSpeed(this.speed + 10);
+				}
+			} else {
+				if (index === 2) {
+					this.switchPreviewState();
 				}
 			}
 		}

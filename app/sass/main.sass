@@ -82,31 +82,52 @@ nav
     border: none
     outline: none
     padding: 2rem 2rem
-.MarkdownPreview
+.tiptap
     width: calc( 100% - var(--sidePadding) * 2)
     padding: 0 var(--sidePadding)
     transform: scale(var(--mirrorX), var(--mirrorY))
+    font-size: var(--MarkdownFontSize)
+    h1, h2, h3, h4, h5, h6
+        margin: 0 0 0 0
+        padding: 0
+        font-weight: bold
+        color: var(--text_color)
     h1
         font-size: var(--h1Size)
+        color: var(--text_color)
+        
     h2
         font-size: var(--h2Size)
+        color: var(--text_color)
     h3
         font-size: var(--h3Size)
+        color: var(--text_color)
     p
         font-size: var(--pSize)
-        line-height: 1.5
-        margin: 0 0 calc(1.5 * var(--pSize)) 0
-    
+        line-height: var(--pLineHeight)
+        margin: 0 0 calc(1 * var(--pSize)) 0
+        color: var(--text_color)
+    code
+        font-size: var(--pSize)
+        background: rgba(var(--color_bg), 0.5)
+        padding: 0.2rem 0.5rem
+        border-radius: 0.5rem
+        color: var(--text_color)
     blockquote
         font-size: var(--pSize)
         margin: 0 0 calc(1.5 * var(--pSize)) 0
         padding: 0 0 0 1rem
         border-left: 0.5rem solid var(--text_color)
 
-    ul
+    ul, ol
+        font-size: var(--pSize)
         li
-            margin: 0 0 calc(1.5 * var(--pSize)) 0
+            margin: 0
+            padding: 0
             font-size: var(--pSize)
+            p
+                margin: 0
+                padding: 0
 
 $scrollArrowSize: 7rem
 .directionArrow
@@ -234,17 +255,18 @@ $SettingsIconSize: 3rem
             margin: 0
         input
             width: 2rem
-            height: 2rem
-            cursor: pointer
+            min-height: 2rem
+            
             &:checked + label
                 color: var(--nBlue)
-            &.slider
+            &.slider, &.text
                 -webkit-appearance: none
                 width: 100%
                 height: 1rem
                 border-radius: 10rem
                 opacity: 0.9
                 background: var(--color_p)
+                cursor: pointer
                 outline: none
                 transition: opacity 0.2s ease
             &.slider::-webkit-slider-thumb
@@ -256,6 +278,11 @@ $SettingsIconSize: 3rem
                 border-radius: 50%
                 background: var(--color_p)
                 cursor: pointer
+            &.text
+                border-radius: 0.5rem
+                cursor: text  
+                font-family: $font
+                font-weight: 600
             &.slider:hover
                 opacity: 1
     @include media(">phone", "<=tablet")

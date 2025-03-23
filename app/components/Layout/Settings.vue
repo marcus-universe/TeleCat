@@ -19,6 +19,11 @@
 			</div>
 
 			<div class="option flex_c_h alignCenter gap1">
+				<DesignIcons icon="web" customclass="web" />
+				<input id="sidePadding" v-model="websocketServer" type="text" class="text">
+			</div>
+
+			<div class="option flex_c_h alignCenter gap1">
 				<DesignIcons icon="speed" customclass="speed" />
 				<input id="speed" v-model="speed" type="range" min="1" max="150" step="0.5" value="50" class="slider">
 			</div>
@@ -81,6 +86,7 @@
 	const tabs = computed(() => store.settings.tabs || []);
 	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
 	const keyboardControls: ComputedRef<KeyboardControl[]> = computed(() => store.settings.keyboardControls || []);
+	const websocketServer = computed(() => store.settings.websocketServer);
 
 	const { isOutside } = useMouseInElement(SettingsBar);
 	const { isMobile } = useDevice();
