@@ -246,7 +246,10 @@ $SettingsIconSize: 3rem
             transform: rotate(90deg)
         &.active
             background: var(--color_p)
+            stroke: var(--color_bg)
             svg
+                fill: var(--color_bg)
+                stroke: var(--color_bg)
                 fill: var(--color_bg)
             
         label
@@ -339,3 +342,17 @@ $SettingsIconSize: 3rem
             color: var(--color_p)
             font-size: 2rem
             margin: 0 0 1rem 0
+
+.server-select
+    flex: 1
+    height: 3rem
+    background: rgba(var(--prompt_bg), 0.5)
+    color: var(--text_color)
+    border: 2px solid var(--color_p)
+    border-radius: 0.5rem
+    padding: 0 0.5rem
+    font-size: 1.2rem
+    outline: none
+
+.mt-1
+    margin-top: 1rem

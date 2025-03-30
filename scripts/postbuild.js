@@ -15,6 +15,6 @@ if (!nuxtConfig.includes("baseURL: \"/TeleCat/\",")) {
 fs.writeFileSync(nuxtConfigPath, nuxtConfig, "utf8");
 
 // Restore tauri.conf.json
-let tauriConfig = JSON.parse(fs.readFileSync(tauriConfigPath, "utf8"));
+const tauriConfig = JSON.parse(fs.readFileSync(tauriConfigPath, "utf8"));
 tauriConfig.build.devUrl = "http://localhost:3000/TeleCat/";
 fs.writeFileSync(tauriConfigPath, JSON.stringify(tauriConfig, null, 2), "utf8");

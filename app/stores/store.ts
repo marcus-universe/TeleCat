@@ -24,7 +24,8 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				mouseOverSettings: false,
 				mouseOverSettingsButton: false,
 				mouseSourceType: "mouse",
-				websocketServer: "ws://localhost:1234",
+				websocketServer: { active: false, port: 6969, host: "192.168.50.78" },
+
 				tabs: [
 					{ name: "General", active: true },
 					{ name: "Colors", active: false },
@@ -84,6 +85,9 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 		},
 		setMouseSettingsButtonOver(value: boolean) {
 			this.settings.mouseOverSettingsButton = value;
+		},
+		toggleWebsocketServer() {
+			this.settings.websocketServer.active = !this.settings.websocketServer.active;
 		},
 		setShortcutAction(index: number) {
 			if (this.previewState) {
