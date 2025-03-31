@@ -17,6 +17,19 @@
 					<DesignIcons icon="mirror" customclass="mirrorY" />
 				</div>
 			</div>
+			<!-- <div class="flex_c_h gap1">
+				<div class="option flex_c_h alignCenter gap1">
+					<DesignIcons icon="websocket" customclass="websocket" />
+					<input id="websocketServer" v-model="websocketServer.host" type="text" class="websocketServer text" placeholder="Search IP Base">
+				</div>
+				<div class="option flex_c_h alignCenter gap1">
+					<DesignIcons icon="port" customclass="port" />
+					<input
+						id="port" v-model="websocketServer.port" type="number" class="port text" min="0"
+						max="65535" placeholder="Port Number"
+					>
+				</div>
+			</div> -->
 
 			<div class="option flex_c_h alignCenter gap1">
 				<DesignIcons icon="speed" customclass="speed" />
@@ -82,6 +95,7 @@
 	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
 	const keyboardControls: ComputedRef<KeyboardControl[]> = computed(() => store.settings.keyboardControls || []);
 	const websocketServer = ref(store.settings.websocketServer);
+	const IPBase = ref(store.settings.IPBase || "192.168.0.");
 
 	const { isOutside } = useMouseInElement(SettingsBar);
 	const { isMobile } = useDevice();
@@ -138,6 +152,9 @@
 		store.settings.colorTheme = newColor;
 
 		document.documentElement.style.setProperty("--color_p", newColor);
+	});
+	watch(IPBase, (newIPBase) => {
+		store.settings.IPBase = newIPBase;
 	});
 
 	const mirrorX = computed(() => store.settings.mirroredX);
