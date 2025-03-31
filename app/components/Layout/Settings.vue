@@ -17,6 +17,19 @@
 					<DesignIcons icon="mirror" customclass="mirrorY" />
 				</div>
 			</div>
+			<!-- <div class="flex_c_h gap1">
+				<div class="option flex_c_h alignCenter gap1">
+					<DesignIcons icon="websocket" customclass="websocket" />
+					<input id="websocketServer" v-model="websocketServer.host" type="text" class="websocketServer text" placeholder="Search IP Base">
+				</div>
+				<div class="option flex_c_h alignCenter gap1">
+					<DesignIcons icon="port" customclass="port" />
+					<input
+						id="port" v-model="websocketServer.port" type="number" class="port text" min="0"
+						max="65535" placeholder="Port Number"
+					>
+				</div>
+			</div> -->
 
 			<div class="option flex_c_h alignCenter gap1">
 				<DesignIcons icon="speed" customclass="speed" />
@@ -60,7 +73,7 @@
 
 <script lang="ts" setup>
 	import { useStore } from "@/stores/store";
-	import { onKeyStroke, useMouseInElement, useMousePressed } from "@vueuse/core";
+	import { onKeyStroke, useMouse, useMouseInElement, useMousePressed } from "@vueuse/core";
 
 	interface KeyboardControl {
 		keyStroke: string
@@ -68,6 +81,7 @@
 	}
 
 	const { pressed } = useMousePressed();
+	const { sourceType } = useMouse();
 
 	const SettingsBar = ref(null);
 
@@ -80,20 +94,29 @@
 	const tabs = computed(() => store.settings.tabs || []);
 	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
 	const keyboardControls: ComputedRef<KeyboardControl[]> = computed(() => store.settings.keyboardControls || []);
+	const websocketServer = ref(store.settings.websocketServer);
+	const IPBase = ref(store.settings.IPBase || "192.168.0.");
 
 	const { isOutside } = useMouseInElement(SettingsBar);
+	const { isMobile } = useDevice();
 
 	function checkAllKeystrokes(keyboardControlsValue: KeyboardControl[]) {
 		const allKeys: { keyStroke: string, index: number }[] = [];
-		for (let i = 0; i < keyboardControlsValue.length; i++) {
-			if (keyboardControlsValue[i]) {
-				allKeys.push({ keyStroke: keyboardControlsValue[i].keyStroke, index: i });
-			}
+
+		// Make sure keyboardControlsValue is an array
+		if (!Array.isArray(keyboardControlsValue)) {
+			return allKeys;
 		}
-		// console.log(allKeys);
+
+		// Use forEach which is safer than for loop with indices
+		keyboardControlsValue.forEach((control, index) => {
+			if (control && typeof control === "object" && "keyStroke" in control && control.keyStroke) {
+				allKeys.push({ keyStroke: control.keyStroke, index });
+			}
+		});
+
 		return allKeys;
 	}
-
 	onKeyStroke(checkAllKeystrokes(keyboardControls.value).map((k) => k.keyStroke), (e) => {
 		const keyObject = checkAllKeystrokes(keyboardControls.value).find((k) => k.keyStroke === e.key);
 		if (keyObject) {
@@ -104,7 +127,8 @@
 	});
 
 	watch(pressed, () => {
-		if (isOutside.value && pressed.value === true && store.settings.open === true && mouseOverSettingsButton.value === false) {
+		if (isOutside.value && pressed.value === true && store.settings.open === true && mouseOverSettingsButton.value === false && !isMobile) {
+			console.log(sourceType.value, isMobile);
 			store.setOverlaysClosed();
 		}
 	});
@@ -112,6 +136,10 @@
 	watch(colorText, (newColor) => {
 		store.settings.colorText = newColor;
 		document.documentElement.style.setProperty("--text_color", newColor);
+	});
+
+	watch(websocketServer, (newWebsocketServer) => {
+		store.settings.websocketServer = newWebsocketServer;
 	});
 
 	watch(colorBackground, () => {
@@ -124,6 +152,9 @@
 		store.settings.colorTheme = newColor;
 
 		document.documentElement.style.setProperty("--color_p", newColor);
+	});
+	watch(IPBase, (newIPBase) => {
+		store.settings.IPBase = newIPBase;
 	});
 
 	const mirrorX = computed(() => store.settings.mirroredX);

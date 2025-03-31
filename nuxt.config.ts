@@ -4,19 +4,31 @@ export default defineNuxtConfig({
 	devtools: {
 		enabled: true // or false to disable
 	},
-
-	modules: ["@vueuse/nuxt", "nuxt-svgo", "@nuxt/eslint", "@pinia/nuxt"],
+	modules: [
+		"@vueuse/nuxt",
+		"nuxt-svgo",
+		"@nuxt/eslint",
+		"@pinia/nuxt",
+		"@nuxtjs/device"
+	],
 	pinia: {
 		storeDirs: ["@/stores/**"]
 	},
 	app: {
-baseURL: "/TeleCat/",
-buildAssetsDir: "assets",
-head: {
+		baseURL: "/TeleCat/",
+		buildAssetsDir: "assets",
+		head: {
 			title: "TeleCat",
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
-			meta: [{ name: "format-detection", content: "no" }]
+			meta: [{ name: "format-detection", content: "no" }, { name: "description", content: "Open Source Telepromter App for you and your cat." }],
+			link: [
+				{ rel: "apple-touch-icon", type: "image/png", sizes: "180x180", href: "/favicon/apple-touch-icon.png" },
+				{ rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon/favicon-32x32.png" },
+				{ rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon/favicon-16x16.png" },
+				{ rel: "manifest", type: "application/manifest+json", sizes: "any", href: "/favicon/site.webmanifest" }
+
+			]
 		},
 		target: "static",
 		pageTransition: {
@@ -108,6 +120,7 @@ function defineNuxtConfig(config: {
 			charset: string
 			viewport: string
 			meta: { name: string, content: string }[]
+			link?: { rel: string, type: string, sizes: string, href: string }[]
 		}
 		target: string
 		pageTransition: { name: string, mode: string }

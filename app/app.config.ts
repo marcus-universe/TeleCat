@@ -55,7 +55,6 @@ function defineAppConfig(config: {
 	app: {
 		name: string
 		author: string
-		repo: string
 		tauriSite: string
 		nuxtSite: string
 	}

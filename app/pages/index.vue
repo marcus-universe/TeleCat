@@ -1,11 +1,12 @@
 <template>
 	<div class="teleprommt_wrapper">
-		<textarea v-if="previewState === false" id="teleprompter" v-model="markdownText" class="teleprompter" role="textbox" aria-multiline="true" aria-label="TelePrompter Text" contenteditable @input="autoResize" />
+		<!-- <textarea v-if="previewState === false" id="teleprompter" v-model="markdownText" class="teleprompter" role="textbox" aria-multiline="true" aria-label="TelePrompter Text" contenteditable @input="autoResize" /> -->
 
-		<div v-if="previewState === true" class="MarkdownPreview" v-html="renderedMarkdown" />
+		<!-- <div v-if="previewState === true" class="MarkdownPreview" v-html="renderedMarkdown" /> -->
 		<div v-if="previewState === true" class="directionArrow" :class="{ up: direction }">
 			<DesignIcons icon="scrollarrow" customclass="scrollarrow" />
 		</div>
+		<MarkdownEditor />
 	</div>
 </template>
 
@@ -26,7 +27,7 @@
 	const direction = computed(() => store.settings.direction);
 
 	const markdownText = ref(store.textContent);
-	const renderedMarkdown = computed(() => marked(markdownText.value));
+	// const renderedMarkdown = computed(() => marked(markdownText.value));
 
 	function autoResize(_event?: Event) {
 		nextTick(() => {
@@ -42,7 +43,7 @@
 	let scrollDelay: ReturnType<typeof setTimeout>;
 	function startScrolling() {
 		nextTick(() => {
-			const markdownPreview = document.querySelector(".MarkdownPreview") as HTMLElement;
+			const markdownPreview = document.querySelector(".tiptap") as HTMLElement;
 			if (!markdownPreview) return;
 
 			const offset = 1;
@@ -78,7 +79,7 @@
 	}
 
 	function preventSpaceScroll(event: KeyboardEvent) {
-		if (event.key === " ") {
+		if (event.key === " " && store.previewState) {
 			event.preventDefault();
 		}
 	}

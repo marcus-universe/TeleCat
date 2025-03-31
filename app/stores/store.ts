@@ -23,6 +23,11 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				open: false,
 				mouseOverSettings: false,
 				mouseOverSettingsButton: false,
+				mouseSourceType: "mouse",
+				serverList: [] as string[],
+				IPBase: "192.168.1.",
+				websocketServer: { active: false, port: 6969, host: "127.0.0.1" },
+
 				tabs: [
 					{ name: "General", active: true },
 					{ name: "Colors", active: false },
@@ -83,6 +88,13 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 		setMouseSettingsButtonOver(value: boolean) {
 			this.settings.mouseOverSettingsButton = value;
 		},
+		setServerList(servers: string[]) {
+			this.settings.serverList = servers;
+		},
+		toggleWebsocketServer() {
+			this.settings.websocketServer.active
+        = !this.settings.websocketServer.active;
+		},
 		setShortcutAction(index: number) {
 			if (this.previewState) {
 				if (index === 0) {
@@ -98,9 +110,12 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				} else if (index === 5) {
 					this.setSpeed(this.speed + 10);
 				}
+			} else {
+				if (index === 2) {
+					this.switchPreviewState();
+				}
 			}
 		}
-
 	}
 });
 
