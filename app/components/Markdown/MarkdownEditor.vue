@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-	import { useStore } from "@/stores/store";
 	import { HocuspocusProvider } from "@hocuspocus/provider";
 	import Collaboration from "@tiptap/extension-collaboration";
 	import Highlight from "@tiptap/extension-highlight";
@@ -18,9 +17,18 @@
 
 	// Reactive provider reference
 	let provider = new HocuspocusProvider({
-		url: `ws://${websocketServer.value.host}:${websocketServer.value.port}`,
+		url: `ws://${websocketServer.value.host}`,
 		name: "telecat",
-		document: new Y.Doc()
+		document: new Y.Doc(),
+		onConnect() {
+			store.setWebsocketConnected(true);
+		},
+		onDisconnect() {
+			store.setWebsocketConnected(false);
+		},
+		onAuthenticationFailed: () => {
+			store.setWebsocketConnected(false);
+		}
 	});
 
 	provider.on("status", (status: any) => {
@@ -32,7 +40,6 @@
 		extensions: [
 			StarterKit,
 			Highlight.configure({ multicolor: true }),
-
 			Collaboration.configure({
 				document: provider.document
 			})
@@ -43,13 +50,13 @@
 	});
 
 	// Watch for changes in websocketServer and recreate the provider
-	watch(websocketServer, (newServer) => {
+	watch(store.settings.websocketServer.host, () => {
 		// Destroy the current provider to close the WebSocket connection
 		provider.destroy();
 
 		// Create a new provider instance with the updated URL
 		const newProvider = new HocuspocusProvider({
-			url: `ws://${newServer.host}:${newServer.port}`, // The new WebSocket server URL
+			url: `ws://${store.settings.websocketServer.host}`, // The new WebSocket server URL
 			name: "telecat" // Your document name
 			// Include other necessary configurations here
 		});
