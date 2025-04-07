@@ -12,7 +12,8 @@ export default defineNuxtConfig({
 		"@nuxtjs/device"
 	],
 	pinia: {
-		storeDirs: ["@/stores/**"]
+		storeDirs: ["@/stores/**"],
+		debug: true
 	},
 	app: {
 		baseURL: "/TeleCat/",
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
 
 			]
 		},
-		target: "static",
+		// target: "static",
 		pageTransition: {
 			name: "page",
 			mode: "out-in"
@@ -42,14 +43,6 @@ export default defineNuxtConfig({
 	},
 	css: ["@/assets/css/main.css", "@/sass/main.sass"],
 
-	icon: {
-		customCollections: [
-			{
-				prefix: "local",
-				dir: "./app/assets/icons"
-			}
-		]
-	},
 	svgo: {
 		autoImportPath: "@/assets/"
 	},
@@ -108,51 +101,3 @@ export default defineNuxtConfig({
 		}
 	}
 });
-function defineNuxtConfig(config: {
-	devtools: { enabled: boolean }
-	modules: string[]
-	pinia: { storeDirs: string[] }
-	app: {
-		baseURL: string
-		buildAssetsDir: string
-		head: {
-			title: string
-			charset: string
-			viewport: string
-			meta: { name: string, content: string }[]
-			link?: { rel: string, type: string, sizes: string, href: string }[]
-		}
-		target: string
-		pageTransition: { name: string, mode: string }
-		layoutTransition: { name: string, mode: string }
-	}
-	css: string[]
-	icon: { customCollections: { prefix: string, dir: string }[] }
-	svgo: { autoImportPath: string }
-	ssr: boolean
-	dir: { modules: string }
-	imports: {
-		presets: {
-			from: string
-			imports: (string | { name: string, as: string, type: boolean })[]
-		}[]
-	}
-	vite: {
-		clearScreen: boolean
-		envPrefix: string[]
-		server: {
-			strictPort: boolean
-			hmr: { protocol: string, host: string, port: number }
-			watch: { ignored: string[] }
-		}
-	}
-	devServer: { host: string }
-	eslint: { config: { standalone: boolean } }
-	experimental: { typedPages: boolean }
-	future: { compatibilityVersion: number }
-	compatibilityDate: string
-
-	runtimeConfig: { public: { appVersion: string } }
-}) {
-	return config;
-}

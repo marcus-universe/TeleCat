@@ -26,7 +26,7 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				mouseSourceType: "mouse",
 				serverList: [] as string[],
 				IPBase: "192.168.1.",
-				websocketServer: { active: false, port: 6969, host: "127.0.0.1" },
+				websocketServer: { active: false, connected: false, host: "127.0.0.1:6969" },
 
 				tabs: [
 					{ name: "General", active: true },
@@ -64,7 +64,7 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 			this.playState = !this.playState;
 		},
 		setSpeed(newSpeed: number) {
-			this.speed = newSpeed;
+			this.speed = Math.min(Math.max(Math.round(newSpeed), 1), 150);
 		},
 		setSettingsOpen() {
 			this.settings.open = !this.settings.open;
@@ -90,6 +90,9 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 		},
 		setServerList(servers: string[]) {
 			this.settings.serverList = servers;
+		},
+		setWebsocketConnected(value: boolean) {
+			this.settings.websocketServer.connected = value;
 		},
 		toggleWebsocketServer() {
 			this.settings.websocketServer.active

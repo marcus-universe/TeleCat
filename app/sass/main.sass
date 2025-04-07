@@ -259,21 +259,22 @@ $SettingsIconSize: 3rem
         input
             width: 2rem
             min-height: 2rem
-            
-            &:checked + label
-                color: var(--nBlue)
-            &.slider, &.text
+            &.slider, &.text, &.number
+                appearance: none
                 -webkit-appearance: none
-                width: 100%
+                -moz-appearance: none
                 height: 1rem
                 border-radius: 10rem
+                border: none
                 opacity: 0.9
                 background: var(--color_p)
                 cursor: pointer
                 outline: none
                 transition: opacity 0.2s ease
             &.slider::-webkit-slider-thumb
+                appearance: none
                 -webkit-appearance: none
+                -moz-appearance: none
                 appearance: none
                 width: 2.5rem
                 height: 2.5rem
@@ -281,11 +282,25 @@ $SettingsIconSize: 3rem
                 border-radius: 50%
                 background: var(--color_p)
                 cursor: pointer
-            &.text
+            &.slider::-moz-range-thumb
+                appearance: none
+                -webkit-appearance: none
+                -moz-appearance: none
+                width: 2.5rem
+                height: 2.5rem
+                border: 0.5rem solid rgb(var(--color_bg))
+                border-radius: 50%
+                background: var(--color_p)
+                cursor: pointer
+            &.text, &.number
                 border-radius: 0.5rem
                 cursor: text  
                 font-family: $font
                 font-weight: 600
+            &.number
+                width: 10%
+                min-width: 4rem
+
             &.slider:hover
                 opacity: 1
     @include media(">phone", "<=tablet")
@@ -308,7 +323,7 @@ $SettingsIconSize: 3rem
     padding: 2rem
     width: calc( 100% - 4rem )
     text-align: center
-    background: rgba(var(--color_bg), 1)
+    background: rgba(var(--prompt_bg), 1)
     .linksAbout
         svg
             fill: var(--color_p)
@@ -331,7 +346,8 @@ $SettingsIconSize: 3rem
     p
         margin: 0 0
         padding: 0
-        font-size: 1.5rem
+        font-size: 2rem
+        color: var(--text_color)
         a
             color: var(--color_p)
             text-decoration: none

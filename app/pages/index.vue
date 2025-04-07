@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-	import { useStore } from "@/stores/store";
 	import { marked } from "marked";
 
 	// Set marked options to enable line breaks
