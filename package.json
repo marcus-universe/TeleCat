@@ -1,7 +1,7 @@
 {
 	"name": "telecat",
 	"type": "module",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"private": true,
 	"packageManager": "pnpm@10.7.1",
 	"description": "Open Source Teleprompter App",
