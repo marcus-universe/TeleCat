@@ -16,18 +16,18 @@ export default defineNuxtConfig({
 		debug: true
 	},
 	app: {
-baseURL: "/TeleCat/",
-buildAssetsDir: "assets",
-head: {
+		baseURL: "/TeleCat/",
+		buildAssetsDir: "assets",
+		head: {
 			title: "TeleCat",
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
-			meta: [{ name: "format-detection", content: "no" }, { name: "description", content: "Open Source Telepromter App for you and your cat." }],
+			meta: [{ name: "format-detection", content: "no" }, { name: "description", content: "Open Source Telepromter App for you and your cat." }, { name: "theme-color", content: "#1B1F3A" }, { name: "msapplication-TileColor", content: "#ffffff" }],
 			link: [
-				{ rel: "apple-touch-icon", type: "image/png", sizes: "180x180", href: "/favicon/apple-touch-icon.png" },
+				{ rel: "apple-touch-icon", type: "image/png", sizes: "180x180", href: "/favicon/apple-icon-180x180.png" },
 				{ rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon/favicon-32x32.png" },
 				{ rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon/favicon-16x16.png" },
-				{ rel: "manifest", type: "application/manifest+json", sizes: "any", href: "/favicon/site.webmanifest" }
+				{ rel: "manifest", type: "application/manifest+json", sizes: "any", href: "/favicon/manifest.json" }
 
 			]
 		},
