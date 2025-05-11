@@ -17,7 +17,11 @@
 					<DesignIcons icon="mirror" customclass="mirrorY" />
 				</div>
 			</div>
-			<div class="option flex_c_h alignCenter" @click="store.toggleWebsocketServer();">
+			<div class="option button flex_c_h" :class="{ active: websocketServer.active }" @click="store.toggleWebsocketServer();">
+				<DesignIcons icon="serverRun" customclass="serverRun" />
+			</div>
+
+			<div v-show="websocketServer.active" class="option flex_c_h alignCenter">
 				<DesignIcons icon="websocket" customclass="websocket" />
 				<input id="websocketServer" v-model="websocketServer.host" type="text" class="text w100">
 			</div>

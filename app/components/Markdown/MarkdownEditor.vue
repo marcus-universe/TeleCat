@@ -39,10 +39,10 @@
 	const editor = useEditor({
 		extensions: [
 			StarterKit,
-			Highlight.configure({ multicolor: true }),
-			Collaboration.configure({
-				document: provider.document
-			})
+			Highlight.configure({ multicolor: true })
+			// Collaboration.configure({
+			// 	document: provider.document
+			// })
 		],
 		content: store.textContent,
 		editable: !previewState.value,

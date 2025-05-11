@@ -7,10 +7,10 @@ export const useStore = defineStore("store", {
 			playState: false,
 			fullscreen: false,
 			speed: 100,
-			textContent: `# Nya 😺 to TeleCat!
-This is the best **Open Source Telepromter App** for you and your cat 😺
+			textContent: `<h1> Nya 😺 to TeleCat! </h1>
+This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 
-## First Steps
+<h2> First Steps </h2>
 <ul>
   <li>On the top right corner you can switch between preview and edit mode.</li>
   <li>On the top left corner you find Settings to customize the preview look.</li>
@@ -18,7 +18,7 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
   <li>Inside the edit view you can use markdown syntax to style your promter content</li>
 </ul>
 
-> Consider contributing to the **Open Source Community** to support this project ❤️`,
+Consider contributing to the <b>Open Source Community</b> to support this project ❤️`,
 			settings: {
 				open: false,
 				mouseOverSettings: false,
@@ -26,7 +26,11 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				mouseSourceType: "mouse",
 				serverList: [] as string[],
 				IPBase: "192.168.1.",
-				websocketServer: { active: false, connected: false, host: "127.0.0.1:6969" },
+				websocketServer: {
+					active: false,
+					connected: false,
+					host: "127.0.0.1:6969"
+				},
 
 				tabs: [
 					{ name: "General", active: true },
@@ -36,7 +40,7 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 				mirroredX: false,
 				mirroredY: false,
 				colorText: "#eeeeee",
-				colorTheme: "#FF8548",
+				colorTheme: "#5E43FF",
 				colorBackground: "27, 31, 58",
 				direction: true,
 				fontScale: 3.5,
@@ -47,8 +51,8 @@ This is the best **Open Source Telepromter App** for you and your cat 😺
 					{ keyStroke: " ", action: "Play/Pause" },
 					{ keyStroke: "Tab", action: "Preview/Editor" },
 					{ keyStroke: "F11", action: "fullscreen" },
-					{ keyStroke: "ArrowLeft", action: "decreaseSpeed" },
-					{ keyStroke: "ArrowRight", action: "increaseSpeed" }
+					{ keyStroke: "PageDown", action: "decreaseSpeed" },
+					{ keyStroke: "PageUp", action: "increaseSpeed" }
 				]
 			}
 		};

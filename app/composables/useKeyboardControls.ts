@@ -3,6 +3,7 @@ import { computed } from "vue";
 export function useKeyboardControls() {
 	const store = useStore();
 	const keyboardControls = computed(() => store.settings.keyboardControls || []);
+
 	function checkAllKeystrokes(keyboardControlsValue: any[]) {
 		const allKeys: { keyStroke: string, index: number }[] = [];
 
@@ -22,13 +23,16 @@ export function useKeyboardControls() {
 	onKeyStroke(
 		checkAllKeystrokes(keyboardControls.value).map((k) => k.keyStroke),
 		(e) => {
+			// Prevent default browser behavior for all configured shortcuts
+			e.preventDefault();
+
 			const keyObject = checkAllKeystrokes(keyboardControls.value).find(
 				(k) => k.keyStroke === e.key
 			);
 			if (keyObject) {
 				const index = keyObject.index;
 				store.setShortcutAction(index);
-				return `Key: ${e.key}, Index: ${index}`;
+				return true;
 			}
 		}
 	);

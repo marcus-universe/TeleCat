@@ -40,8 +40,10 @@ Open Source Teleprompter App for you and your cat😺!
 | <kbd>Enter</kbd> | Toggle Scroll-Direction |
 | <kbd>Tab</kbd> | Switch to Edit-Mode |
 | <kbd>F11</kbd> | Toggle Fullscreen-Mode |
-| <kbd>Arrow Left</kbd> | Decrease Scrollspeed by -10 |
-| <kbd>Arrow Right</kbd> | Increase Scrollspeed by +10 |
+| <kbd>Page Up</kbd> | Increase Scrollspeed by +10 |
+| <kbd>Page Down</kbd> | Decrease Scrollspeed by -10 |
+
+[More Markdown Shortcuts](https://tiptap.dev/docs/editor/core-concepts/keyboard-shortcuts)
 
 <div align="center">
 
