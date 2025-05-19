@@ -29,7 +29,7 @@ Consider contributing to the <b>Open Source Community</b> to support this projec
 				websocketServer: {
 					active: false,
 					connected: false,
-					host: "127.0.0.1:6969"
+					host: "192.168.20.100:6969"
 				},
 
 				tabs: [
