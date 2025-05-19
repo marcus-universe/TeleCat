@@ -23,8 +23,10 @@ export function useKeyboardControls() {
 	onKeyStroke(
 		checkAllKeystrokes(keyboardControls.value).map((k) => k.keyStroke),
 		(e) => {
-			// Prevent default browser behavior for all configured shortcuts
-			e.preventDefault();
+			// Prevent default browser behavior for all configured shortcuts nur im Preview Mode
+			if (store.previewState) {
+				e.preventDefault();
+			}
 
 			const keyObject = checkAllKeystrokes(keyboardControls.value).find(
 				(k) => k.keyStroke === e.key
