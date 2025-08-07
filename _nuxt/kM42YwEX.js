@@ -1,0 +1,1 @@
+import{e as s,C as a,c as t,a as o,t as n,g as c,o as r}from"./Cs1KCNsR.js";const i={class:"aboutSection"},l=s({__name:"[id]",setup(_){const{id:e}=a().params;return(p,u)=>(r(),t("div",i,[o("h1",null,"Id is "+n(c(e)),1)]))}});export{l as default};
