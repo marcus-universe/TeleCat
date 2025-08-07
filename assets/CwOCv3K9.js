@@ -1,4 +1,4 @@
-import{a0 as t}from"./Cs1KCNsR.js";const i=t("store",{state:()=>({previewState:!0,playState:!1,fullscreen:!1,speed:100,textContent:`<h1> Nya 😺 to TeleCat! </h1>
+import{a0 as t}from"./Bwbg6C0o.js";const i=t("store",{state:()=>({previewState:!0,playState:!1,fullscreen:!1,speed:100,textContent:`<h1> Nya 😺 to TeleCat! </h1>
 This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 
 <h2> First Steps </h2>
