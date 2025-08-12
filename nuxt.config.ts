@@ -16,9 +16,9 @@ export default defineNuxtConfig({
 		debug: true
 	},
 	app: {
-		baseURL: "/TeleCat/",
-		buildAssetsDir: "assets",
-		head: {
+baseURL: "/TeleCat/",
+buildAssetsDir: "assets",
+head: {
 			title: "TeleCat",
 			charset: "utf-8",
 			viewport: "width=device-width, initial-scale=1",
