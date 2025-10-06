@@ -1,11 +1,9 @@
 <template>
 	<Html class="overflow-x-hidden">
 		<Body class="font-sans antialiased">
-			<UApp>
-				<NuxtLayout>
-					<NuxtPage />
-				</NuxtLayout>
-			</UApp>
+			<NuxtLayout>
+				<NuxtPage />
+			</NuxtLayout>
 		</Body>
 	</Html>
 </template>

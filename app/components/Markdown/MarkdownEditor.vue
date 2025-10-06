@@ -1,5 +1,8 @@
 <template>
-	<EditorContent :editor="editor" />
+	<div class="markdown-editor">
+		<EditBar :editor="editor" :show="!!editor && !previewState" />
+		<EditorContent :editor="editor" />
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -8,6 +11,7 @@
 	import Highlight from "@tiptap/extension-highlight";
 	import StarterKit from "@tiptap/starter-kit";
 	import { EditorContent, useEditor } from "@tiptap/vue-3";
+	import EditBar from "~/components/Markdown/EditBar.vue";
 	import * as Y from "yjs";
 
 	const store = useStore();
@@ -15,19 +19,66 @@
 
 	const previewState = computed(() => store.previewState);
 
-	// Reactive provider reference
-	const provider = new HocuspocusProvider({
-		url: "ws://192.168.20.100:6969",
-		name: "telecat",
-		document: new Y.Doc()
+	// --- WebSocket Provider handling (conditionally enabled) ---
+	// Keep a mutable reference to the provider so we can connect/disconnect based on settings
+	let provider: HocuspocusProvider | null = null;
+	const ydoc = new Y.Doc();
+	const wsUrl = computed(() => {
+		const host = store.settings.websocketServer.host?.trim() || "";
+		if (host.startsWith("ws://") || host.startsWith("wss://")) return host;
+		return `ws://${host}`;
 	});
+
+	function createProvider() {
+		// Safety: destroy an existing provider before creating a new one
+		if (provider) {
+			try { provider.destroy(); } catch {}
+			provider = null;
+		}
+		provider = new HocuspocusProvider({
+			url: wsUrl.value,
+			name: "telecat",
+			document: ydoc,
+			// Do not auto-connect when the toggle is off
+			connect: true
+		});
+		// Optional: log connection state (useful during development)
+		provider.on("connect", () => {
+			store.setWebsocketConnected(true);
+		});
+		provider.on("disconnect", () => {
+			store.setWebsocketConnected(false);
+		});
+		provider.on("close", () => {
+			store.setWebsocketConnected(false);
+		});
+	}
+
+	// React to changes in websocket active state and host
+	watch(
+		() => [store.settings.websocketServer.active, store.settings.websocketServer.host] as const,
+		([active]) => {
+			if (active) {
+				createProvider();
+			} else {
+				// When deactivated: cleanly destroy and prevent any reconnection attempts
+				if (provider) {
+					try { provider.destroy(); } catch {}
+					provider = null;
+				}
+				store.setWebsocketConnected(false);
+			}
+		},
+		{ immediate: true }
+	);
 
 	// Create the editor with the Y.js document
 	const editor = useEditor({
 		extensions: [
 			StarterKit.configure({
 				// Add any specific configuration for StarterKit here
-				history: false
+				// Enable history so STRG+Z works in editor mode
+				history: {}
 			}),
 			Highlight.configure({ multicolor: true })
 			// Collaboration.configure({
@@ -70,11 +121,15 @@
 	// Clean up on unmount
 	onUnmounted(() => {
 		if (provider) {
-			provider.destroy();
+			try { provider.destroy(); } catch {}
+			provider = null;
 		}
 	});
 </script>
 
 <style>
-/* Fügen Sie hier Ihre Stile hinzu */
+.markdown-editor {
+	display: flex;
+	flex-direction: column;
+}
 </style>

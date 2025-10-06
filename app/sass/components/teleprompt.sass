@@ -1,0 +1,96 @@
+.teleprommt_wrapper
+    margin-top: calc( var(--navIconSize) + var(--navPadding) * 2)
+#teleprompter
+    background: var(--prompt_bg)
+    color: var(--text_color)
+    font-family: var(--mainFont)
+    font-size: var(--MarkdownFontSize)
+    display: block
+    width: calc( 100% - 4rem )
+    min-height: 100% 
+    resize: none
+    overflow: auto
+    border: none
+    outline: none
+    padding: 2rem 2rem
+.tiptap
+    width: calc( 100% - var(--sidePadding) * 2)
+    padding: 0 var(--sidePadding)
+    transform: scale(var(--mirrorX), var(--mirrorY))
+    font-size: var(--MarkdownFontSize)
+    h1, h2, h3, h4, h5, h6
+        margin: 0 0 0 0
+        padding: 0
+        font-weight: bold
+        color: var(--text_color)
+    h1
+        font-size: var(--h1Size)
+        color: var(--text_color)
+        
+    h2
+        font-size: var(--h2Size)
+        color: var(--text_color)
+    h3
+        font-size: var(--h3Size)
+        color: var(--text_color)
+    p
+        font-size: var(--pSize)
+        line-height: var(--pLineHeight)
+        margin: 0 0 calc(var(--pSpacing) * var(--pSize)) 0
+        color: var(--text_color)
+    code
+        font-size: var(--pSize)
+        // Inline code background uses text color at 10% opacity
+        background: color-mix(in srgb, var(--text_color) 10%, transparent)
+        padding: 0.2rem 0.5rem
+        border-radius: 0.5rem
+        color: var(--text_color)
+    // Code blocks
+    pre
+        background: color-mix(in srgb, var(--text_color) 10%, transparent)
+        padding: 1rem
+        border-radius: 0.5rem
+        overflow: auto
+        code
+            background: transparent
+            color: var(--text_color)
+    blockquote
+        font-size: var(--pSize)
+        margin: 0 0 calc(1.5 * var(--pSize)) 0
+        padding: 0 0 0 1rem
+        border-left: 0.5rem solid var(--text_color)
+
+    mark
+        background-color: var(--highlight_color)
+        color: var(--text_color)
+        padding: 0.1rem 0.2rem
+        border-radius: 0.2rem
+
+    ul, ol
+        font-size: var(--pSize)
+        color: var(--text_color)
+        // Sicherstellen, dass die Listenmarker (Bullets/Nummern) die gleiche Farbe wie der Text haben
+        li::marker
+            color: var(--text_color)
+        li
+            margin: 0
+            padding: 0
+            font-size: var(--pSize)
+            p
+                margin: 0
+                padding: 0
+
+$scrollArrowSize: 7rem
+.directionArrow
+    position: fixed
+    bottom: 2rem
+    left: 2rem
+    opacity: 0.5
+    transform: rotate(0deg)
+    transition: transform 0.3s ease
+    .scrollarrow
+        width: $scrollArrowSize
+        height: $scrollArrowSize
+        fill: var(--color_p)
+    &.up
+        transform: rotate(180deg)

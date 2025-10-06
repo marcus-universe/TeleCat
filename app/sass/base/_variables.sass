@@ -17,10 +17,22 @@ $TextColor: #eeeeee
 $BGcolor: 0, 0, 0
 $BGPromter: 27, 31, 58
 
+$navIconSize: 3rem
+$navPadding: 2rem
+$SettingsIconSize: 3rem
+
 //Responsive
 $phone: 740px
 $tablet: 1280px
 $desktop: 1600px
+
+@font-face
+  font-family: 'Assistant'
+  font-display: swap
+  src: url(assets/fonts/Assistant/Assistant-VariableFont_wght.ttf) format("truetype")
+
+$font: 'Assistant', sans-serif
+// $fontSaira: 'Saira Stencil One', cursive
 
 //root
 :root
@@ -33,32 +45,24 @@ $desktop: 1600px
   --mirrorY: 1
   --fontSize: 3.5
   --pLineHeight: 1.5
+  --pSpacing: 1
+  --highlight_color: #fff59e
   --editFontSize: 1.5
-  --pSize: calc(2rem * var(--fontSize))
+  --pScale: 2rem
+  --pSize: calc(var(--pScale) * var(--fontSize))
   --MarkdownFontSize: calc(2rem * var(--editFontSize))
-  --h1Size: calc(5rem * var(--fontSize))
-  --h2Size: calc(3rem * var(--fontSize))
-  --h3Size: calc(2.5rem * var(--fontSize))
+  --h1Scale: 5rem
+  --h2Scale: 3rem
+  --h3Scale: 2.5rem
+  --h1Size: calc(var(--h1Scale) * var(--fontSize))
+  --h2Size: calc(var(--h2Scale) * var(--fontSize))
+  --h3Size: calc(var(--h3Scale) * var(--fontSize))
   --sidePadding: 2rem
+  --navIconSize: #{$navIconSize}
+  --navPadding: #{$navPadding}
+  --SettingsIconSize: #{$SettingsIconSize}
+  --mainFont: #{$font}
 @media screen and (max-width: $phone)
   :root
     --imageSizeN: clamp(200px, 50vw, 100%)
 
-// Fonts
-// @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;800;900&display=swap')
-// @font-face
-//   font-family: 'Noto Sans JP'
-//   src: url('/assets/fonts/NotoSansDisplay-variablefont.ttf') format('truetype')
-//   src: url('/assets/fonts/NotoSansDisplay-Regular.eot') format('embedded-opentype'), url('/assets/fonts/NotoSansDisplay-Regular.woff2') format('woff2'), url('/assets/fonts/NotoSansDisplay-Regular.woff') format('woff'), url('/assets/fonts/NotoSansDisplay-Regular.ttf') format('truetype')
-
-// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Saira+Stencil+One&display=swap')
-
-// $fontExo: 'Exo 2', sans-serif
-// $fontNoto: 'Noto Sans JP', sans-serif
-@font-face
-  font-family: 'Assistant'
-  font-display: swap
-  src: url(assets/fonts/Assistant/Assistant-VariableFont_wght.ttf) format("truetype")
-
-$font: 'Assistant', sans-serif
-// $fontSaira: 'Saira Stencil One', cursive

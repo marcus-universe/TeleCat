@@ -1,151 +1,11 @@
+
+
 @use 'base' as *;
-$navIconSize: 3rem
-$navPadding: 2rem
-nav
-    background: rgba(var(--prompt_bg), 0.7)
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
-    position: fixed
-    transform: translateY(0%)
-    top: 0
-    left: 0
-    width: calc(100% - $navIconSize)
-    backdrop-filter: blur(10px)
-    z-index: 99
-    margin: 0
-    padding: $navPadding
+
+@use 'components' as *;
 
 
-    .nav-wrapper
-        width: 100%
-        .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper, .FullscreenIconWrapper
-            position: relative
-            display: block
-            width: $navIconSize
-            height: $navIconSize
 
-        .PlayIcon, .DirectionIcon, .PreviewIcon, .FullscreenIcon
-            width: $navIconSize
-            height: $navIconSize
-            svg
-                position: absolute
-                width: $navIconSize
-                height: $navIconSize
-                left: 0
-                top: 0
-                transform: translate(-50%, -50%)
-                opacity: 0
-                transform: scale(0) rotate(0deg)
-                transition: opacity 0.3s ease, transform 0.3s ease
-        .DirectionIcon
-            svg
-                transition: opacity 0s ease, transform 1s ease
-                transform: scale(1) rotate(0deg)
-                opacity: 0
-
-        .PlayIcon, .PreviewIcon, .FullscreenIcon
-            &.active
-                svg
-                    
-                    opacity: 1
-                    transform: scale(1)
-        .DirectionIcon
-            &.active
-                svg
-                    transform: scale(1) rotate(180deg)
-                    opacity: 1
-
-            
-            
-        svg
-            width: $navIconSize
-            height: $navIconSize
-            fill: var(--color_p)
-            cursor: pointer  
-
-
-        .logo
-            width: $navIconSize
-            height: $navIconSize
-
-.teleprommt_wrapper
-    margin-top: calc( $navIconSize + $navPadding * 2)
-#teleprompter
-    background: var(--prompt_bg)
-    color: var(--text_color)
-    font-family: $font
-    font-size: var(--MarkdownFontSize)
-    display: block
-    width: calc( 100% - 4rem )
-    min-height: 100% 
-    resize: none
-    overflow: auto
-    border: none
-    outline: none
-    padding: 2rem 2rem
-.tiptap
-    width: calc( 100% - var(--sidePadding) * 2)
-    padding: 0 var(--sidePadding)
-    transform: scale(var(--mirrorX), var(--mirrorY))
-    font-size: var(--MarkdownFontSize)
-    h1, h2, h3, h4, h5, h6
-        margin: 0 0 0 0
-        padding: 0
-        font-weight: bold
-        color: var(--text_color)
-    h1
-        font-size: var(--h1Size)
-        color: var(--text_color)
-        
-    h2
-        font-size: var(--h2Size)
-        color: var(--text_color)
-    h3
-        font-size: var(--h3Size)
-        color: var(--text_color)
-    p
-        font-size: var(--pSize)
-        line-height: var(--pLineHeight)
-        margin: 0 0 calc(1 * var(--pSize)) 0
-        color: var(--text_color)
-    code
-        font-size: var(--pSize)
-        background: rgba(var(--color_bg), 0.5)
-        padding: 0.2rem 0.5rem
-        border-radius: 0.5rem
-        color: var(--text_color)
-    blockquote
-        font-size: var(--pSize)
-        margin: 0 0 calc(1.5 * var(--pSize)) 0
-        padding: 0 0 0 1rem
-        border-left: 0.5rem solid var(--text_color)
-
-    ul, ol
-        font-size: var(--pSize)
-        li
-            margin: 0
-            padding: 0
-            font-size: var(--pSize)
-            p
-                margin: 0
-                padding: 0
-
-$scrollArrowSize: 7rem
-.directionArrow
-    position: fixed
-    bottom: 2rem
-    left: 2rem
-    opacity: 0.5
-    transform: rotate(0deg)
-    transition: transform 0.3s ease
-    .scrollarrow
-        width: $scrollArrowSize
-        height: $scrollArrowSize
-        fill: var(--color_p)
-    &.up
-        transform: rotate(180deg)
-    
-
-$SettingsIconSize: 3rem
 
 .BGWrapper
     position: fixed
@@ -158,7 +18,7 @@ $SettingsIconSize: 3rem
 
 .SettingsBar
     position: fixed
-    top: calc( $navIconSize + $navPadding * 2)
+    top: calc( var(--navIconSize) + var(--navPadding) * 2)
     right: -100vw
     opacity: 0
     width: calc(100vw - 6rem)
@@ -168,7 +28,7 @@ $SettingsIconSize: 3rem
     backdrop-filter: blur(10px)
     z-index: 98
     padding: 2rem
-    border-left: calc($navPadding / 2) solid var(--color_p)
+    border-left: calc(var(--navPadding) / 2) solid var(--color_p)
     .settingsTabs
         flex-direction: row
         justify-content: space-between
@@ -219,28 +79,28 @@ $SettingsIconSize: 3rem
     .option
         display: flex
         // width: 100%
-        height: $SettingsIconSize
+        height: var(--SettingsIconSize)
         cursor: pointer
         padding: 0.5rem
         border-radius: 1rem
         border: 2px solid var(--color_p)
         margin: 1rem 0
         &.button
-            width:  $SettingsIconSize
-            height:  $SettingsIconSize
+            width:  var(--SettingsIconSize)
+            height:  var(--SettingsIconSize)
 
 
-        .color-picker, .color-fillpicker, .color-themepicker 
+        .color-picker, .color-fillpicker, .color-themepicker, .color-highlightpicker 
             position: absolute
-            width:  $SettingsIconSize
-            height:  $SettingsIconSize
+            width:  var(--SettingsIconSize)
+            height:  var(--SettingsIconSize)
             opacity: 0
             cursor: pointer
         .sidePadding
             transform: rotate(90deg)
         svg
-            width:  $SettingsIconSize
-            height:  $SettingsIconSize
+            width:  var(--SettingsIconSize)
+            height:  var(--SettingsIconSize)
             fill: var(--color_p)
         .mirrorY
             transform: rotate(90deg)
@@ -256,6 +116,8 @@ $SettingsIconSize: 3rem
             font-size: 1.5rem
             color: var(--color_p)
             margin: 0
+            min-width: 7rem
+            text-align: left
         input
             width: 2rem
             min-height: 2rem
@@ -295,7 +157,7 @@ $SettingsIconSize: 3rem
             &.text, &.number
                 border-radius: 0.5rem
                 cursor: text  
-                font-family: $font
+                font-family: var(--mainFont)
                 font-weight: 600
             &.number
                 width: 10%
@@ -319,7 +181,7 @@ $SettingsIconSize: 3rem
         
 
 .aboutSection
-    margin-top: calc( $navIconSize + $navPadding * 2)
+    margin-top: calc( var(--navIconSize) + var(--navPadding) * 2)
     padding: 2rem
     width: calc( 100% - 4rem )
     text-align: center
@@ -334,7 +196,7 @@ $SettingsIconSize: 3rem
                 transform: scale(1.2)
     svg
         fill: var(--color_p)
-        width: $SettingsIconSize
+        width: var(--SettingsIconSize)
         height: auto
     img
         width: var(--imageSizeN)
@@ -372,3 +234,4 @@ $SettingsIconSize: 3rem
 
 .mt-1
     margin-top: 1rem
+

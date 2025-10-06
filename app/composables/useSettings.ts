@@ -4,6 +4,12 @@ export function useSettings() {
 	const store = useStore();
 	const fontScale = ref(store.settings.fontScale);
 	const sidePadding = ref(store.settings.sidePadding);
+	const h1Scale = ref(store.settings.h1Scale);
+	const h2Scale = ref(store.settings.h2Scale);
+	const h3Scale = ref(store.settings.h3Scale);
+	const pSize = ref(store.settings.pSize);
+	const pLineHeight = ref(store.settings.pLineHeight);
+	const pSpacing = ref(store.settings.pSpacing ?? 1);
 	const tabs = computed(() => store.settings.tabs || []);
 	const websocketServer = ref(store.settings.websocketServer);
 	const mirrorX = computed(() => store.settings.mirroredX);
@@ -39,6 +45,36 @@ export function useSettings() {
 		);
 	});
 
+	// Heading scales in rem
+	watch(h1Scale, (val) => {
+		store.settings.h1Scale = val;
+		document.documentElement.style.setProperty("--h1Scale", `${val}rem`);
+	});
+	watch(h2Scale, (val) => {
+		store.settings.h2Scale = val;
+		document.documentElement.style.setProperty("--h2Scale", `${val}rem`);
+	});
+	watch(h3Scale, (val) => {
+		store.settings.h3Scale = val;
+		document.documentElement.style.setProperty("--h3Scale", `${val}rem`);
+	});
+
+	// Paragraph scale and line-height
+	watch(pSize, (val) => {
+		store.settings.pSize = val;
+		document.documentElement.style.setProperty("--pScale", `${val}rem`);
+	});
+	watch(pLineHeight, (val) => {
+		store.settings.pLineHeight = val;
+		document.documentElement.style.setProperty("--pLineHeight", `${val}`);
+	});
+
+	// Paragraph spacing multiplier (applies to margin-bottom of paragraphs)
+	watch(pSpacing, (val) => {
+		store.settings.pSpacing = val;
+		document.documentElement.style.setProperty("--pSpacing", `${val}`);
+	});
+
 	watch(speed, (newSpeed) => {
 		store.speed = newSpeed;
 	});
@@ -61,6 +97,12 @@ export function useSettings() {
 			"--sidePadding",
 			`${sidePadding.value}rem`
 		);
+		document.documentElement.style.setProperty("--h1Scale", `${h1Scale.value}rem`);
+		document.documentElement.style.setProperty("--h2Scale", `${h2Scale.value}rem`);
+		document.documentElement.style.setProperty("--h3Scale", `${h3Scale.value}rem`);
+		document.documentElement.style.setProperty("--pScale", `${pSize.value}rem`);
+		document.documentElement.style.setProperty("--pLineHeight", `${pLineHeight.value}`);
+		document.documentElement.style.setProperty("--pSpacing", `${pSpacing.value}`);
 	});
 
 	return {
@@ -71,6 +113,12 @@ export function useSettings() {
 		mirrorX,
 		mirrorY,
 		speed,
+		h1Scale,
+		h2Scale,
+		h3Scale,
+		pSize,
+		pLineHeight,
+		pSpacing,
 		store
 	};
 }

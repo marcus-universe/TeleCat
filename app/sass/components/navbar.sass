@@ -1,0 +1,66 @@
+
+nav
+    background: rgba(var(--prompt_bg), 0.7)
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+    position: fixed
+    transform: translateY(0%)
+    top: 0
+    left: 0
+    width: calc(100% - var(--navIconSize))
+    backdrop-filter: blur(10px)
+    z-index: 99
+    margin: 0
+    padding: var(--navPadding)
+
+
+    .nav-wrapper
+        width: 100%
+        .PlayIconWrapper, .DirectionIconWrapper, .PreviewIconWrapper, .FullscreenIconWrapper
+            position: relative
+            display: block
+            width: var(--navIconSize)
+            height: var(--navIconSize)
+
+        .PlayIcon, .DirectionIcon, .PreviewIcon, .FullscreenIcon
+            width: var(--navIconSize)
+            height: var(--navIconSize)
+            svg
+                position: absolute
+                width: var(--navIconSize)
+                height: var(--navIconSize)
+                left: 0
+                top: 0
+                transform: translate(-50%, -50%)
+                opacity: 0
+                transform: scale(0) rotate(0deg)
+                transition: opacity 0.3s ease, transform 0.3s ease
+        .DirectionIcon
+            svg
+                transition: opacity 0s ease, transform 1s ease
+                transform: scale(1) rotate(0deg)
+                opacity: 0
+
+        .PlayIcon, .PreviewIcon, .FullscreenIcon
+            &.active
+                svg
+                    
+                    opacity: 1
+                    transform: scale(1)
+        .DirectionIcon
+            &.active
+                svg
+                    transform: scale(1) rotate(180deg)
+                    opacity: 1
+
+            
+            
+        svg
+            width: var(--navIconSize)
+            height: var(--navIconSize)
+            fill: var(--color_p)
+            cursor: pointer  
+
+
+        .logo
+            width: var(--navIconSize)
+            height: var(--navIconSize)

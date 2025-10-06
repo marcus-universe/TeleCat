@@ -3,11 +3,11 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 export const useStore = defineStore("store", {
 	state: () => {
 		return {
-			previewState: true,
-			playState: false,
-			fullscreen: false,
-			speed: 100,
-			textContent: `<h1> Nya 😺 to TeleCat! </h1>
+      previewState: true,
+      playState: false,
+      fullscreen: false,
+      speed: 100,
+      textContent: `<h1> Nya 😺 to TeleCat! </h1>
 This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 
 <h2> First Steps </h2>
@@ -19,43 +19,50 @@ This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 </ul>
 
 Consider contributing to the <b>Open Source Community</b> to support this project ❤️`,
-			settings: {
-				open: false,
-				mouseOverSettings: false,
-				mouseOverSettingsButton: false,
-				mouseSourceType: "mouse",
-				serverList: [] as string[],
-				IPBase: "192.168.1.",
-				websocketServer: {
-					active: false,
-					connected: false,
-					host: "192.168.20.100:6969"
-				},
+      settings: {
+        open: false,
+        mouseOverSettings: false,
+        mouseOverSettingsButton: false,
+        mouseSourceType: "mouse",
+        serverList: [] as string[],
+        IPBase: "192.168.1.",
+        websocketServer: {
+          active: false,
+          connected: false,
+          host: "192.168.20.100:6969",
+        },
 
 				tabs: [
 					{ name: "General", active: true },
-					{ name: "Colors", active: false },
-					{ name: "Controls", active: false }
+					{ name: "Styling", active: false },
+					{ name: "Controls", active: false },
 				],
-				mirroredX: false,
-				mirroredY: false,
-				colorText: "#eeeeee",
-				colorTheme: "#5E43FF",
-				colorBackground: "27, 31, 58",
-				direction: true,
-				fontScale: 3.5,
-				editFontScale: 1.5,
-				sidePadding: 8,
-				keyboardControls: [
-					{ keyStroke: "Enter", action: "ChangeScrollDirection" },
-					{ keyStroke: " ", action: "Play/Pause" },
-					{ keyStroke: "Tab", action: "Preview/Editor" },
-					{ keyStroke: "F11", action: "fullscreen" },
-					{ keyStroke: "PageDown", action: "decreaseSpeed" },
-					{ keyStroke: "PageUp", action: "increaseSpeed" }
-				]
-			}
-		};
+        mirroredX: false,
+        mirroredY: false,
+        colorText: "#eeeeee",
+        colorTheme: "#DBDBDB",
+        colorBackground: "27, 31, 58",
+		colorHighlight: "#6038FF",
+        direction: true,
+		fontScale: 3.5,
+		h1Scale: 4.5,
+		h2Scale: 3.5,
+		h3Scale: 2.5,
+		pSize: 1.5,
+		pLineHeight: 1.5,
+		pSpacing: 1,
+        editFontScale: 1.5,
+        sidePadding: 8,
+        keyboardControls: [
+          { keyStroke: "Enter", action: "ChangeScrollDirection" },
+          { keyStroke: " ", action: "Play/Pause" },
+          { keyStroke: "Tab", action: "Preview/Editor" },
+          { keyStroke: "F11", action: "fullscreen" },
+          { keyStroke: "PageDown", action: "decreaseSpeed" },
+          { keyStroke: "PageUp", action: "increaseSpeed" },
+        ],
+      },
+    };
 	},
 	getters: {
 		// getter

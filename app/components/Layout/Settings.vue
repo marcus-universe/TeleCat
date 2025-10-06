@@ -26,24 +26,25 @@
 				<input id="websocketServer" v-model="websocketServer.host" type="text" class="text w100">
 			</div>
 
-			<div class="option flex_c_h alignCenter gap1">
-				<DesignIcons icon="speed" customclass="speed" />
-				<input id="speed" v-model="speed" type="range" min="1" max="150" step="0.5" value="50" class="slider w100">
-				<input id="speedValue" v-model="speed" type="number" class="number">
-			</div>
+			<SettingsSlider id="speed" v-model:modelValue="speed" :min="1" :max="150" :step="0.5">
+				<template #prefix>
+					<DesignIcons icon="speed" customclass="speed" />
+				</template>
+			</SettingsSlider>
 
-			<div class="option flex_c_h alignCenter gap1">
-				<DesignIcons icon="textsize" customclass="textsize" />
-				<input id="fontScale" v-model="fontScale" type="range" min="0.5" max="7" value="3.5" class="slider w100" step="0.1">
-				<input id="fontScaleValue" v-model="fontScale" type="number" class="number">
-			</div>
+			<SettingsSlider id="fontScale" v-model:modelValue="fontScale" :min="0.5" :max="7" :step="0.1">
+				<template #prefix>
+					<DesignIcons icon="textsize" customclass="textsize" />
+				</template>
+			</SettingsSlider>
 
-			<div class="option flex_c_h alignCenter gap1">
-				<DesignIcons icon="padding" customclass="sidePadding" />
-				<input id="sidePadding" v-model="sidePadding" type="range" min="0.4" max="30" value="5" class="slider w100" step="0.1">
-			</div>
+			<SettingsSlider id="sidePadding" v-model:modelValue="sidePadding" :min="0.4" :max="30" :step="0.1">
+				<template #prefix>
+					<DesignIcons icon="padding" customclass="sidePadding" />
+				</template>
+			</SettingsSlider>
 		</div>
-		<div v-if="tabs && tabs[1] && tabs[1].active" class="colorSetttings">
+		<div v-if="tabs && tabs[1] && tabs[1].active" class="stylingSettings">
 			<div class="flex_c_h gap1">
 				<div class="option button" @click="openColorPicker">
 					<DesignIcons icon="textcolor" customclass="textcolor" />
@@ -59,7 +60,27 @@
 					<DesignIcons icon="themecolor" customclass="themecolor" />
 					<input id="colorThemePicker" ref="colorThemePicker" v-model="colorTheme" type="color" class="color-themepicker">
 				</div>
+
+				<div class="option button" @click="openColorHighlightPicker">
+					<Icons icon="mark" customclass="icon" />
+					<input id="colorHighlightPicker" ref="colorHighlightPicker" v-model="colorHighlight" type="color" class="color-highlightpicker">
+				</div>
 			</div>
+
+			<!-- Typography sliders -->
+			<SettingsSlider id="h1Scale" label="H1 Scale" v-model:modelValue="h1Scale" :min="1" :max="8" :step="0.1" />
+
+			<SettingsSlider id="h2Scale" label="H2 Scale" v-model:modelValue="h2Scale" :min="1" :max="6" :step="0.1" />
+
+			<SettingsSlider id="h3Scale" label="H3 Scale" v-model:modelValue="h3Scale" :min="1" :max="5" :step="0.1" />
+
+			<SettingsSlider id="pSize" label="P Scale" v-model:modelValue="pSize" :min="0.5" :max="4" :step="0.1" />
+
+			<SettingsSlider id="pSpacing" label="P Spacing" v-model:modelValue="pSpacing" :min="0" :max="3" :step="0.05" />
+
+			<SettingsSlider id="pLineHeight" label="Line Height" v-model:modelValue="pLineHeight" :min="0.3" :max="3" :step="0.05" />
+
+			
 		</div>
 
 		<div v-if="tabs && tabs[2] && tabs[2].active" class="controlSetttings">
@@ -72,6 +93,8 @@
 	import { useColorPickers } from "~/composables/useColorPickers"; // Ensure this path is correct
 	import { useKeyboardControls } from "~/composables/useKeyboardControls";
 	import { useSettings } from "~/composables/useSettings";
+    import Icons from '~/components/Design/Icons.vue';
+    import SettingsSlider from '~/components/Layout/SettingsSlider.vue';
 
 	const SettingsBar = ref(null);
 
@@ -83,7 +106,13 @@
 		websocketServer,
 		mirrorX,
 		mirrorY,
-		speed
+		speed,
+		h1Scale,
+		h2Scale,
+		h3Scale,
+		pSize,
+		pLineHeight,
+		pSpacing
 	} = useSettings();
 
 	const { keyboardControls: _keyboardControls, checkAllKeystrokes: _checkAllKeystrokes } = useKeyboardControls();
@@ -97,7 +126,10 @@
 		openColorThemePicker,
 		colorText,
 		colorBackground,
-		colorTheme
+		colorTheme,
+		colorHighlightPicker,
+		openColorHighlightPicker,
+		colorHighlight
 	} = useColorPickers();
 
 	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);

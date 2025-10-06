@@ -3,9 +3,11 @@ export function useColorPickers() {
 	const colorPicker = ref<HTMLInputElement | null>(null);
 	const colorFillPicker = ref<HTMLInputElement | null>(null);
 	const colorThemePicker = ref<HTMLInputElement | null>(null);
+	const colorHighlightPicker = ref<HTMLInputElement | null>(null);
 	const colorText = ref(store.settings.colorText);
 	const colorBackground = ref(store.settings.colorBackground);
 	const colorTheme = ref(store.settings.colorTheme);
+	const colorHighlight = ref(store.settings.colorHighlight ?? "#fff59e");
 
 	// Watchers
 	watch(colorText, (newColor) => {
@@ -21,6 +23,11 @@ export function useColorPickers() {
 	watch(colorTheme, (newColor) => {
 		store.settings.colorTheme = newColor;
 		document.documentElement.style.setProperty("--color_p", newColor);
+	});
+
+	watch(colorHighlight, (newColor) => {
+		store.settings.colorHighlight = newColor;
+		document.documentElement.style.setProperty("--highlight_color", newColor);
 	});
 
 	function openColorPicker() {
@@ -41,6 +48,13 @@ export function useColorPickers() {
 		const colorThemePickerElement = colorThemePicker.value;
 		if (colorThemePickerElement) {
 			colorThemePickerElement.click();
+		}
+	}
+
+	function openColorHighlightPicker() {
+		const el = colorHighlightPicker.value;
+		if (el) {
+			el.click();
 		}
 	}
 
@@ -66,18 +80,22 @@ export function useColorPickers() {
 		document.documentElement.style.setProperty("--text_color", colorText.value);
 		document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
 		document.documentElement.style.setProperty("--color_p", colorTheme.value);
+		document.documentElement.style.setProperty("--highlight_color", colorHighlight.value);
 	});
 
 	return {
 		colorPicker,
 		colorFillPicker,
 		colorThemePicker,
+		colorHighlightPicker,
 		openColorPicker,
 		openColorFillPicker,
 		openColorThemePicker,
+		openColorHighlightPicker,
 		getColorFillPickerRGB,
 		colorText,
 		colorBackground,
-		colorTheme
+		colorTheme,
+		colorHighlight
 	};
 }
