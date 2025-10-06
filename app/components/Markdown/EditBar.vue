@@ -95,6 +95,25 @@
           title="Ordered List">
           <Icons icon="orderedlist" customclass="icon" />
         </button>
+
+        <span class="divider" aria-hidden="true"></span>
+
+        <!-- Insert Image Button -->
+        <button type="button"
+          @click="openImagePicker"
+          :disabled="!editor?.isEditable"
+          title="Bild einfügen (aus Datei)">
+          Bild
+        </button>
+        <!-- Hidden file input for selecting images -->
+        <input
+          ref="fileInputRef"
+          type="file"
+          accept="image/*"
+          multiple
+          @change="onFilesSelected"
+          style="display: none;"
+        />
       </div>
     </div>
 
@@ -107,5 +126,36 @@
 import Icons from '~/components/Design/Icons.vue';
 // Accept the TipTap editor instance and visibility flag
 const props = defineProps<{ editor: any, show: boolean }>();
+
+// Hidden input ref
+const fileInputRef = ref<HTMLInputElement | null>(null);
+
+function openImagePicker() {
+  fileInputRef.value?.click();
+}
+
+function insertImageAtCursor(src: string, name?: string) {
+  // Insert a Tiptap image node at current selection
+  props.editor?.chain()?.focus()?.insertContent({
+    type: 'image',
+    attrs: { src, alt: name || 'image', width: 600 }
+  })?.run();
+}
+
+function onFilesSelected(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const files = input.files ? Array.from(input.files) : [];
+  if (!files.length) return;
+
+  files.forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = () => insertImageAtCursor(reader.result as string, file.name);
+    reader.readAsDataURL(file);
+  });
+
+  // reset input so selecting the same file again triggers change
+  input.value = '';
+}
 </script>
 
