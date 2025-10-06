@@ -9,6 +9,7 @@
 	import { HocuspocusProvider } from "@hocuspocus/provider";
 	// import Collaboration from "@tiptap/extension-collaboration";
 	import Highlight from "@tiptap/extension-highlight";
+	import Link from "@tiptap/extension-link";
 	import { Node, mergeAttributes } from "@tiptap/core";
 	import StarterKit from "@tiptap/starter-kit";
 	import { EditorContent, useEditor } from "@tiptap/vue-3";
@@ -27,7 +28,7 @@
 				src: {
 					default: null
 				},
-				
+
 				alt: {
 					default: null
 				},
@@ -258,6 +259,17 @@
 				history: {}
 			}),
 			Highlight.configure({ multicolor: true }),
+			// Cast to any to satisfy TS in NodeNext resolution
+			(Link as any).configure({
+				openOnClick: true,
+				defaultProtocol: 'https',
+				autolink: true,
+				linkOnPaste: true,
+				HTMLAttributes: {
+					rel: 'noopener noreferrer nofollow',
+					target: '_blank'
+				}
+			}),
 			ImageWithSize
 			// Collaboration.configure({
 			// 	document: provider.document
@@ -266,8 +278,35 @@
 		content: store.textContent,
 		editable: !previewState.value,
 		autofocus: !previewState.value,
+		onUpdate: ({ editor }) => {
+			// Persist the editor content as HTML so it matches the format in the store
+			store.textContent = editor.getHTML();
+		},
 		editorProps: {
+			handleClick(_view, _pos, event) {
+				// In edit mode prevent navigating away when clicking links
+				if (editor.value?.isEditable) {
+					const anchor = (event.target as HTMLElement | null)?.closest('a');
+					if (anchor) {
+						event.preventDefault();
+						return true; // handled
+					}
+				}
+				return false;
+			},
 			handleKeyDown(view, event) {
+				// Shortcut: Ctrl/Cmd+K to set/unset link
+				if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+					const prev = editor.value?.getAttributes('link')?.href as string | undefined;
+					const url = window.prompt('URL', prev || '') ?? null;
+					if (url === null) return true; // canceled
+					if (url === '') {
+						(editor.value as any)?.chain().focus().extendMarkRange('link').unsetLink().run();
+						return true;
+					}
+					(editor.value as any)?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+					return true;
+				}
 				// If an image node is selected and the user types a character or presses Enter,
 				// move the caret after the image instead of replacing the node.
 				const sel: any = view.state.selection as any;
@@ -448,6 +487,16 @@
 .ProseMirror ::-moz-selection {
 	background: var(--tc-highlight, #6038FF);
 	color: #fff;
+}
+
+/* Link styles */
+.ProseMirror a {
+	color: var(--tc-highlight, #6038FF);
+	text-decoration: underline;
+	cursor: pointer;
+}
+.ProseMirror a:hover {
+	filter: brightness(1.1);
 }
 
 </style>

@@ -7,3 +7,8 @@ declare global {
 		__TAURI__: Record<string, unknown>
 	}
 }
+
+declare module "@tiptap/extension-link" {
+	const Link: any
+	export default Link
+}

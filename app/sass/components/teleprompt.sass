@@ -64,11 +64,18 @@
         background-color: var(--highlight_color)
         color: var(--text_color)
         padding: 0.1rem 0.2rem
-        border-radius: 0.2rem
+        
+    a
+        color: var(--highlight_color)
+        transition: color 0.1s ease
+        &:hover
+            text-decoration: underline
+            color: var(--text_color)
 
     ul, ol
         font-size: var(--pSize)
         color: var(--text_color)
+        margin: 0 0 calc(var(--pSpacing) * var(--pSize)) 0
         // Sicherstellen, dass die Listenmarker (Bullets/Nummern) die gleiche Farbe wie der Text haben
         li::marker
             color: var(--text_color)

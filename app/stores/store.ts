@@ -6,19 +6,19 @@ export const useStore = defineStore("store", {
       previewState: true,
       playState: false,
       fullscreen: false,
-      speed: 100,
+      speed: 80,
       textContent: `<h1> Nya 😺 to TeleCat! </h1>
 This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 
 <h2> First Steps </h2>
 <ul>
   <li>On the top right corner you can switch between preview and edit mode.</li>
-  <li>On the top left corner you find Settings to customize the preview look.</li>
-  <li>Change the scroll direction with the two arrows next to the play button</li>
-  <li>Inside the edit view you can use markdown syntax to style your promter content</li>
+  <li>Inside the Settings you can customize the appearance and behavior of the teleprompter.</li>
+  <li>Change the scroll direction with the two arrows next to the play button.</li>
+  <li>Inside the edit view you can use markdown syntax to style your promter content.</li>
 </ul>
 
-Consider contributing to the <b>Open Source Community</b> to support this project ❤️`,
+<p>Consider contributing to the <b>Open Source Community</b> to support this project at <a href="https://github.com/marcus-universe/TeleCat" target="_blank">github.com/marcus-universe/TeleCat</a>❤️</p>`,
       settings: {
         open: false,
         mouseOverSettings: false,
@@ -31,26 +31,25 @@ Consider contributing to the <b>Open Source Community</b> to support this projec
           connected: false,
           host: "192.168.20.100:6969",
         },
-
-				tabs: [
-					{ name: "General", active: true },
-					{ name: "Styling", active: false },
-					{ name: "Controls", active: false },
-				],
+        tabs: [
+          { name: "General", active: true },
+          { name: "Styling", active: false },
+          { name: "Controls", active: false },
+        ],
         mirroredX: false,
         mirroredY: false,
         colorText: "#eeeeee",
-        colorTheme: "#DBDBDB",
+        colorTheme: "#6038FF",
         colorBackground: "27, 31, 58",
-		colorHighlight: "#6038FF",
+        colorHighlight: "#6038FF",
         direction: true,
-		fontScale: 3.5,
-		h1Scale: 4.5,
-		h2Scale: 3.5,
-		h3Scale: 2.5,
-		pSize: 1.5,
-		pLineHeight: 1.5,
-		pSpacing: 1,
+        fontScale: 3,
+        h1Scale: 4.5,
+        h2Scale: 3.5,
+        h3Scale: 2.5,
+        pSize: 1.5,
+        pLineHeight: 1.5,
+        pSpacing: 1,
         editFontScale: 1.5,
         sidePadding: 8,
         keyboardControls: [
@@ -78,9 +77,9 @@ Consider contributing to the <b>Open Source Community</b> to support this projec
 			this.speed = Math.min(Math.max(Math.round(newSpeed), 1), 150);
 		},
 		setSettingsOpen() {
-			this.settings.open = !this.settings.open;
+			this.settings.open = true;
 		},
-		setOverlaysClosed() {
+		setSettingsClosed() {
 			this.settings.open = false;
 		},
 

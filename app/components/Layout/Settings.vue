@@ -17,9 +17,9 @@
 					<DesignIcons icon="mirror" customclass="mirrorY" />
 				</div>
 			</div>
-			<div class="option button flex_c_h" :class="{ active: websocketServer.active }" @click="store.toggleWebsocketServer();">
+			<!-- <div class="option button flex_c_h" :class="{ active: websocketServer.active }" @click="store.toggleWebsocketServer();">
 				<DesignIcons icon="serverRun" customclass="serverRun" />
-			</div>
+			</div> -->
 
 			<div v-show="websocketServer.active" class="option flex_c_h alignCenter">
 				<DesignIcons icon="websocket" customclass="websocket" />
@@ -38,7 +38,7 @@
 				</template>
 			</SettingsSlider>
 
-			<SettingsSlider id="sidePadding" v-model:modelValue="sidePadding" :min="0.4" :max="30" :step="0.1">
+			<SettingsSlider id="sidePadding" v-model:modelValue="sidePadding" :min="0.4" :max="50" :step="0.1">
 				<template #prefix>
 					<DesignIcons icon="padding" customclass="sidePadding" />
 				</template>
@@ -68,13 +68,13 @@
 			</div>
 
 			<!-- Typography sliders -->
-			<SettingsSlider id="h1Scale" label="H1 Scale" v-model:modelValue="h1Scale" :min="1" :max="8" :step="0.1" />
+			<SettingsSlider id="h1Scale" label="H1 Scale" v-model:modelValue="h1Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="h2Scale" label="H2 Scale" v-model:modelValue="h2Scale" :min="1" :max="6" :step="0.1" />
+			<SettingsSlider id="h2Scale" label="H2 Scale" v-model:modelValue="h2Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="h3Scale" label="H3 Scale" v-model:modelValue="h3Scale" :min="1" :max="5" :step="0.1" />
+			<SettingsSlider id="h3Scale" label="H3 Scale" v-model:modelValue="h3Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="pSize" label="P Scale" v-model:modelValue="pSize" :min="0.5" :max="4" :step="0.1" />
+			<SettingsSlider id="pSize" label="P Scale" v-model:modelValue="pSize" :min="0.5" :max="10" :step="0.1" />
 
 			<SettingsSlider id="pSpacing" label="P Spacing" v-model:modelValue="pSpacing" :min="0" :max="3" :step="0.05" />
 
@@ -132,14 +132,15 @@
 		colorHighlight
 	} = useColorPickers();
 
-	const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
+	// const mouseOverSettingsButton = computed(() => store.settings.mouseOverSettingsButton);
 
 	// Click Outside to close the settings bar
-	onClickOutside(SettingsBar, () => {
-		store.setOverlaysClosed();
+	// Ignore clicks coming from the settings button, so the button can toggle open/close reliably
+	onClickOutside(SettingsBar, (event: Event) => {
+		const target = event.target as HTMLElement | null;
+		if (target && target.closest('.settingsButton')) return;
+		store.setSettingsClosed();
 	});
-
-	console.log(mouseOverSettingsButton.value);
 
 	function setActiveTab(index: number) {
 		tabs.value.forEach((tab: { active: boolean }, i: number) => {
