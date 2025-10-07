@@ -11,10 +11,42 @@ nav
     z-index: 99
     margin: 0
     padding: var(--navPadding)
+    -webkit-app-region: drag 
 
 
     .nav-wrapper
         width: 100%
+        transition: opacity 0.3s ease
+        opacity: 1
+        .gap1
+            transition: opacity 0.3s ease
+        &.only-logo
+            // hide right and middle control groups smoothly
+            .flex_end,
+            .gap1:last-child
+                opacity: 0
+                pointer-events: none
+            // also disable pointer events for all descendants to prevent clicks
+            .flex_end *,
+            .gap1:last-child *
+                pointer-events: none !important
+                
+
+            // keep the left group visible (logo)
+            .flex_start
+                opacity: 1
+                pointer-events: auto
+        // Make all interactive controls inside the nav non-draggable so they remain clickable
+        .PlayIconWrapper,
+        .DirectionIconWrapper,
+        .PreviewIconWrapper,
+        .FullscreenIconWrapper,
+        .settingsButton,
+        .logo,
+        .logo_colored
+            -webkit-app-region: no-drag
+            pointer-events: auto
+
         .logo_colored
             width: var(--navIconSize)
             height: var(--navIconSize)
@@ -85,6 +117,75 @@ nav
         .logo
             width: var(--navIconSize)
             height: var(--navIconSize)
+
+        // File menu next to logo
+        .file-menu
+            position: relative
+            -webkit-app-region: no-drag
+            pointer-events: auto
+            .fileMenuButton
+                background: transparent
+                border: none
+                color: var(--color_p)
+                
+                font-size: 2rem
+                padding: 0.25rem 0.5rem
+                cursor: pointer
+                border-radius: 6px
+                transition: background 0.2s ease
+                &:hover
+                    background: rgba(255,255,255,0.06)
+            .fileMenuDropdown
+                position: absolute
+                top: calc(100% + 4px)
+                left: 0
+                min-width: 180px
+                background: rgba(var(--prompt_bg), 0.95)
+                backdrop-filter: blur(10px)
+                border: 1px solid rgba(255,255,255,0.1)
+                border-radius: 8px
+                padding: 6px 0
+                list-style: none
+                margin: 0
+                box-shadow: 0 6px 16px rgba(0,0,0,0.35)
+                opacity: 0
+                pointer-events: none
+                transform: translateY(-6px)
+                transition: opacity 0.15s ease, transform 0.15s ease
+                &.open
+                    opacity: 1
+                    transform: translateY(0)
+                    pointer-events: auto
+                li
+                    position: relative
+                    button
+                        width: 100%
+                        text-align: left
+                        background: transparent
+                        border: none
+                        color: var(--color_p)
+                        padding: 8px 12px
+                        font-size: 1.2rem
+                        cursor: pointer
+                        &:hover
+                            background: rgba(255,255,255,0.08)
+                    &:hover > .fileSubMenu
+                        display: block
+                    &.has-sub > .fileSubMenu
+                        position: absolute
+                        top: -6px
+                        left: 100%
+                        min-width: 160px
+                        background: rgba(var(--prompt_bg), 0.95)
+                        border: 1px solid rgba(255,255,255,0.1)
+                        border-radius: 8px
+                        padding: 6px 0
+                        list-style: none
+                        margin: 0
+                        box-shadow: 0 6px 16px rgba(0,0,0,0.35)
+                        display: none
+                    &.has-sub:hover > .fileSubMenu
+                        display: block
 
 @keyframes tc-spin-open
     0%

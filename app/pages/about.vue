@@ -10,6 +10,14 @@
 			<a href="https://marcus-universe.de" target="_blank"><DesignIcons icon="web" customclass="web" /></a>
 		</p>
 		<br>
+
+		<div class="flex flex_c_h flex_center">
+			<NuxtLink to="/" class="backButton">
+				Back
+			</NuxtLink>
+		</div>
+
+		<br>
 		<p class="lighttext">
 			MIT License © 2025-PRESENT MarcusUniverse
 		</p>

@@ -26,19 +26,19 @@
 				<input id="websocketServer" v-model="websocketServer.host" type="text" class="text w100">
 			</div>
 
-			<SettingsSlider id="speed" v-model:modelValue="speed" :min="1" :max="150" :step="0.5">
+			<SettingsSlider id="speed" v-model:model-value="speed" :min="1" :max="150" :step="0.5">
 				<template #prefix>
 					<DesignIcons icon="speed" customclass="speed" />
 				</template>
 			</SettingsSlider>
 
-			<SettingsSlider id="fontScale" v-model:modelValue="fontScale" :min="0.5" :max="7" :step="0.1">
+			<SettingsSlider id="fontScale" v-model:model-value="fontScale" :min="0.5" :max="7" :step="0.1">
 				<template #prefix>
 					<DesignIcons icon="textsize" customclass="textsize" />
 				</template>
 			</SettingsSlider>
 
-			<SettingsSlider id="sidePadding" v-model:modelValue="sidePadding" :min="0.4" :max="50" :step="0.1">
+			<SettingsSlider id="sidePadding" v-model:model-value="sidePadding" :min="0.4" :max="50" :step="0.1">
 				<template #prefix>
 					<DesignIcons icon="padding" customclass="sidePadding" />
 				</template>
@@ -68,19 +68,17 @@
 			</div>
 
 			<!-- Typography sliders -->
-			<SettingsSlider id="h1Scale" label="H1 Scale" v-model:modelValue="h1Scale" :min="1" :max="10" :step="0.1" />
+			<SettingsSlider id="h1Scale" v-model:model-value="h1Scale" label="H1 Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="h2Scale" label="H2 Scale" v-model:modelValue="h2Scale" :min="1" :max="10" :step="0.1" />
+			<SettingsSlider id="h2Scale" v-model:model-value="h2Scale" label="H2 Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="h3Scale" label="H3 Scale" v-model:modelValue="h3Scale" :min="1" :max="10" :step="0.1" />
+			<SettingsSlider id="h3Scale" v-model:model-value="h3Scale" label="H3 Scale" :min="1" :max="10" :step="0.1" />
 
-			<SettingsSlider id="pSize" label="P Scale" v-model:modelValue="pSize" :min="0.5" :max="10" :step="0.1" />
+			<SettingsSlider id="pSize" v-model:model-value="pSize" label="P Scale" :min="0.5" :max="10" :step="0.1" />
 
-			<SettingsSlider id="pSpacing" label="P Spacing" v-model:modelValue="pSpacing" :min="0" :max="3" :step="0.05" />
+			<SettingsSlider id="pSpacing" v-model:model-value="pSpacing" label="P Spacing" :min="0" :max="3" :step="0.05" />
 
-			<SettingsSlider id="pLineHeight" label="Line Height" v-model:modelValue="pLineHeight" :min="0.3" :max="3" :step="0.05" />
-
-			
+			<SettingsSlider id="pLineHeight" v-model:model-value="pLineHeight" label="Line Height" :min="0.3" :max="3" :step="0.05" />
 		</div>
 
 		<div v-if="tabs && tabs[2] && tabs[2].active" class="controlSetttings">
@@ -90,11 +88,11 @@
 </template>
 
 <script lang="ts" setup>
+	import Icons from "~/components/Design/Icons.vue";
+	import SettingsSlider from "~/components/Layout/SettingsSlider.vue";
 	import { useColorPickers } from "~/composables/useColorPickers"; // Ensure this path is correct
 	import { useKeyboardControls } from "~/composables/useKeyboardControls";
 	import { useSettings } from "~/composables/useSettings";
-    import Icons from '~/components/Design/Icons.vue';
-    import SettingsSlider from '~/components/Layout/SettingsSlider.vue';
 
 	const SettingsBar = ref(null);
 
@@ -138,7 +136,7 @@
 	// Ignore clicks coming from the settings button, so the button can toggle open/close reliably
 	onClickOutside(SettingsBar, (event: Event) => {
 		const target = event.target as HTMLElement | null;
-		if (target && target.closest('.settingsButton')) return;
+		if (target && target.closest(".settingsButton")) return;
 		store.setSettingsClosed();
 	});
 

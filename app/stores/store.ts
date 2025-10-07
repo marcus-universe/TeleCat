@@ -3,11 +3,11 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 export const useStore = defineStore("store", {
 	state: () => {
 		return {
-      previewState: true,
-      playState: false,
-      fullscreen: false,
-      speed: 80,
-      textContent: `<h1> Nya 😺 to TeleCat! </h1>
+			previewState: true,
+			playState: false,
+			fullscreen: false,
+			speed: 80,
+			textContent: `<h1> Nya 😺 to TeleCat! </h1>
 This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 
 <h2> First Steps </h2>
@@ -19,49 +19,49 @@ This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 </ul>
 
 <p>Consider contributing to the <b>Open Source Community</b> to support this project at <a href="https://github.com/marcus-universe/TeleCat" target="_blank">github.com/marcus-universe/TeleCat</a>❤️</p>`,
-      settings: {
-        open: false,
-        mouseOverSettings: false,
-        mouseOverSettingsButton: false,
-        mouseSourceType: "mouse",
-        serverList: [] as string[],
-        IPBase: "192.168.1.",
-        websocketServer: {
-          active: false,
-          connected: false,
-          host: "192.168.20.100:6969",
-        },
-        tabs: [
-          { name: "General", active: true },
-          { name: "Styling", active: false },
-          { name: "Controls", active: false },
-        ],
-        mirroredX: false,
-        mirroredY: false,
-        colorText: "#eeeeee",
-        colorTheme: "#6038FF",
-        colorBackground: "27, 31, 58",
-        colorHighlight: "#6038FF",
-        direction: true,
-        fontScale: 3,
-        h1Scale: 4.5,
-        h2Scale: 3.5,
-        h3Scale: 2.5,
-        pSize: 1.5,
-        pLineHeight: 1.5,
-        pSpacing: 1,
-        editFontScale: 1.5,
-        sidePadding: 8,
-        keyboardControls: [
-          { keyStroke: "Enter", action: "ChangeScrollDirection" },
-          { keyStroke: " ", action: "Play/Pause" },
-          { keyStroke: "Tab", action: "Preview/Editor" },
-          { keyStroke: "F11", action: "fullscreen" },
-          { keyStroke: "PageDown", action: "decreaseSpeed" },
-          { keyStroke: "PageUp", action: "increaseSpeed" },
-        ],
-      },
-    };
+			settings: {
+				open: false,
+				mouseOverSettings: false,
+				mouseOverSettingsButton: false,
+				mouseSourceType: "mouse",
+				serverList: [] as string[],
+				IPBase: "192.168.1.",
+				websocketServer: {
+					active: false,
+					connected: false,
+					host: "192.168.20.100:6969"
+				},
+				tabs: [
+					{ name: "General", active: true },
+					{ name: "Styling", active: false },
+					{ name: "Controls", active: false }
+				],
+				mirroredX: false,
+				mirroredY: false,
+				colorText: "#eeeeee",
+				colorTheme: "#eeeeee",
+				colorBackground: "27, 31, 58",
+				colorHighlight: "#6038FF",
+				direction: true,
+				fontScale: 3,
+				h1Scale: 4.5,
+				h2Scale: 3.5,
+				h3Scale: 2.5,
+				pSize: 1.5,
+				pLineHeight: 1.5,
+				pSpacing: 1,
+				editFontScale: 1.5,
+				sidePadding: 8,
+				keyboardControls: [
+					{ keyStroke: "Enter", action: "ChangeScrollDirection" },
+					{ keyStroke: " ", action: "Play/Pause" },
+					{ keyStroke: "Tab", action: "Preview/Editor" },
+					{ keyStroke: "F11", action: "fullscreen" },
+					{ keyStroke: "PageDown", action: "decreaseSpeed" },
+					{ keyStroke: "PageUp", action: "increaseSpeed" }
+				]
+			}
+		};
 	},
 	getters: {
 		// getter
@@ -106,7 +106,7 @@ This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 		},
 		toggleWebsocketServer() {
 			this.settings.websocketServer.active
-        = !this.settings.websocketServer.active;
+				= !this.settings.websocketServer.active;
 		},
 		setShortcutAction(index: number) {
 			if (this.previewState) {
@@ -128,6 +128,51 @@ This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 					this.switchPreviewState();
 				}
 			}
+		},
+		exportSettings() {
+			return {
+				speed: this.speed,
+				textContent: this.textContent,
+				mirroredX: this.settings.mirroredX,
+				mirroredY: this.settings.mirroredY,
+				colorText: this.settings.colorText,
+				colorTheme: this.settings.colorTheme,
+				colorBackground: this.settings.colorBackground,
+				colorHighlight: this.settings.colorHighlight,
+				fontScale: this.settings.fontScale,
+				h1Scale: this.settings.h1Scale,
+				h2Scale: this.settings.h2Scale,
+				h3Scale: this.settings.h3Scale,
+				pSize: this.settings.pSize,
+				pLineHeight: this.settings.pLineHeight,
+				pSpacing: this.settings.pSpacing,
+				sidePadding: this.settings.sidePadding
+			};
+		},
+
+		importSettings(data: any) {
+			if (!data || typeof data !== "object") return;
+
+			if (data.speed !== undefined) this.speed = data.speed;
+			if (data.textContent !== undefined) this.textContent = data.textContent;
+
+			if (data.mirroredX !== undefined) this.settings.mirroredX = data.mirroredX;
+			if (data.mirroredY !== undefined) this.settings.mirroredY = data.mirroredY;
+
+			if (data.colorText !== undefined) this.settings.colorText = data.colorText;
+			if (data.colorTheme !== undefined) this.settings.colorTheme = data.colorTheme;
+			if (data.colorBackground !== undefined) this.settings.colorBackground = data.colorBackground;
+			if (data.colorHighlight !== undefined) this.settings.colorHighlight = data.colorHighlight;
+
+			if (data.fontScale !== undefined) this.settings.fontScale = data.fontScale;
+			if (data.h1Scale !== undefined) this.settings.h1Scale = data.h1Scale;
+			if (data.h2Scale !== undefined) this.settings.h2Scale = data.h2Scale;
+			if (data.h3Scale !== undefined) this.settings.h3Scale = data.h3Scale;
+
+			if (data.pSize !== undefined) this.settings.pSize = data.pSize;
+			if (data.pLineHeight !== undefined) this.settings.pLineHeight = data.pLineHeight;
+			if (data.pSpacing !== undefined) this.settings.pSpacing = data.pSpacing;
+			if (data.sidePadding !== undefined) this.settings.sidePadding = data.sidePadding;
 		}
 	}
 });
