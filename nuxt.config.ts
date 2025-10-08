@@ -2,7 +2,7 @@ import packageJson from "./package.json" with { type: "json" };
 
 export default defineNuxtConfig({
 	devtools: {
-		enabled: true // or false to disable
+		enabled: true
 	},
 	modules: [
 		"@vueuse/nuxt",

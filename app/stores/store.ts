@@ -7,18 +7,7 @@ export const useStore = defineStore("store", {
 			playState: false,
 			fullscreen: false,
 			speed: 80,
-			textContent: `<h1> Nya 😺 to TeleCat! </h1>
-This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
-
-<h2> First Steps </h2>
-<ul>
-  <li>On the top right corner you can switch between preview and edit mode.</li>
-  <li>Inside the Settings you can customize the appearance and behavior of the teleprompter.</li>
-  <li>Change the scroll direction with the two arrows next to the play button.</li>
-  <li>Inside the edit view you can use markdown syntax to style your promter content.</li>
-</ul>
-
-<p>Consider contributing to the <b>Open Source Community</b> to support this project at <a href="https://github.com/marcus-universe/TeleCat" target="_blank">github.com/marcus-universe/TeleCat</a>❤️</p>`,
+			textContent: `<h1>Nya to <mark>TeleCat</mark>!</h1><p> This is the best <strong>Open Source Teleprompter App</strong> for you and your cat.</p><p> <img src=\"https://media.tenor.com/E3v4j9VZuSwAAAAj/cute-cat-cat-typing.gif\" alt=\"a cartoon cat is sitting on a keyboard with a speech bubble above its head\" width=\"256\" height=\"192\" style=\"max-width: 100%; height: auto; margin: 0.25rem; display: inline-block; vertical-align: middle;\"></p><h2>First Steps</h2><ul><li><p>On the top right corner you can switch between preview and edit mode.</p></li><li><p>Inside the Settings you can customize the appearance and behavior of the teleprompter.</p></li><li><p>Change the scroll direction with the two arrows next to the play button.</p></li><li><p>Inside the edit view you can use markdown syntax to style your promter content.</p></li></ul><p>Consider contributing to the <strong>Open Source Community</strong> to support this project at:<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://github.com/marcus-universe/TeleCat\">github.com/marcus-universe/TeleCat</a>❤️</p>`,
 			settings: {
 				open: false,
 				mouseOverSettings: false,
@@ -51,7 +40,7 @@ This is the best <b>Open Source Telepromter App</b> for you and your cat 😺
 				pLineHeight: 1.5,
 				pSpacing: 1,
 				editFontScale: 1.5,
-				sidePadding: 8,
+				sidePadding: 6.4,
 				keyboardControls: [
 					{ keyStroke: "Enter", action: "ChangeScrollDirection" },
 					{ keyStroke: " ", action: "Play/Pause" },

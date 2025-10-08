@@ -14,13 +14,7 @@ declare module "@tiptap/extension-link" {
 }
 
 // Ambient module declarations for optional converters used at runtime
-declare module "jszip" {
-	export default class JSZip {
-		file(path: string, data: string, options?: any): this;
-		folder(path: string): JSZip | undefined;
-		generateAsync(options: { type: string, mimeType?: string }): Promise<Blob>;
-	}
-}
+// (JSZip Deklaration entfernt)
 
 // Vite Asset Imports for fonts
 declare module "*.ttf" {

@@ -1,12 +1,8 @@
 <template>
 	<div class="markdown-editor" :style="{ '--tc-highlight': store.settings.colorHighlight }">
-		<EditBar :editor="editor" :show="!!editor && !previewState" />
-		<div
-			class="tiptap-wrapper"
-			:style="previewTransform"
-		>
-			<EditorContent class="tiptap" :editor="editor" />
-		</div>
+		<EditBar :editor="editor" :show="!previewState" />
+		<EditorContent class="tiptap" :editor="editor" :style="previewTransform" />
+		<ImageResizer />
 	</div>
 </template>
 
@@ -14,14 +10,14 @@
 	import type { ExportFormat } from "~/composables/useFileConverter";
 	// import Collaboration from "@tiptap/extension-collaboration";
 
-	import { HocuspocusProvider } from "@hocuspocus/provider";
+	// import { HocuspocusProvider } from "@hocuspocus/provider";
 	import Highlight from "@tiptap/extension-highlight";
 	import Image from "@tiptap/extension-image";
-	import Link from "@tiptap/extension-link";
 	import StarterKit from "@tiptap/starter-kit";
 	import { EditorContent, useEditor } from "@tiptap/vue-3";
-	import * as Y from "yjs";
+	// import * as Y from "yjs";
 	import EditBar from "~/components/Markdown/EditBar.vue";
+	import ImageResizer from "~/components/Markdown/ImageResizer.vue";
 	import { onAppEvent } from "~/composables/useAppEvents";
 	import { useFileConverter } from "~/composables/useFileConverter";
 
@@ -41,103 +37,46 @@
 
 	// --- WebSocket Provider handling (conditionally enabled) ---
 	// Keep a mutable reference to the provider so we can connect/disconnect based on settings
-	let provider: HocuspocusProvider | null = null;
-	const ydoc = new Y.Doc();
-	const wsUrl = computed(() => {
-		const host = store.settings.websocketServer.host?.trim() || "";
-		if (host.startsWith("ws://") || host.startsWith("wss://")) return host;
-		return `ws://${host}`;
-	});
+	// const ydoc = new Y.Doc();
+	// const wsUrl = computed(() => {
+	// 	const host = store.settings.websocketServer.host?.trim() || "";
+	// 	if (host.startsWith("ws://") || host.startsWith("wss://")) return host;
+	// 	return `ws://${host}`;
+	// });
 
-	function createProvider() {
-		// Safety: destroy an existing provider before creating a new one
-		if (provider) {
-			try {
-				provider.destroy();
-			} catch {}
-			provider = null;
-		}
-		provider = new HocuspocusProvider({
-			url: wsUrl.value,
-			name: "telecat",
-			document: ydoc
-			// Do not auto-connect when the toggle is off
-			// connect: true
-		});
-		// Optional: log connection state (useful during development)
-		provider.on("connect", () => {
-			store.setWebsocketConnected(true);
-		});
-		provider.on("disconnect", () => {
-			store.setWebsocketConnected(false);
-		});
-		provider.on("close", () => {
-			store.setWebsocketConnected(false);
-		});
-	}
-
-	// React to changes in websocket active state and host
-	watch(
-		() => [store.settings.websocketServer.active, store.settings.websocketServer.host] as const,
-		([active]) => {
-			if (active) {
-				createProvider();
-			} else {
-				// When deactivated: cleanly destroy and prevent any reconnection attempts
-				if (provider) {
-					try {
-						provider.destroy();
-					} catch {}
-					provider = null;
-				}
-				store.setWebsocketConnected(false);
-			}
-		},
-		{ immediate: true }
-	);
-
-	// Create the editor with the Y.js document
-	function dedupeExtensions(list: any[]) {
-		const seen = new Set<string>();
-		const out: any[] = [];
-		for (const ext of list) {
-			const name = (ext && (ext.name || (ext.config && ext.config.name))) as string | undefined;
-			if (!name || !seen.has(name)) {
-				out.push(ext);
-				if (name) seen.add(name);
-			}
-		}
-		return out;
-	}
-
-	const baseExtensions: any[] = [
-		StarterKit.configure({}),
-		Highlight.configure({ multicolor: true }),
-		Image.configure({
-			allowBase64: true,
-			HTMLAttributes: {
-				style: "max-width:100%;height:auto;display:block;margin:1.5rem 0;"
-			}
-		}),
-		(Link as any).configure({
-			openOnClick: true,
-			defaultProtocol: "https",
-			autolink: true,
-			linkOnPaste: true,
-			HTMLAttributes: {
-				rel: "noopener noreferrer nofollow",
-				target: "_blank"
-			}
-		})
-	];
+	// const provider = new HocuspocusProvider({
+	// 	url: wsUrl.value,
+	// 	name: "telecat",
+	// 	document: ydoc
+	// });
 
 	const editor = useEditor({
-		extensions: dedupeExtensions(baseExtensions),
+		extensions: [
+			StarterKit.configure({
+				link: {
+					openOnClick: true,
+					autolink: true,
+					linkOnPaste: true,
+					HTMLAttributes: {
+						rel: "noopener noreferrer nofollow",
+						target: "_blank"
+					}
+				}
+			}),
+			Highlight.configure({ multicolor: true }),
+			Image.configure({
+				allowBase64: true,
+				inline: true,
+				HTMLAttributes: {
+					style: "max-width:100%;height:auto;margin:0.25rem;display:inline-block;vertical-align:middle;"
+				}
+			})
+		],
 		content: store.textContent,
 		editable: !previewState.value,
 		autofocus: !previewState.value,
 		onUpdate: ({ editor }) => {
-			// Persist the editor content as HTML so it matches the format in the store
+			// Update store with current editor content
 			store.textContent = editor.getHTML();
 		}
 	});
@@ -146,6 +85,16 @@
 	watch(previewState, (value) => {
 		if (editor.value) {
 			editor.value.setEditable(!value);
+		}
+	});
+
+	// If store.textContent changes externally (e.g. cleared from menu), update the editor content
+	watch(() => store.textContent, (val) => {
+		if (!editor.value) return;
+		const current = editor.value.getHTML();
+		if (val !== current) {
+			// replace the editor content; use parse options to avoid errors
+			editor.value.commands.setContent(val, { parseOptions: { preserveWhitespace: false } });
 		}
 	});
 
@@ -199,7 +148,7 @@
 		handleExport("docx");
 	});
 	const disposeExportOdt = onAppEvent("file:export:odt", () => {
-		handleExport("odt");
+		handleExport("odt" as any);
 	});
 
 	const disposeExportPdf = onAppEvent("file:export:pdf", () => {
@@ -208,12 +157,12 @@
 
 	// Clean up on unmount
 	onUnmounted(() => {
-		if (provider) {
-			try {
-				provider.destroy();
-			} catch {}
-			provider = null;
-		}
+		// if (provider) {
+		// 	try {
+		// 		provider.destroy();
+		// 	} catch {}
+		// 	provider = null;
+		// }
 		try {
 			disposeExportMd();
 		} catch {}
@@ -246,10 +195,12 @@
 }
 
 .tiptap img {
-	display: block;
+	display: inline-block;
+	vertical-align: middle;
 	height: auto;
-	margin: 1.5rem 0;
+	margin: 0.25rem;
 	max-width: 100%;
+	position: relative;
 }
 
 .tiptap img.ProseMirror-selectednode {

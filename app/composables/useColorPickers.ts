@@ -1,34 +1,63 @@
+import { computed, onMounted, ref, watch } from "vue";
+import { useStore } from "../stores/store.js";
+
 export function useColorPickers() {
 	const store = useStore();
 	const colorPicker = ref<HTMLInputElement | null>(null);
 	const colorFillPicker = ref<HTMLInputElement | null>(null);
 	const colorThemePicker = ref<HTMLInputElement | null>(null);
 	const colorHighlightPicker = ref<HTMLInputElement | null>(null);
-	const colorText = ref(store.settings.colorText);
-	const colorBackground = ref(store.settings.colorBackground);
-	const colorTheme = ref(store.settings.colorTheme);
-	const colorHighlight = ref(store.settings.colorHighlight ?? "#fff59e");
 
-	// Watchers
-	watch(colorText, (newColor) => {
-		store.settings.colorText = newColor;
-		document.documentElement.style.setProperty("--text_color", newColor);
+	// Computed proxies so UI bindings read/write the store directly
+	const colorText = computed({
+		get: () => store.settings.colorText,
+		set: (v: string) => (store.settings.colorText = v)
+	});
+	const colorBackground = computed({
+		get: () => store.settings.colorBackground,
+		set: (v: string) => (store.settings.colorBackground = v)
+	});
+	const colorTheme = computed({
+		get: () => store.settings.colorTheme,
+		set: (v: string) => (store.settings.colorTheme = v)
+	});
+	const colorHighlight = computed({
+		get: () => store.settings.colorHighlight ?? "#fff59e",
+		set: (v: string) => (store.settings.colorHighlight = v)
 	});
 
-	watch(colorBackground, () => {
-		store.settings.colorBackground = getColorFillPickerRGB() || "";
-		document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
-	});
+	// Watch store colors so imports update UI immediately
+	watch(
+		() => store.settings.colorText,
+		(newColor) => {
+			document.documentElement.style.setProperty("--text_color", newColor);
+		},
+		{ immediate: true }
+	);
 
-	watch(colorTheme, (newColor) => {
-		store.settings.colorTheme = newColor;
-		document.documentElement.style.setProperty("--color_p", newColor);
-	});
+	watch(
+		() => store.settings.colorBackground,
+		() => {
+			document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
+		},
+		{ immediate: true }
+	);
 
-	watch(colorHighlight, (newColor) => {
-		store.settings.colorHighlight = newColor;
-		document.documentElement.style.setProperty("--highlight_color", newColor);
-	});
+	watch(
+		() => store.settings.colorTheme,
+		(newColor) => {
+			document.documentElement.style.setProperty("--color_p", newColor);
+		},
+		{ immediate: true }
+	);
+
+	watch(
+		() => store.settings.colorHighlight,
+		(newColor) => {
+			document.documentElement.style.setProperty("--highlight_color", newColor || "#fff59e");
+		},
+		{ immediate: true }
+	);
 
 	function openColorPicker() {
 		const colorPickerElement = colorPicker.value;
