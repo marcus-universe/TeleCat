@@ -254,3 +254,24 @@
 .mt-1
     margin-top: 1rem
 
+// ProseMirror image resize and selection highlight
+.ProseMirror img
+    display: inline-block
+    max-width: 100%
+    height: auto
+    resize: both
+    overflow: auto
+    cursor: nwse-resize
+    border-radius: .25rem
+    /* Optional padding/border for better grab area */
+    /* border: 1px solid transparent */
+
+.ProseMirror img:hover
+    outline: 2px solid var(--color_p)
+    outline-offset: 1px
+
+/* ProseMirror marks selected nodes with this class */
+.ProseMirror .ProseMirror-selectednode
+    outline: 2px solid var(--color_p)
+    outline-offset: 1px
+

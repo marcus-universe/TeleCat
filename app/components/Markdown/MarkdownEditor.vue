@@ -17,7 +17,6 @@
 	import { HocuspocusProvider } from "@hocuspocus/provider";
 	import Highlight from "@tiptap/extension-highlight";
 	import Image from "@tiptap/extension-image";
-	import Link from "@tiptap/extension-link";
 	import StarterKit from "@tiptap/starter-kit";
 	import { EditorContent, useEditor } from "@tiptap/vue-3";
 	import * as Y from "yjs";
@@ -111,22 +110,23 @@
 	}
 
 	const baseExtensions: any[] = [
-		StarterKit.configure({}),
+		StarterKit.configure({
+			link: {
+				openOnClick: true,
+				defaultProtocol: "https",
+				autolink: true,
+				linkOnPaste: true,
+				HTMLAttributes: {
+					rel: "noopener noreferrer nofollow",
+					target: "_blank"
+				}
+			}
+		}),
 		Highlight.configure({ multicolor: true }),
 		Image.configure({
 			allowBase64: true,
 			HTMLAttributes: {
 				style: "max-width:100%;height:auto;display:block;margin:1.5rem 0;"
-			}
-		}),
-		(Link as any).configure({
-			openOnClick: true,
-			defaultProtocol: "https",
-			autolink: true,
-			linkOnPaste: true,
-			HTMLAttributes: {
-				rel: "noopener noreferrer nofollow",
-				target: "_blank"
 			}
 		})
 	];

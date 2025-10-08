@@ -41,7 +41,7 @@
 				"title": "TeleCat",
 				"dragDropEnabled": true,
 				"decorations": true,
-				"transparent": true,
+				"transparent": false,
 				"width": 1366,
 				"height": 768,
 				"minWidth": 100,

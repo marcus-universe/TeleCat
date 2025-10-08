@@ -1,6 +1,11 @@
 import JSZip from "jszip";
 import { useStore } from "../stores/store.js";
 import { useFileConverter } from "./useFileConverter.js";
+// Tauri imports (used only when running inside a Tauri window)
+let tauriSave: any = null;
+let tauriWriteFile: any = null;
+// Helper to import modules at runtime without TypeScript trying to resolve them at compile time
+const runtimeImport = new Function("p", "return import(p)") as (p: string) => Promise<any>;
 
 export function useTelecatFileHandler() {
 	const store = useStore();
@@ -123,7 +128,36 @@ export function useTelecatFileHandler() {
 		}
 		const file = new File([blob], filename, { type: "application/zip" });
 
-		// Trigger download
+		// If running inside Tauri, show native Save dialog and write file via plugin-fs
+		const isTauri = typeof window !== "undefined" && (window as any).__TAURI__ !== undefined;
+		if (isTauri) {
+			// lazy-import Tauri APIs to avoid bundling problems in the web
+			if (!tauriSave) {
+				const dlg = await runtimeImport("@tauri-apps/api/dialog");
+				if (dlg && dlg.save) tauriSave = dlg.save;
+			}
+			if (!tauriWriteFile) {
+				const fsMod = await runtimeImport("@tauri-apps/plugin-fs");
+				if (fsMod && fsMod.writeFile) tauriWriteFile = fsMod.writeFile;
+			}
+			try {
+				const saveOptions: any = { defaultPath: file.name };
+				// ask the user where to save
+				const path = await tauriSave(saveOptions);
+				if (path) {
+					// write binary contents
+					const arr = new Uint8Array(await blob.arrayBuffer());
+					await tauriWriteFile({ path, contents: arr });
+					// persist last saved filename (absolute path in Tauri)
+					(store as any)._lastSavedFilename = path;
+				}
+				return;
+			} catch (err) {
+				console.error("Tauri save failed, falling back to web download:", err);
+				// fallthrough to web fallback
+			}
+		}
+		// Web fallback: trigger browser download
 		const link = document.createElement("a");
 		link.href = URL.createObjectURL(file);
 		link.download = file.name;

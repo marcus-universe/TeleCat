@@ -39,6 +39,7 @@
 
 				<span class="divider" aria-hidden="true" />
 
+				<!-- Bold -->
 				<button
 					type="button"
 					:disabled="!editor.can().chain().focus().toggleBold().run()"
@@ -49,6 +50,7 @@
 				>
 					<Icons icon="bold" customclass="icon" />
 				</button>
+				<!-- Italic -->
 				<button
 					type="button"
 					:disabled="!editor.can().chain().focus().toggleItalic().run()"
@@ -59,6 +61,7 @@
 				>
 					<Icons icon="italic" customclass="icon" />
 				</button>
+				<!-- Strike -->
 				<button
 					type="button"
 					:disabled="!editor.can().chain().focus().toggleStrike().run()"
@@ -121,33 +124,26 @@
 
 				<span class="divider" aria-hidden="true" />
 
-				<!-- Insert Image Button (URL prompt like Tiptap docs) -->
-				<button
-					type="button"
-					:disabled="!editor?.isEditable"
-					title="Bild von URL einfügen"
-					@click="addImageFromUrl"
-				>
-					Bild (URL)
-				</button>
+				<!-- Image Dropdown Component -->
+				<ImageDropdown :editor="editor" />
 			</div>
 		</div>
 
 		<!-- Spacer to avoid overlap with fixed bar -->
 		<div class="tc-editbar-spacer" aria-hidden="true" />
+		<!-- mount-only resizer so images in editor are resizable -->
+		<ImageResizer style="display: none" />
 	</div>
 </template>
 
 <script lang="ts" setup>
 	import Icons from "~/components/Design/Icons.vue";
+	import ImageDropdown from "~/components/Markdown/ImageDropdown.vue";
+	import ImageResizer from "~/components/Markdown/ImageResizer.vue";
 	// Accept the TipTap editor instance and visibility flag
-	const props = defineProps<{ editor: any, show: boolean }>();
-
-	function addImageFromUrl() {
-		// eslint-disable-next-line no-alert
-		const url = window.prompt("Bild-URL eingeben");
-		if (!url) return;
-		// Use Tiptap's setImage command
-		props.editor?.chain()?.focus()?.setImage?.({ src: url })?.run();
-	}
+	const _props = defineProps<{ editor: any, show: boolean }>();
 </script>
+
+<style lang="scss" scoped>
+/* Image dropdown styles live in components/Markdown/ImageDropdown.vue */
+</style>
