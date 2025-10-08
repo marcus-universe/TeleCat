@@ -1,3 +1,5 @@
+import { strToU8, zipSync } from "fflate";
+
 export async function htmlToOdtBlob(html: string): Promise<Blob> {
 	const container = document.createElement("div");
 	container.innerHTML = html;
@@ -35,19 +37,17 @@ export async function htmlToOdtBlob(html: string): Promise<Blob> {
 	<manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml"/>
 </manifest:manifest>`;
 
-	let JSZipCtor: any;
-	try {
-		const mod: any = await import("jszip");
-		JSZipCtor = mod.default || mod;
-	} catch {
-		throw new Error("JSZip not available for ODT export");
-	}
-	const zip: any = new JSZipCtor();
-	(zip as any).file("mimetype", "application/vnd.oasis.opendocument.text", { compression: "STORE" });
-	zip.file("content.xml", contentXml);
-	zip.file("styles.xml", stylesXml);
-	zip.folder("META-INF")?.file("manifest.xml", manifestXml);
+	// ODT ist ein ZIP-Container. Wir verwenden fflate, um die minimalen Dateien zu packen.
+	// Wichtig: "mimetype" muss unkomprimiert sein und als erste Datei erscheinen.
+	const files: Record<string, any> = {};
+	files.mimetype = [strToU8("application/vnd.oasis.opendocument.text"), { level: 0 }];
+	files["content.xml"] = strToU8(contentXml);
+	files["styles.xml"] = strToU8(stylesXml);
+	files["META-INF/manifest.xml"] = strToU8(manifestXml);
 
-	const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.oasis.opendocument.text" });
-	return blob;
+	const zipData = zipSync(files, { level: 6 });
+	// In strengen TS/DOM Typings erstellen wir einen neuen ArrayBuffer und kopieren die Daten hinein.
+	const ab = new ArrayBuffer(zipData.byteLength);
+	new Uint8Array(ab).set(zipData);
+	return new Blob([ab], { type: "application/vnd.oasis.opendocument.text" });
 }

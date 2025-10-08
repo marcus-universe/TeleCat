@@ -14,11 +14,11 @@
 					Open
 				</button>
 			</li>
-			<li>
+			<!-- <li>
 				<button type="button" @click="onImport">
 					Import
 				</button>
-			</li>
+			</li> -->
 			<li>
 				<button type="button" @click="onSave">
 					Save
@@ -56,25 +56,35 @@
 					</li>
 				</ul>
 			</li>
-			<li>
+			<!-- <li>
 				<button type="button" @click="onExit">
 					Exit
 				</button>
-			</li>
+			</li> -->
 		</ul>
+
+		<ConfirmDialog
+			:show="showNewConfirm"
+			title="New File"
+			message="Are you sure you want to create a new file? All unsaved changes will be lost."
+			confirm-text="Create New"
+			cancel-text="Cancel"
+			@confirm="confirmNew"
+			@cancel="cancelNew"
+		/>
 	</div>
 </template>
 
 <script lang="ts" setup>
+	import ConfirmDialog from "~/components/Layout/ConfirmDialog.vue";
 	import { emitAppEvent } from "~/composables/useAppEvents";
 	import { useTelecatFileHandler } from "~/composables/useTelecatFileHandler";
-	import { useStore } from "~/stores/store";
 
 	const { saveTelecatFile, openTelecatFile } = useTelecatFileHandler();
-	const store = useStore();
 
 	const open = ref(false);
 	const root = ref<HTMLElement | null>(null);
+	const showNewConfirm = ref(false);
 
 	function toggleDropdown() {
 		open.value = !open.value;
@@ -99,14 +109,26 @@
 	});
 
 	function onNew() {
-		emitAppEvent("file:new", undefined);
+		showNewConfirm.value = true;
 		closeDropdown();
 	}
+
+	function confirmNew() {
+		// Clear editor content
+		const store = useStore();
+		store.textContent = "";
+		showNewConfirm.value = false;
+		emitAppEvent("file:new", undefined);
+	}
+
+	function cancelNew() {
+		showNewConfirm.value = false;
+	}
 	function onOpen() {
-		// Open a .zip file and apply its settings
+		// Open a config.json file and apply it to the store
 		const input = document.createElement("input");
 		input.type = "file";
-		input.accept = ".zip";
+		input.accept = ".json";
 		input.onchange = async (event) => {
 			const file = (event.target as HTMLInputElement)?.files?.[0];
 			if (file) {
@@ -116,30 +138,29 @@
 		input.click();
 		closeDropdown();
 	}
-	function onImport() {
+	function _onImport() {
 		// Placeholder import event
 		emitAppEvent("file:importContent", { content: "", extension: undefined });
 		closeDropdown();
 	}
 	function onSave() {
-		// Save the current state to a .telecat file
+		// Save config.json only
 		saveTelecatFile();
 		closeDropdown();
 	}
 	function onSaveAs() {
-		// Use default filename "project.zip" for Save As (prompt/UI can be added later)
-		(store as any)._lastSavedFilename = "project.zip";
+		// Save As will show a file picker; we always save config.json
 		saveTelecatFile();
 		closeDropdown();
 	}
-	function onExport(fmt: "docx" | "odt" | "md" | "pdf") {
+	function onExport(fmt: "docx" | "md" | "pdf" | "odt") {
 		if (fmt === "docx") emitAppEvent("file:export:docx", undefined);
 		else if (fmt === "pdf") emitAppEvent("file:export:pdf", undefined);
 		else if (fmt === "odt") emitAppEvent("file:export:odt", undefined);
 		else emitAppEvent("file:export:md", undefined);
 		closeDropdown();
 	}
-	function onExit() {
+	function _onExit() {
 		// Best-effort close; real app should wire OS integration
 		try {
 			window.close();
@@ -150,4 +171,104 @@
 
 <style scoped>
 /* No component-scoped styles; styling lives in navbar.sass */
+
+/* Confirm Dialog Styles */
+.confirm-dialog-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	backdrop-filter: blur(2px);
+}
+
+.confirm-dialog {
+	background: var(--color_bg, #fff);
+	border-radius: 8px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	max-width: 400px;
+	width: 90%;
+	max-height: 80vh;
+	overflow: hidden;
+	animation: dialogSlideIn 0.2s ease-out;
+}
+
+@keyframes dialogSlideIn {
+	from {
+		transform: translateY(-20px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.confirm-dialog-header {
+	padding: 1.5rem 1.5rem 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.confirm-dialog-header h3 {
+	margin: 0 0 1rem 0;
+	color: var(--text_color, #333);
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+
+.confirm-dialog-body {
+	padding: 1.5rem;
+}
+
+.confirm-dialog-body p {
+	margin: 0;
+	color: var(--text_color, #666);
+	line-height: 1.5;
+}
+
+.confirm-dialog-actions {
+	padding: 0 1.5rem 1.5rem;
+	display: flex;
+	gap: 1rem;
+	justify-content: flex-end;
+}
+
+.btn {
+	padding: 0.75rem 1.5rem;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	outline: none;
+}
+
+.btn:focus {
+	box-shadow: 0 0 0 3px rgba(64, 120, 255, 0.3);
+}
+
+.btn-secondary {
+	background: #e5e5e5;
+	color: #666;
+}
+
+.btn-secondary:hover {
+	background: #d4d4d4;
+}
+
+.btn-primary {
+	background: var(--color_p, #4078ff);
+	color: white;
+}
+
+.btn-primary:hover {
+	background: var(--color_p, #326ce5);
+	transform: translateY(-1px);
+}
 </style>

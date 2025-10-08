@@ -275,3 +275,35 @@
     outline: 2px solid var(--color_p)
     outline-offset: 1px
 
+// Wrapper for images to allow absolute-positioned resize handle
+.tc-image-wrapper
+    position: relative
+    display: inline-block
+
+.tc-image-wrapper img
+    display: block
+    height: auto
+    max-width: 100%
+
+.tc-image-wrapper .tc-image-resize-handle
+    background: var(--tc-highlight, #6038ff)
+    border: 2px solid #fff
+    border-radius: 2px
+    bottom: -6px
+    box-shadow: 0 1px 3px #0000004d
+    cursor: se-resize
+    height: 12px
+    opacity: 0
+    position: absolute
+    right: -6px
+    transition: opacity .15s ease-in-out
+    width: 12px
+
+.ProseMirror-hideselection .tc-image-wrapper .tc-image-resize-handle,
+.ProseMirror-selectednode + .tc-image-resize-handle,
+.tc-image-wrapper:hover .tc-image-resize-handle
+    opacity: 1
+
+.ProseMirror[contenteditable=false] .tc-image-resize-handle
+    display: none
+

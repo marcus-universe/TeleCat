@@ -1,7 +1,7 @@
-// HTML → MD/DOCX/ODT converter utilities
+// HTML → MD/DOCX/PDF/ODT converter utilities
 // - MD: einfacher interner Converter
 // - DOCX: native Word-Struktur via 'docx' (Überschriften, Listen, Absätze, Fett/Kursiv)
-// - ODT: minimalistischer ODT-Zip via JSZip
+// - PDF: gerendert via pdf-lib
 
 // Dynamische Importe für DOCX/ODT; Markdown-Konvertierung lokal implementiert
 import { htmlToDocxBlob } from "./ConvertTypes/convertHTMLtoDocx.js";
@@ -9,7 +9,7 @@ import { basicHtmlToMarkdown } from "./ConvertTypes/convertHTMLtoMarkdown.js";
 import { htmlToOdtBlob } from "./ConvertTypes/convertHTMLtoOdt.js";
 import { htmlToPdfBlob } from "./ConvertTypes/convertHTMLtoPdf.js";
 
-export type ExportFormat = "md" | "docx" | "odt" | "pdf";
+export type ExportFormat = "md" | "docx" | "pdf" | "odt";
 
 export interface ConvertResult {
 	blob: Blob
@@ -44,13 +44,16 @@ export function useFileConverter() {
 				defaultFileName: "telecat.pdf"
 			};
 		}
-		// odt
-		const blob = await htmlToOdtBlob(html);
-		return {
-			blob,
-			mime: "application/vnd.oasis.opendocument.text",
-			defaultFileName: "telecat.odt"
-		};
+		if (format === "odt") {
+			const blob = await htmlToOdtBlob(html);
+			return {
+				blob,
+				mime: "application/vnd.oasis.opendocument.text",
+				defaultFileName: "telecat.odt"
+			};
+		}
+		// no other export formats
+		throw new Error(`Unsupported export format: ${String(format)}`);
 	}
 
 	return { convert };

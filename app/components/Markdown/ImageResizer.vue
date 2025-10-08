@@ -1,140 +1,106 @@
 <template>
-	<!-- invisible mounting component -->
 	<div style="display: none" />
 </template>
 
 <script lang="ts" setup>
 	import { onBeforeUnmount, onMounted } from "vue";
 
-	let handle: HTMLDivElement | null = null;
 	let currentImg: HTMLImageElement | null = null;
+	let isResizing = false;
 	let startX = 0;
-	let _startY = 0; // prefixed to avoid unused var lint
-	let startW = 0;
-	let startH = 0;
-	let aspect = 1;
+	let startWidth = 0;
+	let aspectRatio = 1;
 
-	function createHandle(): void {
-		handle = document.createElement("div");
-		handle.className = "tc-image-resize-handle";
-		handle.style.position = "absolute";
-		handle.style.width = "12px";
-		handle.style.height = "12px";
-		handle.style.borderRadius = "3px";
-		handle.style.background = "var(--color_p)";
-		handle.style.zIndex = "99999";
-		handle.style.cursor = "nwse-resize";
-		handle.style.boxShadow = "0 1px 4px rgba(0,0,0,0.2)";
+	function showHandle(img: HTMLImageElement): void {
+		// Remove existing handles
+		document.querySelectorAll(".tc-resize-handle").forEach((el) => el.remove());
+
+		const handle = document.createElement("div");
+		handle.className = "tc-resize-handle";
+		handle.style.cssText = `
+			position: absolute;
+			width: 12px;
+			height: 12px;
+			background: var(--tc-highlight, #6038FF);
+			border-radius: 3px;
+			cursor: se-resize;
+			z-index: 1000;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+		`;
+
+		// Position handle at bottom-right corner
+		const rect = img.getBoundingClientRect();
+		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+		handle.style.left = `${rect.right + scrollLeft - 6}px`;
+		handle.style.top = `${rect.bottom + scrollTop - 6}px`;
+
 		document.body.appendChild(handle);
 
-		handle.addEventListener("pointerdown", onPointerDown);
+		handle.addEventListener("mousedown", startResize);
 	}
 
-	function removeHandle(): void {
-		if (handle) {
-			handle.removeEventListener("pointerdown", onPointerDown);
-			if (handle.parentNode) handle.parentNode.removeChild(handle);
-			handle = null;
-		}
-	}
-
-	function positionHandleFor(img: HTMLImageElement): void {
-		if (!handle) createHandle();
-		if (!handle) return;
-		const rect = img.getBoundingClientRect();
-		const left = rect.right - 8;
-		const top = rect.bottom - 8;
-		handle.style.left = `${left}px`;
-		handle.style.top = `${top}px`;
-	}
-
-	function onPointerDown(ev: PointerEvent): void {
-		ev.preventDefault();
-		if (!currentImg) return;
-		startX = ev.clientX;
-		_startY = ev.clientY;
-		startW = currentImg.getBoundingClientRect().width;
-		startH = currentImg.getBoundingClientRect().height;
-		aspect = startW / startH || 1;
-		// ensure the image can be sized freely
-		currentImg.style.maxWidth = "none";
-		currentImg.style.boxSizing = "border-box";
-
-		window.addEventListener("pointermove", onPointerMove);
-		window.addEventListener("pointerup", onPointerUp, { once: true });
-	}
-
-	function onPointerMove(ev: PointerEvent): void {
-		if (!currentImg) return;
-		const dx = ev.clientX - startX;
-		// resize maintaining aspect ratio
-		const newW = Math.max(16, startW + dx);
-		const newH = Math.round(newW / aspect);
-		currentImg.style.width = `${newW}px`;
-		currentImg.style.height = `${newH}px`;
-		// reposition handle
-		positionHandleFor(currentImg);
-	}
-
-	function onPointerUp(): void {
-		window.removeEventListener("pointermove", onPointerMove);
-		// leave the inline width/height so layout persists
-	}
-
-	function clearSelection(): void {
+	function hideHandle(): void {
+		document.querySelectorAll(".tc-resize-handle").forEach((el) => el.remove());
 		if (currentImg) {
-			currentImg.classList.remove("tc-image-selected");
+			currentImg.style.outline = "none";
 			currentImg = null;
 		}
-		if (handle) {
-			handle.style.left = "-9999px";
-			handle.style.top = "-9999px";
-		}
 	}
 
-	function onMouseOver(ev: MouseEvent): void {
-		const target = ev.target as HTMLElement;
-		if (!target) return;
-		const img = target.closest("img") as HTMLImageElement | null;
+	function startResize(e: MouseEvent): void {
+		e.preventDefault();
+		if (!currentImg) return;
+
+		isResizing = true;
+		startX = e.clientX;
+		startWidth = currentImg.offsetWidth;
+		aspectRatio = currentImg.offsetWidth / currentImg.offsetHeight;
+
+		document.addEventListener("mousemove", doResize);
+		document.addEventListener("mouseup", stopResize);
+	}
+
+	function doResize(e: MouseEvent): void {
+		if (!isResizing || !currentImg) return;
+
+		const deltaX = e.clientX - startX;
+		const newWidth = Math.max(50, startWidth + deltaX);
+		const newHeight = newWidth / aspectRatio;
+
+		currentImg.style.width = `${newWidth}px`;
+		currentImg.style.height = `${newHeight}px`;
+
+		// Update handle position
+		showHandle(currentImg);
+	}
+
+	function stopResize(): void {
+		isResizing = false;
+		document.removeEventListener("mousemove", doResize);
+		document.removeEventListener("mouseup", stopResize);
+	}
+
+	function onImageClick(e: MouseEvent): void {
+		const target = e.target as HTMLElement;
+		const img = target.closest("img") as HTMLImageElement;
+
 		if (img && img.closest(".ProseMirror")) {
 			currentImg = img;
-			img.classList.add("tc-image-selected");
-			positionHandleFor(img);
+			img.style.outline = "2px solid var(--tc-highlight, #6038FF)";
+			showHandle(img);
+		} else {
+			hideHandle();
 		}
-	}
-
-	function onClick(ev: MouseEvent): void {
-		const target = ev.target as HTMLElement;
-		const img = target.closest("img") as HTMLImageElement | null;
-		if (!img || !img.closest(".ProseMirror")) {
-			clearSelection();
-			return;
-		}
-		// select image
-		clearSelection();
-		currentImg = img;
-		img.classList.add("tc-image-selected");
-		positionHandleFor(img);
 	}
 
 	onMounted(() => {
-		document.addEventListener("mouseover", onMouseOver);
-		document.addEventListener("click", onClick);
+		document.addEventListener("click", onImageClick);
 	});
 
 	onBeforeUnmount(() => {
-		document.removeEventListener("mouseover", onMouseOver);
-		document.removeEventListener("click", onClick);
-		removeHandle();
+		document.removeEventListener("click", onImageClick);
+		hideHandle();
 	});
 </script>
-
-<style scoped>
-  .tc-image-selected {
-    outline: 2px solid var(--color_p);
-    outline-offset: 2px;
-  }
-  .tc-image-resize-handle {
-    touch-action: none;
-  }
-</style>

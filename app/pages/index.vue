@@ -25,19 +25,8 @@
 	const speed = computed(() => store.speed);
 	const direction = computed(() => store.settings.direction);
 
-	const markdownText = ref(store.textContent);
-	// const renderedMarkdown = computed(() => marked(markdownText.value));
-
-	function autoResize(_event?: Event) {
-		nextTick(() => {
-			const textarea = document.getElementById("teleprompter") as HTMLTextAreaElement;
-			if (textarea) {
-				textarea.style.height = "auto";
-				textarea.style.height = `${textarea.scrollHeight}px`;
-			}
-			store.textContent = markdownText.value;
-		});
-	}
+	// Legacy code removed - markdownText and autoResize are no longer needed
+	// since we're using TipTap editor in MarkdownEditor component
 
 	let scrollDelay: ReturnType<typeof setTimeout>;
 	function startScrolling() {
@@ -84,15 +73,11 @@
 	}
 
 	onMounted(() => {
-		autoResize();
 		window.addEventListener("keydown", preventSpaceScroll);
 	});
 
 	onUnmounted(() => {
 		window.removeEventListener("keydown", preventSpaceScroll);
-	});
-	watch(previewState, () => {
-		autoResize();
 	});
 
 	watch(playState, (newVal) => {
