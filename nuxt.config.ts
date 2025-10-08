@@ -2,7 +2,7 @@ import packageJson from "./package.json" with { type: "json" };
 
 export default defineNuxtConfig({
 	devtools: {
-		enabled: true // or false to disable
+		enabled: true
 	},
 	modules: [
 		"@vueuse/nuxt",
@@ -68,6 +68,7 @@ export default defineNuxtConfig({
 	vite: {
 		clearScreen: false,
 		envPrefix: ["VITE_", "TAURI_"],
+		// Keine speziellen Ausschlüsse mehr nötig
 		server: {
 			strictPort: true,
 			hmr: {
@@ -101,3 +102,6 @@ export default defineNuxtConfig({
 		}
 	}
 });
+function defineNuxtConfig(config: any) {
+	return config;
+}

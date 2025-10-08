@@ -1,66 +1,69 @@
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 
 export function useSettings() {
 	const store = useStore();
-	const fontScale = ref(store.settings.fontScale);
-	const sidePadding = ref(store.settings.sidePadding);
+
+	// Computed proxies so UI bindings read/write the store directly
+	const fontScale = computed({
+		get: () => store.settings.fontScale,
+		set: (v: number) => (store.settings.fontScale = v)
+	});
+
+	const sidePadding = computed({
+		get: () => store.settings.sidePadding,
+		set: (v: number) => (store.settings.sidePadding = v)
+	});
+
+	const h1Scale = computed({ get: () => store.settings.h1Scale, set: (v: number) => (store.settings.h1Scale = v) });
+	const h2Scale = computed({ get: () => store.settings.h2Scale, set: (v: number) => (store.settings.h2Scale = v) });
+	const h3Scale = computed({ get: () => store.settings.h3Scale, set: (v: number) => (store.settings.h3Scale = v) });
+
+	const pSize = computed({ get: () => store.settings.pSize, set: (v: number) => (store.settings.pSize = v) });
+	const pLineHeight = computed({ get: () => store.settings.pLineHeight, set: (v: number) => (store.settings.pLineHeight = v) });
+	const pSpacing = computed({ get: () => store.settings.pSpacing ?? 1, set: (v: number) => (store.settings.pSpacing = v) });
+
 	const tabs = computed(() => store.settings.tabs || []);
-	const websocketServer = ref(store.settings.websocketServer);
-	const mirrorX = computed(() => store.settings.mirroredX);
-	const mirrorY = computed(() => store.settings.mirroredY);
-	const speed = ref(store.speed);
+	const websocketServer = computed({ get: () => store.settings.websocketServer, set: (v: any) => (store.settings.websocketServer = v) });
 
-	watch(mirrorX, (newMirrorX) => {
-		store.settings.mirroredX = newMirrorX;
-		document.documentElement.style.setProperty(
-			"--mirrorX",
-			newMirrorX ? "-1" : "1"
-		);
-	});
+	const mirrorX = computed({ get: () => store.settings.mirroredX, set: (v: boolean) => (store.settings.mirroredX = v) });
+	const mirrorY = computed({ get: () => store.settings.mirroredY, set: (v: boolean) => (store.settings.mirroredY = v) });
 
-	watch(mirrorY, (newMirrorY) => {
-		store.settings.mirroredY = newMirrorY;
-		document.documentElement.style.setProperty(
-			"--mirrorY",
-			newMirrorY ? "-1" : "1"
-		);
-	});
+	const speed = computed({ get: () => store.speed, set: (v: number) => (store.speed = v) });
 
-	watch(fontScale, (newFontScale) => {
-		store.settings.fontScale = newFontScale;
-		document.documentElement.style.setProperty("--fontSize", `${newFontScale}`);
-	});
-
-	watch(sidePadding, (newSidePadding) => {
-		store.settings.sidePadding = newSidePadding;
-		document.documentElement.style.setProperty(
-			"--sidePadding",
-			`${newSidePadding}rem`
-		);
-	});
-
-	watch(speed, (newSpeed) => {
-		store.speed = newSpeed;
-	});
-
-	// Watch for changes in the store and update the speed ref
+	// When the store.settings object changes (for example via importSettings), apply CSS vars
 	watch(
-		() => store.speed,
-		(newSpeed) => {
-			speed.value = newSpeed; // Sync the ref with the store
-			console.log(`Speed ref synced with store: ${newSpeed}`);
-		}
+		() => store.settings,
+		(s) => {
+			// Mirror transforms
+			document.documentElement.style.setProperty("--mirrorX", s.mirroredX ? "-1" : "1");
+			document.documentElement.style.setProperty("--mirrorY", s.mirroredY ? "-1" : "1");
+
+			// Typographic scales
+			document.documentElement.style.setProperty("--fontSize", `${s.fontScale}`);
+			document.documentElement.style.setProperty("--sidePadding", `${s.sidePadding}rem`);
+			document.documentElement.style.setProperty("--h1Scale", `${s.h1Scale}rem`);
+			document.documentElement.style.setProperty("--h2Scale", `${s.h2Scale}rem`);
+			document.documentElement.style.setProperty("--h3Scale", `${s.h3Scale}rem`);
+			document.documentElement.style.setProperty("--pScale", `${s.pSize}rem`);
+			document.documentElement.style.setProperty("--pLineHeight", `${s.pLineHeight}`);
+			document.documentElement.style.setProperty("--pSpacing", `${s.pSpacing}`);
+		},
+		{ deep: true, immediate: true }
 	);
 
 	onMounted(() => {
-		document.documentElement.style.setProperty(
-			"--fontSize",
-			`${fontScale.value}`
-		);
-		document.documentElement.style.setProperty(
-			"--sidePadding",
-			`${sidePadding.value}rem`
-		);
+		// Ensure initial values are applied (watch with immediate:true covers this, but keep for clarity)
+		const s = store.settings;
+		document.documentElement.style.setProperty("--fontSize", `${s.fontScale}`);
+		document.documentElement.style.setProperty("--sidePadding", `${s.sidePadding}rem`);
+		document.documentElement.style.setProperty("--h1Scale", `${s.h1Scale}rem`);
+		document.documentElement.style.setProperty("--h2Scale", `${s.h2Scale}rem`);
+		document.documentElement.style.setProperty("--h3Scale", `${s.h3Scale}rem`);
+		document.documentElement.style.setProperty("--pScale", `${s.pSize}rem`);
+		document.documentElement.style.setProperty("--pLineHeight", `${s.pLineHeight}`);
+		document.documentElement.style.setProperty("--pSpacing", `${s.pSpacing}`);
+		document.documentElement.style.setProperty("--mirrorX", s.mirroredX ? "-1" : "1");
+		document.documentElement.style.setProperty("--mirrorY", s.mirroredY ? "-1" : "1");
 	});
 
 	return {
@@ -71,6 +74,12 @@ export function useSettings() {
 		mirrorX,
 		mirrorY,
 		speed,
+		h1Scale,
+		h2Scale,
+		h3Scale,
+		pSize,
+		pLineHeight,
+		pSpacing,
 		store
 	};
 }

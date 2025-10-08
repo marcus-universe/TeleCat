@@ -1,0 +1,63 @@
+// #####################################
+// --- EditBar Styles ---
+// #####################################
+$editbar-height: 48px
+
+.tc-editbar
+    position: fixed
+    top: 6rem
+    left: 0
+    right: 0
+    height: $editbar-height
+    z-index: 4
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    padding: 0.5rem 0.75rem
+    background: rgba(var(--prompt_bg), 0.7)
+    backdrop-filter: blur(6px)
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08)
+
+    .button-group
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        gap: 0.25rem
+
+    .button-group button
+        appearance: none
+        border: 1px solid rgba(255, 255, 255, 0.12)
+        background: rgba(255, 255, 255, 0.04)
+        color: #eee
+        padding: 0.35rem 0.6rem
+        border-radius: 6px
+        font-size: 1.5rem
+        line-height: 1
+        cursor: pointer
+
+    .button-group button:hover
+        background: rgba(255, 255, 255, 0.08)
+
+    .button-group button.is-active
+        background: var(--color_p)
+        color: rgb(var(--color_bg))
+        border-color: var(--color_p)
+
+    .button-group .icon
+        width: 1em
+        height: 1em
+        vertical-align: middle
+        fill: currentColor
+
+    .button-group button:disabled
+        opacity: 0.5
+        cursor: not-allowed
+
+    .divider
+        width: 0.2rem
+        height: 3rem
+        margin: 0 0.25rem
+        background: rgba(255, 255, 255, 0.12)
+.tc-editbar-spacer
+        height: $editbar-height
+        width: 100%
