@@ -74,7 +74,7 @@
 .confirm-dialog-overlay {
   position: fixed;
   inset: 0;
-  background: var(--color_bg);
+  background: rgba(var(--color_bg), 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +83,7 @@
 }
 
 .confirm-dialog {
-  background: var(--color_bg);
+  background: rgba(var(--color_bg), 0.9);
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   border: 0.3rem solid var(--color_p);
@@ -111,7 +111,7 @@
 
 .btn { padding: 0.6rem 1.1rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1.5rem; font-weight: 600; }
 .btn:focus { outline: none; box-shadow: 0 0 0 3px rgba(64,120,255,0.18); }
-.btn-primary, .btn-secondary { background: var(--color_bg); color: var(--color_p); border: 0.3rem solid var(--color_p); }
+.btn-primary, .btn-secondary { background: rgba(var(--color_bg), 0.9); color: var(--color_p); border: 0.3rem solid var(--color_p); }
 
 .confirm-fade-enter-active, .confirm-fade-leave-active { transition: opacity 0.15s ease; }
 .confirm-fade-enter-from, .confirm-fade-leave-to { opacity: 0; }

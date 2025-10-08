@@ -12,7 +12,8 @@ export function useTelecatFileHandler() {
 		// Build config payload from store
 		const config = store.exportSettings();
 		const json = JSON.stringify(config, null, 2);
-		const filename = "config.json";
+		// Keep JSON format but use .telecat extension for TeleCat project files
+		const filename = "config.telecat";
 
 		// If running inside Tauri, show native Save dialog and write file via plugin-fs
 		const isTauri = typeof window !== "undefined" && (window as any).__TAURI__ !== undefined;
@@ -26,7 +27,8 @@ export function useTelecatFileHandler() {
 				if (fsMod && fsMod.writeFile) tauriWriteFile = fsMod.writeFile;
 			}
 			try {
-				const path = await tauriSave({ defaultPath: filename, filters: [{ name: "JSON", extensions: ["json"] }] });
+				// Suggest .telecat extension in native dialog
+				const path = await tauriSave({ defaultPath: filename, filters: [{ name: "TeleCat", extensions: ["telecat"] }, { name: "JSON", extensions: ["json"] }] });
 				if (path) {
 					await tauriWriteFile({ path, contents: json });
 				}
@@ -40,9 +42,10 @@ export function useTelecatFileHandler() {
 		const anyWin = window as any;
 		if (anyWin.showSaveFilePicker) {
 			try {
+				// Web picker: suggest .telecat; file content remains JSON
 				const handle = await anyWin.showSaveFilePicker({
 					suggestedName: filename,
-					types: [{ description: "JSON", accept: { "application/json": [".json"] } }]
+					types: [{ description: "TeleCat file (JSON)", accept: { "application/json": [".telecat", ".json"] } }]
 				});
 				const writable = await handle.createWritable();
 				await writable.write(new Blob([json], { type: "application/json" }));
@@ -54,6 +57,7 @@ export function useTelecatFileHandler() {
 		}
 
 		// Fallback: trigger download
+		// Fallback download uses .telecat filename
 		const a = document.createElement("a");
 		a.href = URL.createObjectURL(new Blob([json], { type: "application/json" }));
 		a.download = filename;
@@ -71,7 +75,7 @@ export function useTelecatFileHandler() {
 			const data = JSON.parse(text);
 			store.importSettings(data);
 		} catch (err) {
-			console.error("Failed to read config.json:", err);
+			console.error("Failed to read .telecat/.json file:", err);
 		}
 	}
 

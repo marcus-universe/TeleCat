@@ -128,7 +128,8 @@
 		// Open a config.json file and apply it to the store
 		const input = document.createElement("input");
 		input.type = "file";
-		input.accept = ".json";
+		// Accept TeleCat project files (JSON format) and also plain JSON
+		input.accept = ".telecat,.json,application/json";
 		input.onchange = async (event) => {
 			const file = (event.target as HTMLInputElement)?.files?.[0];
 			if (file) {
