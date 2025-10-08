@@ -1,7 +1,7 @@
 <template>
 	<div class="markdown-editor" :style="{ '--tc-highlight': store.settings.colorHighlight }">
 		<EditBar :editor="editor" :show="!previewState" />
-		<EditorContent class="tiptap" :editor="editor" :style="previewTransform" />
+		<EditorContent :class="tiptapClasses" :editor="editor" />
 		<ImageResizer />
 	</div>
 </template>
@@ -28,11 +28,14 @@
 	const mirrorX = computed(() => store.settings.mirroredX);
 	const mirrorY = computed(() => store.settings.mirroredY);
 
-	const previewTransform = computed(() => {
-		if (!previewState.value) return {};
-		const sx = mirrorX.value ? -1 : 1;
-		const sy = mirrorY.value ? -1 : 1;
-		return { transform: `scale(${sx}, ${sy})`, transformOrigin: "center" };
+	// Compute classes for the EditorContent so CSS can handle mirroring in SASS
+	const tiptapClasses = computed(() => {
+		const classes: Record<string, boolean> = { tiptap: true };
+		if (previewState.value) {
+			if (mirrorX.value) classes.mirrorX = true;
+			if (mirrorY.value) classes.mirrorY = true;
+		}
+		return classes;
 	});
 
 	// --- WebSocket Provider handling (conditionally enabled) ---
