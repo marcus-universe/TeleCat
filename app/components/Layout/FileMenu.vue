@@ -19,11 +19,11 @@
 					Import
 				</button>
 			</li> -->
-			<li>
+			<!-- <li>
 				<button type="button" @click="onSave">
 					Save
 				</button>
-			</li>
+			</li> -->
 			<li>
 				<button type="button" @click="onSaveAs">
 					Save as
@@ -144,11 +144,11 @@
 		emitAppEvent("file:importContent", { content: "", extension: undefined });
 		closeDropdown();
 	}
-	function onSave() {
-		// Save config.json only
-		saveTelecatFile();
-		closeDropdown();
-	}
+	// function onSave() {
+	// 	// Save config.json only
+	// 	saveTelecatFile();
+	// 	closeDropdown();
+	// }
 	function onSaveAs() {
 		// Save As will show a file picker; we always save config.json
 		saveTelecatFile();

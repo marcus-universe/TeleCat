@@ -16,7 +16,8 @@
 .tiptap
     width: calc( 100% - var(--sidePadding) * 2)
     padding: 0 var(--sidePadding)
-    transform: scale(var(--mirrorX), var(--mirrorY))
+    // Mirror transforms are handled via classes added from the component
+    // (mirror-x / mirror-y). This avoids inline style binding issues.
     font-size: var(--MarkdownFontSize)
     h1, h2, h3, h4, h5, h6
         margin: 0 0 0 0
@@ -76,6 +77,16 @@
     img
         resize: both
         display: inline-block
+
+    // Mirror helpers — apply flips only when in preview mode via classes
+    &.mirrorX
+        transform: scaleX(-1)
+
+    &.mirrorY
+        transform: scaleY(-1)
+
+    &.mirrorX.mirrorY
+        transform: scale(-1, -1)
 
     .tiptap img.ProseMirror-selectednode
         outline: 3px solid var(--tc-highlight)
