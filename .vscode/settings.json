@@ -45,5 +45,6 @@
 		"jsonc",
 		"yaml",
 		"toml"
-	]
+	],
+	"nuxt.isNuxtApp": false
 }

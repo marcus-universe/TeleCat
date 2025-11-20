@@ -3,6 +3,9 @@
 		"dbaeumer.vscode-eslint",
 		"antfu.file-nesting",
 		"vue.volar",
-		"bradlc.vscode-tailwindcss"
+		"bradlc.vscode-tailwindcss",
+		"nuxtr.nuxtr-vscode",
+		"rust-lang.rust-analyzer",
+		"nuxtr.nuxt-vscode-extentions"
 	]
 }
