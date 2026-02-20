@@ -123,7 +123,7 @@
 	}
 
 	watch(isFullscreen, () => {
-		if (isFullscreen.value === false) {
+		if (isFullscreen.value === true) {
 			document.documentElement.requestFullscreen();
 		} else {
 			if (document.fullscreenElement) {
