@@ -1,0 +1,7 @@
+services:
+  telecat:
+    image: marcusuniverseofficial/telecat:latest
+    ports:
+      - "3003:80"
+    volumes:
+      - ./data:/app/data

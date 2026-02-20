@@ -1,0 +1,12 @@
+node_modules
+.nuxt
+.output
+.dist
+dist
+src-tauri/target
+backend/node_modules
+.DS_Store
+.git
+.gitignore
+.vscode
+.idea

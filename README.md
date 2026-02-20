@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://marcus-universe.github.io/TeleCat/" target="_blank">
-    <img width="400" src="./public/SVG/logo_wide.svg" alt="logo">
+    <img width="400" src="https://raw.githubusercontent.com/marcus-universe/TeleCat/main/public/SVG/logo_wide.svg" alt="logo">
 </a>
 </p>
 <center>
@@ -26,11 +26,31 @@ Open Source Teleprompter App for you and your cat😺!
 
 <h2> ▶️ Latest Releases:</h2>
 <a href="https://github.com/marcus-universe/TeleCat/releases/latest" target="_blank">
-    <img width="200" src="./public/SVG/download.svg" alt="logo">
+    <img width="200" src="https://raw.githubusercontent.com/marcus-universe/TeleCat/main/public/SVG/download.svg" alt="logo">
 </a>
 <a href="https://marcus-universe.github.io/TeleCat/" target="_blank">
-    <img width="200" src="./public/SVG/webview.svg" alt="logo">
+    <img width="200" src="https://raw.githubusercontent.com/marcus-universe/TeleCat/main/public/SVG/webview.svg" alt="logo">
 </a>
+
+<h2>🐳 Docker Compose</h2>
+
+```bash
+docker compose up -d
+```
+
+Open http://localhost:3003
+
+**docker-compose.yml:**
+```yaml
+services:
+  telecat:
+    image: marcusuniverseofficial/telecat:latest
+    ports:
+      - "3003:80"
+    volumes:
+      - ./data:/app/data
+```
+
 
 ## ⌨️Default Keyboard Shortcuts
 
