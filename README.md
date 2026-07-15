@@ -49,6 +49,9 @@ services:
       - "3003:80"
     volumes:
       - ./data:/app/data
+    environment:
+      TELECAT_DB_PATH: /app/data/sb.sqlite
+      TELECAT_PORT: "4000"
 ```
 
 

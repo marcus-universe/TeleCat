@@ -1,6 +1,6 @@
 <template>
 	<div class="markdown-editor" :style="{ '--tc-highlight': store.settings.colorHighlight }">
-		<EditBar :editor="editor" :show="!previewState" />
+		<EditBar :editor="editor" :show="!previewState && !isClientMode" />
 		<EditorContent :class="tiptapClasses" :editor="editor" />
 		<ImageResizer />
 	</div>
@@ -18,6 +18,7 @@
 	// import * as Y from "yjs";
 	import EditBar from "~/components/Markdown/EditBar.vue";
 	import ImageResizer from "~/components/Markdown/ImageResizer.vue";
+	import { tiptapEditorKey } from "~/composables/useTiptapEditor";
 	import { onAppEvent } from "~/composables/useAppEvents";
 	import { useFileConverter } from "~/composables/useFileConverter";
 
@@ -25,6 +26,7 @@
 	// const websocketServer = computed(() => store.settings.websocketServer);
 
 	const previewState = computed(() => store.previewState);
+	const isClientMode = computed(() => store.isClientMode);
 	const mirrorX = computed(() => store.settings.mirroredX);
 	const mirrorY = computed(() => store.settings.mirroredY);
 
@@ -76,18 +78,20 @@
 			})
 		],
 		content: store.textContent,
-		editable: !previewState.value,
-		autofocus: !previewState.value,
+		editable: !previewState.value && !store.isClientMode,
+		autofocus: !previewState.value && !store.isClientMode,
 		onUpdate: ({ editor }) => {
-			// Update store with current editor content
+			if (store.isClientMode) return;
 			store.textContent = editor.getHTML();
 		}
 	});
 
-	// Watch for changes in previewState to toggle editability
-	watch(previewState, (value) => {
+	provide(tiptapEditorKey, editor);
+
+	// Watch for changes in previewState / client mode to toggle editability
+	watch([previewState, isClientMode], ([preview, client]) => {
 		if (editor.value) {
-			editor.value.setEditable(!value);
+			editor.value.setEditable(!preview && !client);
 		}
 	});
 

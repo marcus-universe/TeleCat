@@ -9,8 +9,25 @@ export default defineNuxtConfig({
 		"nuxt-svgo",
 		"@nuxt/eslint",
 		"@pinia/nuxt",
-		"@nuxtjs/device"
+		"@nuxtjs/device",
+		"@nuxtjs/i18n"
 	],
+	i18n: {
+		locales: [
+			{ code: "en", name: "English", file: "en.json" },
+			{ code: "de", name: "Deutsch", file: "de.json" }
+		],
+		defaultLocale: "en",
+		lazy: true,
+		langDir: "locales",
+		strategy: "no_prefix",
+		detectBrowserLanguage: {
+			useCookie: true,
+			cookieKey: "telecat-locale",
+			fallbackLocale: "en"
+		}
+	},
+	ignore: ["server/**"],
 	pinia: {
 		storeDirs: ["@/stores/**"],
 		debug: true
@@ -68,16 +85,26 @@ export default defineNuxtConfig({
 	vite: {
 		clearScreen: false,
 		envPrefix: ["VITE_", "TAURI_"],
-		// Keine speziellen Ausschlüsse mehr nötig
 		server: {
 			strictPort: true,
+			proxy: {
+				"/api": {
+					target: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:4000",
+					changeOrigin: true
+				},
+				"/ws": {
+					target: process.env.NUXT_PUBLIC_API_BASE || "http://localhost:4000",
+					ws: true,
+					changeOrigin: true
+				}
+			},
 			hmr: {
 				protocol: "ws",
 				host: "0.0.0.0",
 				port: 3001
 			},
 			watch: {
-				ignored: ["**/src-tauri/**"]
+				ignored: ["**/src-tauri/**", "**/server/**"]
 			}
 		}
 	},
@@ -98,7 +125,8 @@ export default defineNuxtConfig({
 	compatibilityDate: "2025-02-01",
 	runtimeConfig: {
 		public: {
-			appVersion: packageJson.version
+			appVersion: packageJson.version,
+			apiBase: process.env.NUXT_PUBLIC_API_BASE ?? ""
 		}
 	}
 });

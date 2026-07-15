@@ -8,22 +8,18 @@
 			</li>
 		</ul>
 		<div v-if="tabs && tabs[0] && tabs[0].active" class="generalSettings">
+			<div v-if="showLanguageInSettings" class="option flex_c_h alignCenter">
+				<span class="settings-label">{{ t("language.label") }}</span>
+				<LayoutLanguageDropdown />
+			</div>
+
 			<div class="flex_c_h gap1">
-				<div class="option button flex_c_h" :class="{ active: mirrorX }" @click="store.toggleMirroredX();">
+				<div class="option button flex_c_h" :class="{ active: mirrorX }" @click="store.toggleMirroredX()">
 					<DesignIcons icon="mirror" customclass="mirrorX" />
 				</div>
-
-				<div class="option button" :class="{ active: mirrorY }" @click="store.toggleMirroredY();">
+				<div class="option button" :class="{ active: mirrorY }" @click="store.toggleMirroredY()">
 					<DesignIcons icon="mirror" customclass="mirrorY" />
 				</div>
-			</div>
-			<!-- <div class="option button flex_c_h" :class="{ active: websocketServer.active }" @click="store.toggleWebsocketServer();">
-				<DesignIcons icon="serverRun" customclass="serverRun" />
-			</div> -->
-
-			<div v-show="websocketServer.active" class="option flex_c_h alignCenter">
-				<DesignIcons icon="websocket" customclass="websocket" />
-				<input id="websocketServer" v-model="websocketServer.host" type="text" class="text w100">
 			</div>
 
 			<SettingsSlider id="speed" v-model:model-value="speed" :min="1" :max="150" :step="0.5">
@@ -95,6 +91,12 @@
 	import { useSettings } from "~/composables/useSettings";
 
 	const SettingsBar = ref(null);
+	const route = useRoute();
+	const { t } = useI18n();
+
+	const showLanguageInSettings = computed(() =>
+		route.path.startsWith("/project") || route.path === "/control"
+	);
 
 	const {
 		store,

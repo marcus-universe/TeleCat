@@ -1,14 +1,25 @@
 <template>
-	<nav class="flex_c_h">
-		<div class="nav-wrapper flex_c_h flex_space" :class="{ 'only-logo': isAbout }">
+	<nav class="nav-top flex_c_h">
+		<div class="nav-wrapper flex_c_h flex_space" :class="{ 'only-logo': isAbout || isDashboard }">
 			<div class="flex_c_h flex_start gap1">
-				<NuxtLink :to="logoTarget" class="brand-logo" @click="onLogoClick">
+				<a
+					v-if="logoUsesDashboardNav"
+					href="/"
+					class="brand-logo"
+					@click.prevent="onLogoNavigate"
+				>
+					<DesignIcons icon="logo" customclass="logo_colored" />
+				</a>
+				<NuxtLink v-else :to="logoTarget" class="brand-logo" @click="onLogoClick">
 					<DesignIcons icon="logo" customclass="logo_colored" />
 				</NuxtLink>
-				<FileMenu />
+				<FileMenu v-if="showFileMenu" />
+				<NuxtLink v-if="showControlLink" to="/control" class="controlButton fileMenuButton" :title="t('nav.control')">
+					<DesignIcons icon="joystick" customclass="joystick" />
+				</NuxtLink>
 			</div>
 
-			<div class="flex_c_h flex_end gap1">
+			<div v-if="showEditorControls" class="flex_c_h flex_end gap1">
 				<div class="FullscreenIconWrapper" @click="store.toggleFullscreen()">
 					<div :class="{ active: !isFullscreen }" class="FullscreenIcon">
 						<DesignIcons icon="fullscreen" customclass="fullscreen" />
@@ -37,7 +48,7 @@
 				</div>
 			</div>
 
-			<div class="flex_c_h gap1">
+			<div v-if="showEditorControls" class="flex_c_h gap1">
 				<div ref="settingsButton" class="settingsButton" :class="{ 'spinning-open': settingsOpen, 'spinning-close': !settingsOpen }" @click="onClickSettings()">
 					<DesignIcons icon="settings" customclass="settings" />
 				</div>
@@ -51,6 +62,7 @@
 				</div>
 			</div>
 		</div>
+		<LayoutLanguageDropdown v-if="isDashboard || isAbout" class="nav-lang" />
 	</nav>
 </template>
 
@@ -63,7 +75,9 @@
 
 	defineEmits(["switchPreview"]);
 
+	const { t } = useI18n();
 	const route = useRoute();
+	const { goToDashboard } = useTelecatServer();
 
 	const store = useStore();
 	const playState = computed(() => store.playState);
@@ -72,6 +86,15 @@
 	const settingsOpen = computed(() => store.settings.open);
 	const isFullscreen = computed(() => store.fullscreen);
 	const isAbout = computed(() => route.path === "/about");
+	const isDashboard = computed(() => route.path === "/");
+	const isClientMode = computed(() => store.isClientMode);
+	const isProjectHost = computed(() => route.path.startsWith("/project") && !isClientMode.value);
+	const showFileMenu = computed(() => isDashboard.value || isProjectHost.value);
+	const showControlLink = computed(() => isDashboard.value || isProjectHost.value);
+	const showEditorControls = computed(() => isProjectHost.value);
+	const logoUsesDashboardNav = computed(() =>
+		route.path.startsWith("/project") || route.path === "/control"
+	);
 	const settingsButton = ref(null);
 
 	const { isOutside: isSettingsButtonOutside } = useMouseInElement(settingsButton);
@@ -89,7 +112,6 @@
 	}
 
 	function switchPreview() {
-		console.log("Preview State:", store.previewState);
 		store.switchPreviewState();
 	}
 
@@ -99,16 +121,19 @@
 			if (previewState.value === false) {
 				store.switchPreviewState();
 			}
-			// if (settingsOpen.value === true) {
-			// 	store.setSettingsOpen();
-			// }
 		});
 	}
 
-	// Logo navigation behavior: toggle between / and /about
-	const logoTarget = computed(() => (route.path === "/about" ? "/" : "/about"));
+	const logoTarget = computed(() => {
+		if (route.path === "/about") return "/";
+		return "/about";
+	});
+
+	function onLogoNavigate() {
+		goToDashboard();
+	}
+
 	function onLogoClick() {
-		// Close settings when navigating to About for visual clarity
 		if (logoTarget.value === "/about" && settingsOpen.value === true) {
 			store.setSettingsOpen();
 		}
@@ -132,8 +157,6 @@
 		}
 		setWindowFullscreen(isFullscreen.value);
 	});
-
-	// openAbout removed (replaced by onLogoClick)
 
 	function toggleDirection() {
 		store.toggleDirection();
