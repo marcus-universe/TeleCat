@@ -1,9 +1,9 @@
 import { computed, onMounted, watch } from "vue";
+import { applyThemeFromStore } from "@/composables/applyThemeFromStore";
 
 export function useSettings() {
 	const store = useStore();
 
-	// Computed proxies so UI bindings read/write the store directly
 	const fontScale = computed({
 		get: () => store.settings.fontScale,
 		set: (v: number) => (store.settings.fontScale = v)
@@ -30,40 +30,19 @@ export function useSettings() {
 
 	const speed = computed({ get: () => store.speed, set: (v: number) => (store.speed = v) });
 
-	// When the store.settings object changes (for example via importSettings), apply CSS vars
 	watch(
 		() => store.settings,
-		(s) => {
-			// Mirror transforms
-			document.documentElement.style.setProperty("--mirrorX", s.mirroredX ? "-1" : "1");
-			document.documentElement.style.setProperty("--mirrorY", s.mirroredY ? "-1" : "1");
-
-			// Typographic scales
-			document.documentElement.style.setProperty("--fontSize", `${s.fontScale}`);
-			document.documentElement.style.setProperty("--sidePadding", `${s.sidePadding}rem`);
-			document.documentElement.style.setProperty("--h1Scale", `${s.h1Scale}rem`);
-			document.documentElement.style.setProperty("--h2Scale", `${s.h2Scale}rem`);
-			document.documentElement.style.setProperty("--h3Scale", `${s.h3Scale}rem`);
-			document.documentElement.style.setProperty("--pScale", `${s.pSize}rem`);
-			document.documentElement.style.setProperty("--pLineHeight", `${s.pLineHeight}`);
-			document.documentElement.style.setProperty("--pSpacing", `${s.pSpacing}`);
-		},
+		() => applyThemeFromStore(store),
 		{ deep: true, immediate: true }
 	);
 
+	watch(
+		() => store.speed,
+		() => applyThemeFromStore(store)
+	);
+
 	onMounted(() => {
-		// Ensure initial values are applied (watch with immediate:true covers this, but keep for clarity)
-		const s = store.settings;
-		document.documentElement.style.setProperty("--fontSize", `${s.fontScale}`);
-		document.documentElement.style.setProperty("--sidePadding", `${s.sidePadding}rem`);
-		document.documentElement.style.setProperty("--h1Scale", `${s.h1Scale}rem`);
-		document.documentElement.style.setProperty("--h2Scale", `${s.h2Scale}rem`);
-		document.documentElement.style.setProperty("--h3Scale", `${s.h3Scale}rem`);
-		document.documentElement.style.setProperty("--pScale", `${s.pSize}rem`);
-		document.documentElement.style.setProperty("--pLineHeight", `${s.pLineHeight}`);
-		document.documentElement.style.setProperty("--pSpacing", `${s.pSpacing}`);
-		document.documentElement.style.setProperty("--mirrorX", s.mirroredX ? "-1" : "1");
-		document.documentElement.style.setProperty("--mirrorY", s.mirroredY ? "-1" : "1");
+		applyThemeFromStore(store);
 	});
 
 	return {

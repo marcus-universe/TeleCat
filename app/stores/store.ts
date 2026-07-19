@@ -1,4 +1,10 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
+import { applyThemeFromStore } from "@/composables/applyThemeFromStore";
+import { persistClientOverrides } from "@/composables/useClientStylePersistence";
+import { useNetworkStore } from "@/stores/network";
+import { DEFAULT_TEXT_CONTENT, getDefaultProjectData } from "../../shared/defaultProjectData";
+
+export { DEFAULT_TEXT_CONTENT, getDefaultProjectData };
 
 export const useStore = defineStore("store", {
 	state: () => {
@@ -6,8 +12,10 @@ export const useStore = defineStore("store", {
 			previewState: true,
 			playState: false,
 			fullscreen: false,
+			isClientMode: false,
+			clientOverrides: null as Record<string, unknown> | null,
 			speed: 80,
-			textContent: `<h1>Nya to <mark>TeleCat</mark>!</h1><p> This is the best <strong>Open Source Teleprompter App</strong> for you and your cat.</p><p> <img src=\"https://media.tenor.com/E3v4j9VZuSwAAAAj/cute-cat-cat-typing.gif\" alt=\"a cartoon cat is sitting on a keyboard with a speech bubble above its head\" width=\"256\" height=\"192\" style=\"max-width: 100%; height: auto; margin: 0.25rem; display: inline-block; vertical-align: middle;\"></p><h2>First Steps</h2><ul><li><p>On the top right corner you can switch between preview and edit mode.</p></li><li><p>Inside the Settings you can customize the appearance and behavior of the teleprompter.</p></li><li><p>Change the scroll direction with the two arrows next to the play button.</p></li><li><p>Inside the edit view you can use markdown syntax to style your promter content.</p></li></ul><p>Consider contributing to the <strong>Open Source Community</strong> to support this project at:<br><a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://github.com/marcus-universe/TeleCat\">github.com/marcus-universe/TeleCat</a>❤️</p>`,
+			textContent: DEFAULT_TEXT_CONTENT,
 			settings: {
 				open: false,
 				mouseOverSettings: false,
@@ -29,7 +37,7 @@ export const useStore = defineStore("store", {
 				mirroredY: false,
 				colorText: "#eeeeee",
 				colorTheme: "#eeeeee",
-				colorBackground: "27, 31, 58",
+				colorBackground: "0, 0, 0",
 				colorHighlight: "#6038FF",
 				direction: true,
 				fontScale: 3,
@@ -135,18 +143,52 @@ export const useStore = defineStore("store", {
 				pSize: this.settings.pSize,
 				pLineHeight: this.settings.pLineHeight,
 				pSpacing: this.settings.pSpacing,
-				sidePadding: this.settings.sidePadding
+				sidePadding: this.settings.sidePadding,
+				direction: this.settings.direction
 			};
 		},
 
-		importSettings(data: any) {
+		applyClientOverrides(payload: Record<string, unknown>) {
+			this.clientOverrides = { ...(this.clientOverrides ?? {}), ...payload };
+			this.applyOverrideValues(payload);
+			applyThemeFromStore(this);
+
+			if (import.meta.client && this.isClientMode) {
+				const network = useNetworkStore();
+				if (network.projectId && network.instanceId) {
+					persistClientOverrides(network.projectId, network.instanceId, this.clientOverrides);
+				}
+			}
+		},
+
+		applyOverrideValues(data: Record<string, unknown>) {
+			if (data.speed !== undefined) this.speed = data.speed as number;
+			if (data.mirroredX !== undefined) this.settings.mirroredX = data.mirroredX as boolean;
+			if (data.mirroredY !== undefined) this.settings.mirroredY = data.mirroredY as boolean;
+			if (data.colorText !== undefined) this.settings.colorText = data.colorText as string;
+			if (data.colorTheme !== undefined) this.settings.colorTheme = data.colorTheme as string;
+			if (data.colorBackground !== undefined) this.settings.colorBackground = data.colorBackground as string;
+			if (data.colorHighlight !== undefined) this.settings.colorHighlight = data.colorHighlight as string;
+			if (data.fontScale !== undefined) this.settings.fontScale = data.fontScale as number;
+			if (data.h1Scale !== undefined) this.settings.h1Scale = data.h1Scale as number;
+			if (data.h2Scale !== undefined) this.settings.h2Scale = data.h2Scale as number;
+			if (data.h3Scale !== undefined) this.settings.h3Scale = data.h3Scale as number;
+			if (data.pSize !== undefined) this.settings.pSize = data.pSize as number;
+			if (data.pLineHeight !== undefined) this.settings.pLineHeight = data.pLineHeight as number;
+			if (data.pSpacing !== undefined) this.settings.pSpacing = data.pSpacing as number;
+			if (data.sidePadding !== undefined) this.settings.sidePadding = data.sidePadding as number;
+		},
+
+		importSettings(data: any, options?: { syncPlayback?: boolean; applyMirror?: boolean }) {
 			if (!data || typeof data !== "object") return;
 
 			if (data.speed !== undefined) this.speed = data.speed;
 			if (data.textContent !== undefined) this.textContent = data.textContent;
 
-			if (data.mirroredX !== undefined) this.settings.mirroredX = data.mirroredX;
-			if (data.mirroredY !== undefined) this.settings.mirroredY = data.mirroredY;
+			if (options?.applyMirror !== false) {
+				if (data.mirroredX !== undefined) this.settings.mirroredX = data.mirroredX;
+				if (data.mirroredY !== undefined) this.settings.mirroredY = data.mirroredY;
+			}
 
 			if (data.colorText !== undefined) this.settings.colorText = data.colorText;
 			if (data.colorTheme !== undefined) this.settings.colorTheme = data.colorTheme;
@@ -162,6 +204,37 @@ export const useStore = defineStore("store", {
 			if (data.pLineHeight !== undefined) this.settings.pLineHeight = data.pLineHeight;
 			if (data.pSpacing !== undefined) this.settings.pSpacing = data.pSpacing;
 			if (data.sidePadding !== undefined) this.settings.sidePadding = data.sidePadding;
+
+			if (data.direction !== undefined) this.settings.direction = data.direction;
+
+			if (options?.syncPlayback) {
+				if (data.playState !== undefined) this.playState = data.playState;
+				if (data.previewState !== undefined) this.previewState = data.previewState;
+				if (data.scrollY !== undefined && import.meta.client) {
+					window.scrollTo({ top: data.scrollY as number, behavior: "instant" as ScrollBehavior });
+				}
+			}
+
+			if (this.isClientMode && this.clientOverrides) {
+				this.applyOverrideValues(this.clientOverrides);
+			}
+
+			applyThemeFromStore(this);
+		},
+
+		setClientMode(value: boolean) {
+			this.isClientMode = value;
+			if (value) {
+				this.previewState = true;
+			} else {
+				this.clientOverrides = null;
+			}
+		},
+
+		applyDefaultProjectData() {
+			this.importSettings(getDefaultProjectData());
+			this.previewState = true;
+			this.playState = false;
 		}
 	}
 });

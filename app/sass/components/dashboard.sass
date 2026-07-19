@@ -1,0 +1,466 @@
+:root
+    --navHeight: calc(var(--navIconSize) + var(--navPadding) * 2 + 1rem)
+
+.dashboard:not(svg),
+.control-page
+    max-width: 1100px
+    margin: 0 auto
+    padding: var(--navHeight) 2rem 2rem
+    color: var(--text_color)
+    font-size: 1.6rem
+    overflow: visible
+
+.control-page
+    max-width: 700px
+    --color_p: #eeeeee
+    --text_color: #eeeeee
+
+.is-control-page
+    --color_p: #eeeeee
+    --text_color: #eeeeee
+
+.control-settings-section
+    margin-top: 0
+    padding: 0
+    border: none
+    background: transparent
+
+.dashboard-header,
+.control-header
+    h1
+        margin: 0 0 0.5rem
+        font-size: 3.2rem
+        font-weight: 700
+        color: var(--text_color)
+
+    p,
+    .dashboard-subtitle
+        margin: 0 0 2rem
+        font-size: 1.6rem
+        opacity: 0.75
+
+.dashboard-section,
+.control-section
+    margin-bottom: 2.5rem
+    overflow: visible
+
+    h2
+        margin: 0 0 1rem
+        font-size: 2.2rem
+        font-weight: 600
+
+.dashboard-toolbar
+    display: flex
+    flex-wrap: wrap
+    gap: 1rem
+    justify-content: space-between
+    align-items: flex-start
+    overflow: visible
+
+.server-config
+    display: flex
+    flex-wrap: wrap
+    gap: 0.75rem
+    align-items: center
+    overflow: visible
+    position: relative
+    z-index: 5
+
+    label
+        font-size: 1.4rem
+        opacity: 0.85
+        color: #eeeeee
+
+    input,
+    select
+        padding: 0.75rem 1rem
+        border-radius: 6px
+        border: 1px solid rgba(255, 255, 255, 0.25)
+        background: rgb(0, 0, 0)
+        color: #eeeeee
+        font-size: 1.4rem
+        min-width: 280px
+        appearance: auto
+
+    .server-select
+        min-width: 320px
+        cursor: pointer
+
+        option
+            background: rgb(0, 0, 0)
+            color: #eeeeee
+
+    .server-custom-url
+        min-width: 280px
+
+    .server-scan-port
+        width: 9rem
+        min-width: 9rem
+
+    .btn-compact
+        padding: 0.75rem 1rem
+        font-size: 1.3rem
+        white-space: nowrap
+
+    .btn-icon
+        appearance: none
+        padding: 0.5rem
+        border-radius: 6px
+        border: 1px solid rgba(255, 255, 255, 0.15)
+        background: rgba(255, 255, 255, 0.08)
+        cursor: pointer
+        display: flex
+        align-items: center
+        justify-content: center
+
+        svg
+            width: 1.6rem
+            height: 1.6rem
+            fill: var(--text_color)
+
+        &.spinning svg
+            animation: spin 1s linear infinite
+
+@keyframes spin
+    from
+        transform: rotate(0deg)
+    to
+        transform: rotate(360deg)
+
+.connection-badge
+    padding: 0.4rem 1rem
+    border-radius: 999px
+    font-size: 1.2rem
+    font-weight: 600
+    background: rgba(255, 80, 80, 0.2)
+    color: #ff8888
+
+    &.online
+        background: rgba(80, 200, 120, 0.2)
+        color: #6fcf97
+
+.dashboard-actions
+    display: flex
+    gap: 0.75rem
+
+.btn-primary,
+.btn-secondary
+    appearance: none
+    padding: 0.75rem 1.5rem
+    border-radius: 6px
+    border: none
+    cursor: pointer
+    font-size: 1.4rem
+    font-weight: 600
+    font-family: inherit
+    transition: background 0.2s ease, transform 0.2s ease
+
+.btn-primary
+    background-color: var(--color_p)
+    color: rgb(var(--color_bg))
+
+    &:hover
+        filter: brightness(1.15)
+        transform: scale(1.02)
+
+.btn-secondary
+    background: rgba(255, 255, 255, 0.12)
+    color: var(--text_color)
+    border: 1px solid rgba(255, 255, 255, 0.15)
+
+    &:hover
+        background: rgba(255, 255, 255, 0.2)
+
+.project-grid
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+    gap: 1rem
+
+.project-card
+    position: relative
+    padding: 1.5rem
+    border-radius: 10px
+    background: rgba(255, 255, 255, 0.05)
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    cursor: pointer
+    transition: border-color 0.2s, transform 0.2s
+
+    &:hover
+        border-color: var(--color_p)
+        transform: translateY(-2px)
+
+    .project-card-actions
+        position: absolute
+        top: 0.75rem
+        right: 0.75rem
+        display: flex
+        gap: 0.4rem
+
+    .project-rename,
+    .project-delete
+        appearance: none
+        border: none
+        border-radius: 6px
+        padding: 0.4rem
+        cursor: pointer
+        display: flex
+        align-items: center
+        justify-content: center
+        opacity: 0.85
+        transition: opacity 0.2s, background 0.2s
+
+        svg
+            width: 1.4rem
+            height: 1.4rem
+            fill: #ffffff
+
+    .project-rename
+        background: rgba(96, 56, 255, 0.45)
+
+        &:hover
+            opacity: 1
+            background: rgba(96, 56, 255, 0.65)
+
+    .project-delete
+        background: rgba(255, 60, 60, 0.45)
+
+        &:hover
+            opacity: 1
+            background: rgba(255, 40, 40, 0.65)
+
+    h3
+        margin: 0 0 0.5rem
+        font-size: 1.8rem
+
+.project-meta
+    margin: 0 0 0.75rem
+    font-size: 1.3rem
+    opacity: 0.65
+
+.project-badges
+    display: flex
+    flex-wrap: wrap
+    gap: 0.5rem
+
+.badge
+    display: inline-block
+    padding: 0.3rem 0.75rem
+    border-radius: 999px
+    font-size: 1.2rem
+    font-weight: 500
+    background: rgba(255, 255, 255, 0.1)
+
+.badge-host
+    background: rgba(96, 56, 255, 0.3)
+    color: #b8a4ff
+
+.badge-client
+    background: rgba(56, 200, 255, 0.2)
+    color: #7dd3fc
+
+.badge-active
+    background: rgba(80, 200, 120, 0.2)
+    color: #6fcf97
+
+.dashboard-empty,
+.control-empty
+    padding: 2rem
+    text-align: center
+    font-size: 1.5rem
+    opacity: 0.7
+    border-radius: 8px
+    background: rgba(255, 255, 255, 0.03)
+
+.sessions-table
+    width: 100%
+    border-collapse: collapse
+    font-size: 1.4rem
+
+    th,
+    td
+        padding: 1rem 1.25rem
+        text-align: left
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08)
+
+    th
+        font-size: 1.3rem
+        opacity: 0.75
+        font-weight: 600
+
+    .session-kick
+        appearance: none
+        border: none
+        background: rgba(255, 80, 80, 0.35)
+        border-radius: 6px
+        padding: 0.35rem
+        cursor: pointer
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        transition: background 0.2s
+
+        &:hover
+            background: rgba(255, 60, 60, 0.55)
+
+        svg
+            width: 1.4rem
+            height: 1.4rem
+            fill: #ffffff
+
+.control-section
+    display: flex
+    flex-wrap: wrap
+    gap: 0.75rem
+    align-items: center
+    margin-bottom: 1.5rem
+
+    label
+        font-size: 1.4rem
+        opacity: 0.85
+        width: 100%
+
+    select
+        flex: 1
+        min-width: 200px
+        padding: 0.75rem 1rem
+        border-radius: 6px
+        border: 1px solid rgba(255, 255, 255, 0.2)
+        background: rgba(0, 0, 0, 0.3)
+        color: inherit
+        font-size: 1.4rem
+        font-family: inherit
+
+.control-buttons
+    display: flex
+    flex-direction: column
+    gap: 1rem
+
+.control-row
+    display: flex
+    gap: 0.75rem
+    flex-wrap: wrap
+
+.control-btn
+    flex: 1
+    min-width: 140px
+    padding: 1.25rem
+    border-radius: 10px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.05)
+    color: inherit
+    cursor: pointer
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 0.5rem
+    font-size: 1.4rem
+    font-family: inherit
+    transition: background 0.2s, border-color 0.2s
+
+    &:hover
+        background: rgba(96, 56, 255, 0.15)
+        border-color: var(--color_p)
+
+    &.play
+        border-color: rgba(80, 200, 120, 0.4)
+
+    &.stop
+        border-color: rgba(255, 80, 80, 0.4)
+
+    svg
+        width: 2rem
+        height: 2rem
+        fill: #ffffff
+
+.client-tabs-section
+    margin-bottom: 1.5rem
+
+.client-tabs-row
+    display: flex
+    align-items: stretch
+    gap: 0.75rem
+
+.client-tabs-scroll
+    flex: 1
+    display: flex
+    gap: 0.5rem
+    overflow-x: auto
+    flex-wrap: nowrap
+    padding-bottom: 0.25rem
+    scrollbar-width: thin
+
+.client-tab
+    appearance: none
+    flex: 0 0 auto
+    min-width: 140px
+    max-width: 220px
+    padding: 0.75rem 1rem
+    border-radius: 8px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background: rgba(255, 255, 255, 0.05)
+    color: inherit
+    cursor: pointer
+    text-align: left
+    display: flex
+    flex-direction: column
+    gap: 0.2rem
+    transition: border-color 0.2s, background 0.2s
+
+    &:hover
+        border-color: rgba(96, 56, 255, 0.5)
+
+    &.active
+        border-color: var(--color_p)
+        background: rgba(96, 56, 255, 0.2)
+
+    &.offline
+        opacity: 0.65
+
+.client-tab-name
+    font-size: 1.4rem
+    font-weight: 600
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+.client-tab-project
+    font-size: 1.2rem
+    opacity: 0.75
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+.client-tab-status
+    font-size: 1.1rem
+    opacity: 0.6
+
+.client-refresh
+    flex-shrink: 0
+    align-self: center
+    appearance: none
+    width: var(--SettingsIconSize)
+    height: var(--SettingsIconSize)
+    padding: 0.5rem
+    border-radius: 1rem
+    border: 2px solid var(--color_p)
+    background: transparent
+    color: #eeeeee
+    cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 0
+    transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease
+
+    &:hover
+        background: rgba(255, 255, 255, 0.08)
+        border-color: var(--color_p)
+        transform: scale(1.05)
+
+    &:active
+        transform: scale(0.98)
+
+    svg
+        width: calc(var(--SettingsIconSize) - 0.75rem)
+        height: calc(var(--SettingsIconSize) - 0.75rem)
+        fill: currentColor

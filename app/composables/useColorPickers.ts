@@ -1,4 +1,5 @@
 import { computed, onMounted, ref, watch } from "vue";
+import { applyThemeFromStore } from "@/composables/applyThemeFromStore";
 import { useStore } from "../stores/store.js";
 
 export function useColorPickers() {
@@ -8,7 +9,6 @@ export function useColorPickers() {
 	const colorThemePicker = ref<HTMLInputElement | null>(null);
 	const colorHighlightPicker = ref<HTMLInputElement | null>(null);
 
-	// Computed proxies so UI bindings read/write the store directly
 	const colorText = computed({
 		get: () => store.settings.colorText,
 		set: (v: string) => (store.settings.colorText = v)
@@ -26,72 +26,32 @@ export function useColorPickers() {
 		set: (v: string) => (store.settings.colorHighlight = v)
 	});
 
-	// Watch store colors so imports update UI immediately
 	watch(
-		() => store.settings.colorText,
-		(newColor) => {
-			document.documentElement.style.setProperty("--text_color", newColor);
-		},
-		{ immediate: true }
-	);
-
-	watch(
-		() => store.settings.colorBackground,
-		() => {
-			document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
-		},
-		{ immediate: true }
-	);
-
-	watch(
-		() => store.settings.colorTheme,
-		(newColor) => {
-			document.documentElement.style.setProperty("--color_p", newColor);
-		},
-		{ immediate: true }
-	);
-
-	watch(
-		() => store.settings.colorHighlight,
-		(newColor) => {
-			document.documentElement.style.setProperty("--highlight_color", newColor || "#fff59e");
-		},
+		() => [store.settings.colorText, store.settings.colorBackground, store.settings.colorTheme, store.settings.colorHighlight],
+		() => applyThemeFromStore(store),
 		{ immediate: true }
 	);
 
 	function openColorPicker() {
-		const colorPickerElement = colorPicker.value;
-		if (colorPickerElement) {
-			colorPickerElement.click();
-		}
+		colorPicker.value?.click();
 	}
 
 	function openColorFillPicker() {
-		const colorFillPickerElement = colorFillPicker.value;
-		if (colorFillPickerElement) {
-			colorFillPickerElement.click();
-		}
+		colorFillPicker.value?.click();
 	}
 
 	function openColorThemePicker() {
-		const colorThemePickerElement = colorThemePicker.value;
-		if (colorThemePickerElement) {
-			colorThemePickerElement.click();
-		}
+		colorThemePicker.value?.click();
 	}
 
 	function openColorHighlightPicker() {
-		const el = colorHighlightPicker.value;
-		if (el) {
-			el.click();
-		}
+		colorHighlightPicker.value?.click();
 	}
 
 	function getColorFillPickerRGB() {
-		const colorFillPickerElement = colorFillPicker.value;
-		if (colorFillPickerElement) {
-			const color = colorFillPickerElement.value;
-			const rgb = hexToRgb(color);
+		const el = colorFillPicker.value;
+		if (el) {
+			const rgb = hexToRgb(el.value);
 			return `${rgb.r}, ${rgb.g}, ${rgb.b}`;
 		}
 		return null;
@@ -106,10 +66,7 @@ export function useColorPickers() {
 	}
 
 	onMounted(() => {
-		document.documentElement.style.setProperty("--text_color", colorText.value);
-		document.documentElement.style.setProperty("--prompt_bg", getColorFillPickerRGB() || "");
-		document.documentElement.style.setProperty("--color_p", colorTheme.value);
-		document.documentElement.style.setProperty("--highlight_color", colorHighlight.value);
+		applyThemeFromStore(store);
 	});
 
 	return {

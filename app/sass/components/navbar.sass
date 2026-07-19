@@ -1,5 +1,5 @@
 
-nav
+nav.nav-top
     background: rgba(var(--prompt_bg), 0.7)
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
     position: fixed
@@ -21,19 +21,19 @@ nav
         .gap1
             transition: opacity 0.3s ease
         &.only-logo
-            // hide right and middle control groups smoothly
+            // hide editor control groups only, keep left nav (logo, file, control)
             .flex_end,
-            .gap1:last-child
+            .gap1:not(.flex_start)
                 opacity: 0
                 pointer-events: none
-            // also disable pointer events for all descendants to prevent clicks
             .flex_end *,
-            .gap1:last-child *
+            .gap1:not(.flex_start) *
                 pointer-events: none !important
-                
 
-            // keep the left group visible (logo)
             .flex_start
+                opacity: 1
+                pointer-events: auto
+            .nav-lang
                 opacity: 1
                 pointer-events: auto
         // Make all interactive controls inside the nav non-draggable so they remain clickable
@@ -118,23 +118,44 @@ nav
             width: var(--navIconSize)
             height: var(--navIconSize)
 
-        // File menu next to logo
-        .file-menu
+        // File menu and control button next to logo
+        .file-menu,
+        .controlButton
             position: relative
+        .file-menu,
+        .controlButton,
+        .fileMenuButton,
+        .brand-logo
             -webkit-app-region: no-drag
             pointer-events: auto
-            .fileMenuButton
-                background: transparent
-                border: none
-                color: var(--color_p)
-                
-                font-size: 2rem
-                padding: 0.25rem 0.5rem
-                cursor: pointer
-                border-radius: 6px
-                transition: background 0.2s ease
-                &:hover
-                    background: rgba(255,255,255,0.06)
+        .fileMenuButton,
+        .controlButton
+            background: transparent
+            border: none
+            color: var(--color_p)
+            text-decoration: none
+            font-size: 2rem
+            padding: 0.25rem 0.5rem
+            cursor: pointer
+            border-radius: 6px
+            transition: background 0.2s ease
+            &:hover
+                background: rgba(255,255,255,0.06)
+
+            .joystick
+                width: var(--navIconSize)
+                height: var(--navIconSize)
+                fill: var(--color_p)
+
+        .nav-lang
+            position: absolute
+            right: var(--navPadding)
+            top: 50%
+            transform: translateY(-50%)
+            -webkit-app-region: no-drag
+            pointer-events: auto
+            z-index: 100
+        .file-menu
             .fileMenuDropdown
                 position: absolute
                 top: calc(100% + 4px)
@@ -198,3 +219,48 @@ nav
         transform: scale(0.5) rotate(0deg)
     100%
         transform: scale(1) rotate(90deg)
+
+.nav-bottom
+    position: fixed
+    bottom: var(--navPadding)
+    left: 50%
+    transform: translateX(-50%)
+    top: auto
+    width: auto
+    height: auto
+    padding: 0
+    margin: 0
+    background: transparent
+    backdrop-filter: none
+    box-shadow: none
+    z-index: 99
+    -webkit-app-region: no-drag
+
+    .dashboard-button
+        appearance: none
+        border: none
+        background: rgba(var(--prompt_bg), 0.95)
+        border: 1px solid rgba(255, 255, 255, 0.15)
+        border-radius: 8px
+        padding: 0.35rem
+        line-height: 0
+        color: var(--color_p)
+        cursor: pointer
+        display: flex
+        align-items: center
+        justify-content: center
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+        transition: background 0.2s ease, transform 0.2s ease
+
+        &:hover
+            background: rgba(96, 56, 255, 0.8)
+            transform: scale(1.05)
+
+        svg.dashboard-icon
+            display: block
+            width: var(--navIconSize)
+            height: var(--navIconSize)
+            color: var(--color_p)
+
+            path
+                fill: currentColor
